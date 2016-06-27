@@ -1,0 +1,22 @@
+Génération documentation XSL
+
+3 parties :
+	- frameset
+	- TOC
+	- documentation
+
+Le frameset est statique. Son nom est <nomXsl>.html
+
+Le TOC comporte 4 div
+	- types des composants
+	- origine (quelle XSL)
+	- namespace
+	- mode
+	On explore les templates, les fonctions, les import, les include, les variables, les parameters
+	LEs import et include ne permettent que de continuer à l'intérieur
+	On crée une liste de variables, de parametres, de templates et de fonctions, qu'on qualifie par 4 attributs :
+	data-type [template | function | parameter | variable]
+	data-origine (nom et ID de la XSL qui déclare le truc)
+	data-namespace L'espace de nommage du nom de l'élément. Peut être vide !!!
+	data-mode Le mode de l'élément, si applicable (templates seulement). Est vide dans tous les cas, sauf si @mode est présent
+	Ensuite, on alimente chaque DIV en requetant ce qui a été construit avant.

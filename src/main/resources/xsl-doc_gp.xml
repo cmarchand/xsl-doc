@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This Source Code Form is subject to the terms of 
+the Mozilla Public License, v. 2.0. If a copy of 
+the MPL was not distributed with this file, You 
+can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<config xmlns="http://efl.fr/chaine/saxon-pipe/config"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://efl.fr/chaine/saxon-pipe/config gaulois-pipe:/fr/efl/chaine/xslt/schemas/saxon-pipe_config.xsd">
+    <pipe mutiThreadMaxSourceSize="24349456" nbThreads="4">
+        <xslt href="cp:/get-xfile-dependencies.xsl">
+            <param name="includeContent" value="false"/>
+        </xslt>
+        <output id="step2">
+            <folder relative="./target/generated-test-files" to="${user.dir}"/>
+            <fileName name="step2-output.xml"/>
+        </output>
+    </pipe>
+    <params>
+        <param name="p-general" value="GENERAL"/>
+    </params>
+    <sources>
+	<!-- on veut inclure les fichiers qui finissent par .xml, mais exclure les fichiers qui finissent par .out.xml -->
+        <folder href="./src/test/resources" pattern=".*\.xsl"></folder>
+    </sources>
+</config>
