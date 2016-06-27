@@ -38,9 +38,9 @@
     <inceptionYear>2016</inceptionYear>
     
     <scm>
-        <connection>TODO</connection>
-        <url>TODO</url>
-        <developerConnection>git@github.com/cmarchand/xsl-doc</developerConnection>
+        <connection>https://github.com/cmarchand/xsl-doc.git</connection>
+        <url>https://github.com/cmarchand/xsl-doc.git</url>
+        <developerConnection>git@github.com:cmarchand/xsl-doc.git</developerConnection>
     </scm>
     
     <properties>
