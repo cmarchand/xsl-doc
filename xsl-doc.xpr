@@ -208,6 +208,7 @@
     </meta>
     <projectTree name="xsl-doc.xpr">
         <folder path="src/"/>
+        <file name="catalog.xml"/>
         <file name="pom.xml"/>
     </projectTree>
 </project>
