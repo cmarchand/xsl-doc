@@ -59,11 +59,26 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     </xsl:template>
     
     <xsl:template match="xsl:param">
-        <element type="param" origine="{generate-id(.)}">
+        <element type="parameter" origine="{generate-id(.)}">
             <xsl:copy-of select="local:extractName(@name)"/>
+            <xsl:apply-templates select="@* except @name"/>
         </element>
     </xsl:template>
     
+    <xsl:template match="xsl:variable">
+        <element type="variable" origine="{generate-id(.)}">
+            <xsl:copy-of select="local:extractName(@name)"/>
+            <xsl:apply-templates select="@* except @name"/>
+        </element>
+    </xsl:template>
+    
+    <xsl:template match="xsl:function">
+        <element type="function" origine="{generate-id(.)}">
+            <xsl:copy-of select="local:extractName(@name)"/>
+            <xsl:apply-templates select="@* except @name"/>
+            <xsl:copy-of select="local:calcSignature(.)"/>
+        </element>
+    </xsl:template>
     <!-- here, we don't care -->
     <xsl:template match="xd:*"/>
     
@@ -71,6 +86,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <xsl:apply-templates/>
     </xsl:template>
     <xsl:template match="text()"/>
+    <xsl:template match="comment()"/>
     
     <xsl:function name="local:extractName" as="attribute()*">
         <xsl:param name="name" as="xs:string"/>
@@ -88,6 +104,23 @@ can obtain one at https://mozilla.org/MPL/2.0/.
                 </xsl:sequence>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="local:calcSignature" as="attribute(signature)">
+        <xsl:param name="function" as="element(xsl:function)"/>
+        <xsl:variable name="qname" as="xs:QName" select="xs:QName($function/@name)"/>
+        <xsl:variable name="NS" select="namespace-uri-from-QName($qname)"/>
+        <xsl:variable name="name" select="local-name-from-QName($qname)"/>
+        <xsl:variable name="functionName" as="xs:string" select="concat('Q{',$NS,'}',$name,'(')"/>
+        <xsl:variable name="parameters" as="xs:string*" select="for $i in $function/xsl:param return local:getType($i)"/>
+        <xsl:sequence>
+            <xsl:attribute name="signature" select="concat($functionName, string-join($parameters,','),')')"/>
+        </xsl:sequence>
+    </xsl:function>
+    
+    <xsl:function name="local:getType" as="xs:string">
+        <xsl:param name="param" as="element(xsl:param)"/>
+        <xsl:sequence select="if($param/@as) then $param/@as else 'item()'"/>
     </xsl:function>
         
 </xsl:stylesheet>
