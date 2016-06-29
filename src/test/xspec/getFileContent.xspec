@@ -21,8 +21,9 @@
         <x:call function="local:extractName">
             <x:param name="name" as="xs:string" select="'toto'"/>
         </x:call>
-        <!--x:expect label="two attributes, @name and @namespace" select="exists(/*/@name) and exists(/*/@namespace)"/-->
-        <x:expect label="root element is temp" select="count($x:result/*) ge 2"/>
+        <x:expect label="two attributes, @name and @namespace" select="/*/@*">
+            <result name="toto" namespace="..."/>
+        </x:expect>
     </x:scenario>
 
     <x:scenario pending="Not yet implemented"
