@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:local="top:marchand:xml:local"
+    stylesheet="../../main/xsl/getFileContent.xsl" xslt-version="3.0">
+    <x:scenario label="Scenario for testing template with match 'file">
+        <x:context>
+            <file dependance-type="first-doc"
+                name="premier.xsl"
+                base-uri="../../test/resources/premier.xsl"/>
+        </x:context>
+        <x:expect label="A file with a template inside">
+            <file dependance-type="first-doc"
+                name="premier.xsl"
+                base-uri="../../test/resources/premier.xsl">
+                <element type="template" origine="..." match="/"></element>
+            </file>
+        </x:expect>
+    </x:scenario>
+    
+    <x:scenario label="Scenario for testing extractName function">
+        <x:call function="local:extractName">
+            <x:param name="name" as="xs:string" select="'toto'"/>
+        </x:call>
+        <!--x:expect label="two attributes, @name and @namespace" select="exists(/*/@name) and exists(/*/@namespace)"/-->
+        <x:expect label="root element is temp" select="count($x:result/*) ge 2"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented"
+        label="Scenario for testing template with match 'xsl:template">
+        <x:context>
+            <x:param name="xsl-name" select="'no_value'" tunnel="yes"/>
+            <x:param name="base-uri" select="'no_value'" tunnel="yes"/>
+            <x:param name="rel-uri" select="'no_value'" tunnel="yes"/>
+        </x:context>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented" label="Scenario for testing template with match 'xd:*">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+</x:description>

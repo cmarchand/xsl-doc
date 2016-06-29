@@ -12,6 +12,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <xslt href="cp:/get-xfile-dependencies.xsl">
             <param name="includeContent" value="false"/>
         </xslt>
+        <xslt href="cp:/getFileContent.xsl"/>
         <output id="step2" indent="yes">
             <folder relative="./target/generated-test-files" to="${user.dir}"/>
             <fileName name="step2-output.xml"/>
