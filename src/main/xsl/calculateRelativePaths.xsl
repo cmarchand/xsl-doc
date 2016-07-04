@@ -22,17 +22,9 @@
     <xsl:variable name="absoluteRootUri" as="xs:anyURI" select="resolve-uri($absoluteRootFolder)"/>
     
     <xsl:template match="file">
-        <xsl:message>absoluteRootFolder=<xsl:value-of select="$absoluteRootFolder"/></xsl:message>
-        <xsl:message>absoluteRootUri=<xsl:value-of select="$absoluteRootUri"/></xsl:message>
-        <xsl:message>resolveUri('.')=<xsl:value-of select="resolve-uri('.')"/></xsl:message>
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
-            <xsl:attribute name="root-rel-uri">
-                <xsl:choose>
-                    <xsl:when test="starts-with(@base-uri,$absoluteRootUri)"><xsl:value-of select="substring(@base-uri, string-length($absoluteRootUri))"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="@base-uri"/></xsl:otherwise>
-                </xsl:choose>
-            </xsl:attribute>
+            <xsl:attribute name="root-rel-uri" select="local:normalizeFilePath(local:getRelativePath($absoluteRootUri,@base-uri))"></xsl:attribute>
             <xsl:apply-templates select="*"/>
         </xsl:copy>
     </xsl:template>
