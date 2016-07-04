@@ -13,16 +13,33 @@ can obtain one at https://mozilla.org/MPL/2.0/.
             <param name="includeContent" value="false"/>
         </xslt>
         <xslt href="cp:/getFileContent.xsl"/>
-        <output id="step2" indent="yes">
-            <folder relative="./target/generated-test-files" to="${user.dir}"/>
-            <fileName name="step2-output.xml"/>
-        </output>
+        <xslt href="cp:/calculateRelativePaths.xsl">
+            <param name="absoluteRootFolder" value="$[absoluteRootFolder]"/>
+        </xslt>
+        <tee>
+            <pipe1>
+                <xslt href="cp:/makeTOC.xsl">
+                    <param name="outputFolder" value="$[outputFolder]"/>
+                </xslt>
+                <output id="step1" indent="yes">
+                    <folder relative="./target/generated-test-files" to="${user.dir}"/>
+                    <fileName name="step1-output.xml"/>
+                </output>
+            </pipe1>
+            <pipe2>
+                <output id="step2" indent="yes">
+                    <folder relative="./target/generated-test-files" to="${user.dir}"/>
+                    <fileName name="step2-output.xml"/>
+                </output>
+            </pipe2>
+        </tee>
     </pipe>
     <params>
-        <param name="p-general" value="GENERAL"/>
+        <param name="outputFolder" value="should give it to command line"/>
+        <param name="absoluteRootFolder" value="should give it to command line"/>
     </params>
     <sources>
 	<!-- on veut inclure les fichiers qui finissent par .xml, mais exclure les fichiers qui finissent par .out.xml -->
-        <folder href="./src/test/run" pattern=".*\.xsl"></folder>
+        <folder href="./src/test/run" pattern=".*\.xsl" recurse="true"/>
     </sources>
 </config>

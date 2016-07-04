@@ -150,6 +150,9 @@
                         <argument>src/main/resources/xsl-doc_gp.xml</argument>
                         <argument>--instance-name</argument>
                         <argument>XSL-DOC</argument>
+                        <argument>PARAMS</argument>
+                        <argument>outputFolder=${project.build.directory}/generated-test-files</argument>
+                        <argument>absoluteRootFolder=${basedir}/src/main/xsl</argument>
                     </arguments>
                 </configuration>
             </plugin>

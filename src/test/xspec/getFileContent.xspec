@@ -14,7 +14,7 @@
             <file dependance-type="first-doc"
                 name="premier.xsl"
                 base-uri="../../test/resources/premier.xsl">
-                <element type="template" origine="..." match="/"></element>
+                <element type="template" id="..." match="/"></element>
             </file>
         </x:expect>
     </x:scenario>
@@ -47,7 +47,7 @@
                 <xsl:template match="/"/>
             </x:context>
             <x:expect label="element type template" >
-                <element type="template" match="/" origine="..."/>
+                <element type="template" match="/" id="..."/>
             </x:expect>
         </x:scenario>
         <x:scenario label="with doc">
@@ -61,7 +61,7 @@
                 <xsl:template match="/"/>
             </x:context>
             <x:expect label="element type template" >
-                <element type="template" match="/" origine="...">
+                <element type="template" match="/" id="...">
                     <xd:doc>
                         <xd:desc><xd:p>This is the documentation</xd:p></xd:desc>
                     </xd:doc>
@@ -84,7 +84,7 @@
             <xsl:param name="p" as="xs:string"/>
         </x:context>
         <x:expect label="element type param">
-            <element type="parameter" name="p" origine="..." as="xs:string" namespace=""/>
+            <element type="parameter" name="p" id="..." as="xs:string" namespace=""/>
         </x:expect>
     </x:scenario>
 
@@ -93,7 +93,7 @@
             <xsl:variable name="v" as="xs:string" select="'toto'"/>
         </x:context>
         <x:expect label="element type variable">
-            <element type="variable" name="v" origine="..." as="xs:string" namespace="" select="'toto'"/>
+            <element type="variable" name="v" id="..." as="xs:string" namespace="" select="'toto'"/>
         </x:expect>
     </x:scenario>
 
@@ -106,7 +106,7 @@
             </xsl:function>
         </x:context>
         <x:expect label="element type function">
-            <element type="function" origine="..." namespace="top:marchand:xml:local" name="myFunction" as="xs:string" signature="Q{{top:marchand:xml:local}}myFunction(xs:string,xs:integer*,item())"/>
+            <element type="function" id="..." namespace="top:marchand:xml:local" name="myFunction" as="xs:string" signature="Q{{top:marchand:xml:local}}myFunction(xs:string,xs:integer*,item())"/>
         </x:expect>
     </x:scenario>
 </x:description>
