@@ -69,7 +69,7 @@
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
-                <filtering>true</filtering>
+                <filtering>false</filtering>
             </resource>
         </resources>
         <plugins>
@@ -152,7 +152,7 @@
                         <argument>XSL-DOC</argument>
                         <argument>PARAMS</argument>
                         <argument>outputFolder=${project.build.directory}/generated-test-files</argument>
-                        <argument>absoluteRootFolder=file:${basedir}/src/main/xsl</argument>
+                        <argument>absoluteRootFolder=file:${basedir}/src/test/run</argument>
                     </arguments>
                 </configuration>
             </plugin>

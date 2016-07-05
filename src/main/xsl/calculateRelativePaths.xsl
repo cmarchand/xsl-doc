@@ -22,10 +22,15 @@
     <xsl:param name="absoluteRootFolder" as="xs:string" required="yes"/>
     <xsl:variable name="absoluteRootUri" as="xs:anyURI" select="resolve-uri($absoluteRootFolder)"/>
     
+    <xsl:template match="/">
+        <xsl:comment><xsl:value-of select="$absoluteRootUri"/></xsl:comment>
+        <xsl:apply-templates/>
+    </xsl:template>
+    
     <xsl:template match="file">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
-            <xsl:attribute name="root-rel-uri" select="local:normalizeFilePath(local:getRelativePath($absoluteRootUri,@base-uri))"></xsl:attribute>
+            <xsl:attribute name="root-rel-uri" select="local:normalizeFilePath(local:getRelativePath($absoluteRootUri,@base-uri))"/>
             <xsl:apply-templates select="*"/>
         </xsl:copy>
     </xsl:template>
@@ -75,6 +80,12 @@
             <xsl:otherwise><xsl:sequence select="$temp"/></xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+
+    <xd:doc>
+        <xd:desc>Removes .. in an URI when it is preceded by a folder reference. So, removes /xxxx/.. </xd:desc>
+        <xd:param name="path">The path to clean</xd:param>
+        <xd:return>The clean path</xd:return>
+    </xd:doc>
     <xsl:function name="local:removeDoubleDot" as="xs:string">
         <xsl:param name="path" as="xs:string"/>
         <xsl:variable name="temp" as="xs:string" select="replace($path,'/[^./]*/\.\./','/')"/>
@@ -85,6 +96,12 @@
             <xsl:otherwise><xsl:sequence select="$temp"/></xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+    
+    <xd:doc>
+        <xd:desc>Returns true if the provided URI is absolute, false otherwise</xd:desc>
+        <xd:param name="path">The URI to test</xd:param>
+        <xd:return><html:tt>true</html:tt> if the URI is absolute</xd:return>
+    </xd:doc>
     <xsl:function name="local:isAbsoluteUri" as="xs:boolean">
         <xsl:param name="path" as="xs:string"/>
         <xsl:choose>
@@ -92,6 +109,17 @@
             <xsl:otherwise><xsl:sequence select="matches($path,'[a-zA-Z0-9]+:.*')"/></xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+    
+    <xd:doc>
+        <xd:desc>
+            <xd:p>Returns the relative apth from source to target.</xd:p>
+            <xd:p>Both source and target must be absolute URI</xd:p>
+            <xd:p>If there is no way to walk a relative path from source to target, then absolute target URI is returned</xd:p>
+        </xd:desc>
+        <xd:param name="source">The source URI</xd:param>
+        <xd:param name="target">The target URI</xd:param>
+        <xd:return>The relative path to walk from source to target</xd:return>
+    </xd:doc>
     <xsl:function name="local:getRelativePath" as="xs:string">
         <xsl:param name="source" as="xs:string"/>
         <xsl:param name="target" as="xs:string"/>
@@ -106,8 +134,8 @@
                         <xsl:choose>
                             <xsl:when test="$protocole eq local:getProtocol($target)">
                                 <!-- combien d'éléments en début d'URI sont identiques ? -->
-                                <xsl:variable name="sourceSeq" select="tokenize(substring($source,string-length($protocole)+1),'/')" as="xs:string*"/>
-                                <xsl:variable name="targetSeq" select="tokenize(substring($target,string-length($protocole)+1),'/')" as="xs:string*"/>
+                                <xsl:variable name="sourceSeq" select="tokenize(substring(local:normalizeFilePath($source),string-length($protocole)+1),'/')" as="xs:string*"/>
+                                <xsl:variable name="targetSeq" select="tokenize(substring(local:normalizeFilePath($target),string-length($protocole)+1),'/')" as="xs:string*"/>
                                 <xsl:variable name="nbCommonElements" as="xs:integer" select="local:getNbEqualsElements($sourceSeq, $targetSeq)"/>
                                 <xsl:variable name="goUpLevels" as="xs:integer" select="count($sourceSeq) - $nbCommonElements"/>
                                 <xsl:variable name="goUp" as="xs:string*" select="(for $i in (1 to $goUpLevels) return '..')" />
@@ -129,6 +157,12 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+    
+    <xd:doc>
+        <xd:desc>Returns the protocol of this URI</xd:desc>
+        <xd:param name="path">The URI to check</xd:param>
+        <xd:return>The protocol of the URI</xd:return>
+    </xd:doc>
     <xsl:function name="local:getProtocol" as="xs:string">
         <xsl:param name="path" as="xs:string"/>
         <xsl:variable name="protocol" select="substring-before($path,':')"/>
@@ -137,6 +171,12 @@
             <xsl:otherwise><xsl:message error-code="GPR001">local:protocol('<xsl:value-of select="$path"/>') : path must be an absolute URI</xsl:message></xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+
+    <xd:doc>
+        <xd:desc>Compare pair to pair seq1 and seq2 items, and returns the numbers of deeply-equals items</xd:desc>
+        <xd:param name="seq1">The first sequence</xd:param>
+        <xd:param name="seq2">The second sequence</xd:param>
+    </xd:doc>
     <xsl:function name="local:getNbEqualsElements" as="xs:integer">
         <xsl:param name="seq1" as="item()*"/>
         <xsl:param name="seq2" as="item()*"/>

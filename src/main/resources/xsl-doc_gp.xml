@@ -18,17 +18,18 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         </xslt>
         <tee>
             <pipe1>
+                <xslt href="cp:/prepareTOC.xsl"></xslt>
                 <xslt href="cp:/makeTOC.xsl">
                     <param name="outputFolder" value="$[outputFolder]"/>
                 </xslt>
-                <output id="step1" indent="yes">
-                    <folder relative="./target/generated-test-files" to="${user.dir}"/>
-                    <fileName name="step1-output.xml"/>
+                <output id="step1" indent="yes" method="xhtml">
+                    <folder relative="target/generated-test-files" to="${user.dir}"/>
+                    <fileName name="${basename}-toc.xhtml"/>
                 </output>
             </pipe1>
             <pipe2>
                 <output id="step2" indent="yes">
-                    <folder relative="./target/generated-test-files" to="${user.dir}"/>
+                    <folder relative="target/generated-test-files" to="${user.dir}"/>
                     <fileName name="step2-output.xml"/>
                 </output>
             </pipe2>

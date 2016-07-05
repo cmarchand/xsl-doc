@@ -15,6 +15,9 @@
   <logger name="org.eclipse">
       <level value="WARN"/>
   </logger>
+  <logger name="fr.efl.chaine">
+      <level value="DEBUG"/>
+  </logger>
   <root>
     <level value="DEBUG"/>
     <appender-ref ref="console.appender"/>
