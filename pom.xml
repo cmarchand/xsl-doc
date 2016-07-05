@@ -147,7 +147,8 @@
                         <classpath/>
                         <argument>fr.efl.chaine.xslt.GauloisPipe</argument>
                         <argument>--config</argument>
-                        <argument>src/main/resources/xsl-doc_gp.xml</argument>
+                        <!-- argument>src/main/resources/xsl-doc_gp.xml</argument -->
+                        <argument>cp:/xsl-doc_gp.xml</argument>
                         <argument>--instance-name</argument>
                         <argument>XSL-DOC</argument>
                     </arguments>

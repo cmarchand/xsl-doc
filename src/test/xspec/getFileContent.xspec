@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
     xmlns:local="top:marchand:xml:local"
+    xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     stylesheet="../../main/xsl/getFileContent.xsl" xslt-version="3.0">
     <x:scenario label="Scenario for testing template with match 'file">
         <x:context>
@@ -18,26 +20,40 @@
     </x:scenario>
     
     <x:scenario label="Scenario for testing extractName function">
-        <x:call function="local:extractName">
-            <x:param name="name" as="xs:string" select="'toto'"/>
-        </x:call>
-        <x:expect label="two attributes, @name and @namespace" select="/*/@*">
-            <result name="toto" namespace="..."/>
-        </x:expect>
+        <x:scenario label="No namespace">
+            <x:call function="local:extractName">
+                <x:param name="name" as="xs:string" select="'toto'"/>
+            </x:call>
+            <x:expect label="two attributes, @name and @namespace" select="/*/@*">
+                <result name="toto" namespace=""/>
+            </x:expect>
+        </x:scenario>
+        <x:scenario label="local: namespace">
+            <x:call function="local:extractName">
+                <x:param name="name" as="xs:string" select="'local:toto'"/>
+            </x:call>
+            <x:expect label="two attributes, @name and @namespace" select="/*/@*">
+                <result name="toto" namespace="top:marchand:xml:local"/>
+            </x:expect>
+        </x:scenario>
     </x:scenario>
 
-    <x:scenario pending="Not yet implemented"
-        label="Scenario for testing template with match 'xsl:template">
+    <x:scenario label="Scenario for testing template with match 'xsl:template">
         <x:context>
             <x:param name="xsl-name" select="'no_value'" tunnel="yes"/>
             <x:param name="base-uri" select="'no_value'" tunnel="yes"/>
             <x:param name="rel-uri" select="'no_value'" tunnel="yes"/>
+            <xsl:template match="/"/>
         </x:context>
-        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+        <x:expect label="element type template">
+            <element type="template" match="/" origine="..."/>
+        </x:expect>
     </x:scenario>
 
-    <x:scenario pending="Not yet implemented" label="Scenario for testing template with match 'xd:*">
-        <x:context/>
-        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    <x:scenario label="Scenario for testing template with match 'xd:*">
+        <x:context>
+            <xd:doc scope="stylesheet"><xd:p>Ceci est la documentation</xd:p></xd:doc>
+        </x:context>
+        <x:expect label="Empty" />
     </x:scenario>
 </x:description>
