@@ -10,13 +10,14 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
     xmlns:local="top:marchand:xml:local"
-    exclude-result-prefixes="xs math xd"
+    exclude-result-prefixes="#all"
     version="3.0">
 
     <xsl:import href="identity.xsl"/>
 
     <xd:doc scope="stylesheet">
         <xd:desc>
+            <xd:p>This program extract from input files all (root+1) elements, and generates an ID fro each</xd:p>
             <xd:p><xd:b>Created on:</xd:b> Jun 28, 2016</xd:p>
             <xd:p><xd:b>Author:</xd:b> Christophe Marchand - christophe@marchand.top</xd:p>
             <xd:p></xd:p>
@@ -39,7 +40,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <xsl:param name="xsl-name" as="xs:string" tunnel="yes"/>
         <xsl:param name="base-uri" as="xs:string" tunnel="yes"/>
         <xsl:param name="rel-uri" as="xs:string?" tunnel="yes"/>
-        <element type="template" origine="{generate-id(.)}">
+        <element type="template" id="{generate-id(.)}">
             <xsl:choose>
                 <xsl:when test="exists(@match)">
                     <xsl:attribute name="match" select="@match"/>
@@ -59,11 +60,26 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     </xsl:template>
     
     <xsl:template match="xsl:param">
-        <element type="param" origine="{generate-id(.)}">
+        <element type="parameter" id="{generate-id(.)}">
             <xsl:copy-of select="local:extractName(@name)"/>
+            <xsl:apply-templates select="@* except @name"/>
         </element>
     </xsl:template>
     
+    <xsl:template match="xsl:variable">
+        <element type="variable" id="{generate-id(.)}">
+            <xsl:copy-of select="local:extractName(@name)"/>
+            <xsl:apply-templates select="@* except @name"/>
+        </element>
+    </xsl:template>
+    
+    <xsl:template match="xsl:function">
+        <element type="function" id="{generate-id(.)}">
+            <xsl:copy-of select="local:extractName(@name)"/>
+            <xsl:apply-templates select="@* except @name"/>
+            <xsl:copy-of select="local:calcSignature(.)"/>
+        </element>
+    </xsl:template>
     <!-- here, we don't care -->
     <xsl:template match="xd:*"/>
     
@@ -71,6 +87,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <xsl:apply-templates/>
     </xsl:template>
     <xsl:template match="text()"/>
+    <xsl:template match="comment()"/>
     
     <xsl:function name="local:extractName" as="attribute()*">
         <xsl:param name="name" as="xs:string"/>
@@ -88,6 +105,23 @@ can obtain one at https://mozilla.org/MPL/2.0/.
                 </xsl:sequence>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="local:calcSignature" as="attribute(signature)">
+        <xsl:param name="function" as="element(xsl:function)"/>
+        <xsl:variable name="qname" as="xs:QName" select="xs:QName($function/@name)"/>
+        <xsl:variable name="NS" select="namespace-uri-from-QName($qname)" as="xs:anyURI"/>
+        <xsl:variable name="name" select="local-name-from-QName($qname)"/>
+        <xsl:variable name="functionName" as="xs:string" select="concat('Q{',$NS,'}',$name,'(')"/>
+        <xsl:variable name="parameters" as="xs:string*" select="for $i in $function/xsl:param return local:getType($i)"/>
+        <xsl:sequence>
+            <xsl:attribute name="signature" select="concat($functionName, string-join($parameters,','),')')"/>
+        </xsl:sequence>
+    </xsl:function>
+    
+    <xsl:function name="local:getType" as="xs:string">
+        <xsl:param name="param" as="element(xsl:param)"/>
+        <xsl:sequence select="if($param/@as) then $param/@as else 'item()'"/>
     </xsl:function>
         
 </xsl:stylesheet>

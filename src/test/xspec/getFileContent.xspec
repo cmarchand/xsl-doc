@@ -4,7 +4,7 @@
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     stylesheet="../../main/xsl/getFileContent.xsl" xslt-version="3.0">
-    <x:scenario label="Scenario for testing template with match 'file">
+    <x:scenario label="Scenario for testing template with match 'file'">
         <x:context>
             <file dependance-type="first-doc"
                 name="premier.xsl"
@@ -14,7 +14,7 @@
             <file dependance-type="first-doc"
                 name="premier.xsl"
                 base-uri="../../test/resources/premier.xsl">
-                <element type="template" origine="..." match="/"></element>
+                <element type="template" id="..." match="/"></element>
             </file>
         </x:expect>
     </x:scenario>
@@ -39,21 +39,74 @@
     </x:scenario>
 
     <x:scenario label="Scenario for testing template with match 'xsl:template">
-        <x:context>
-            <x:param name="xsl-name" select="'no_value'" tunnel="yes"/>
-            <x:param name="base-uri" select="'no_value'" tunnel="yes"/>
-            <x:param name="rel-uri" select="'no_value'" tunnel="yes"/>
-            <xsl:template match="/"/>
-        </x:context>
-        <x:expect label="element type template">
-            <element type="template" match="/" origine="..."/>
-        </x:expect>
+        <x:scenario label="without doc">
+            <x:context>
+                <x:param name="xsl-name" select="'no_value'" tunnel="yes"/>
+                <x:param name="base-uri" select="'no_value'" tunnel="yes"/>
+                <x:param name="rel-uri" select="'no_value'" tunnel="yes"/>
+                <xsl:template match="/"/>
+            </x:context>
+            <x:expect label="element type template" >
+                <element type="template" match="/" id="..."/>
+            </x:expect>
+        </x:scenario>
+        <x:scenario label="with doc">
+            <x:context>
+                <x:param name="xsl-name" select="'no_value'" tunnel="yes"/>
+                <x:param name="base-uri" select="'no_value'" tunnel="yes"/>
+                <x:param name="rel-uri" select="'no_value'" tunnel="yes"/>
+                <xd:doc>
+                    <xd:desc><xd:p>This is the documentation</xd:p></xd:desc>
+                </xd:doc>
+                <xsl:template match="/"/>
+            </x:context>
+            <x:expect label="element type template" >
+                <element type="template" match="/" id="...">
+                    <xd:doc>
+                        <xd:desc><xd:p>This is the documentation</xd:p></xd:desc>
+                    </xd:doc>
+                </element>
+            </x:expect>
+        </x:scenario>
     </x:scenario>
 
     <x:scenario label="Scenario for testing template with match 'xd:*">
         <x:context>
-            <xd:doc scope="stylesheet"><xd:p>Ceci est la documentation</xd:p></xd:doc>
+            <xd:doc scope="stylesheet">
+                <xd:p>Bla bla bla</xd:p>
+            </xd:doc>
         </x:context>
-        <x:expect label="Empty" />
+        <x:expect label="empty" />
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'xsl:param">
+        <x:context>
+            <xsl:param name="p" as="xs:string"/>
+        </x:context>
+        <x:expect label="element type param">
+            <element type="parameter" name="p" id="..." as="xs:string" namespace=""/>
+        </x:expect>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'xsl:variable">
+        <x:context>
+            <xsl:variable name="v" as="xs:string" select="'toto'"/>
+        </x:context>
+        <x:expect label="element type variable">
+            <element type="variable" name="v" id="..." as="xs:string" namespace="" select="'toto'"/>
+        </x:expect>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'xsl:function'">
+        <x:context>
+            <xsl:function name="local:myFunction" as="xs:string">
+                <xsl:param name="p1" as="xs:string"/>
+                <xsl:param name="p2" as="xs:integer*"/>
+                <xsl:param name="p3"/>
+            </xsl:function>
+        </x:context>
+        <x:expect label="element type function">
+            <element type="function" id="..." namespace="top:marchand:xml:local" name="myFunction" as="xs:string" signature="Q{{top:marchand:xml:local}}myFunction(xs:string,xs:integer*,item())"/>
+        </x:expect>
     </x:scenario>
 </x:description>
