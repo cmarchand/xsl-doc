@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description 
+    xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:local="top:marchand:xml:local"
+    stylesheet="../../../main/xsl/lib/common.xsl" xslt-version="3.0">
+    <x:scenario label="Scenario for testing local:getHtmlFileName">
+        <x:scenario label="Simple file name">
+            <x:call function="local:getHtmlFileURI">
+                <x:param name="relUri" select="'test.xsl'"/>
+            </x:call>
+            <x:expect label="test_xsl.html" select="'test_xsl.html'"/>
+        </x:scenario>
+        <x:scenario label="Relative path">
+            <x:call function="local:getHtmlFileURI">
+                <x:param name="relUri" select="'../overthere/test.xsl'"/>
+            </x:call>
+            <x:expect label="../overthere/test_xsl.html" select="'../overthere/test_xsl.html'"/>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenario for testing function removeSingleDot">
+        <x:scenario label="Empty path">
+            <x:call function="local:removeSingleDot">
+                <x:param name="path" select="''"/>
+            </x:call>
+            <x:expect label="Empty string" select="''"/>
+        </x:scenario>
+        <x:scenario label="contains /./">
+            <x:call function="local:removeSingleDot">
+                <x:param name="path" select="'file:/home/cmarchand/./devel/test.xml'"/>
+            </x:call>
+            <x:expect select="'file:/home/cmarchand/devel/test.xml'" label="removed the /./"/>
+        </x:scenario>
+        <x:scenario label="contains many /./">
+            <x:call function="local:removeSingleDot">
+                <x:param name="path" select="'file:/home/cmarchand/././devel/test.xml'"/>
+            </x:call>
+            <x:expect select="'file:/home/cmarchand/devel/test.xml'" label="removed the /./"/>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenario for testing function removeLeadingDotSlash">
+        <x:scenario label="starts with ./">
+            <x:call function="local:removeLeadingDotSlash">
+                <x:param name="path" select="'./devel/test.xml'"/>
+            </x:call>
+            <x:expect select="'devel/test.xml'" label="removed the leading ./"/>
+        </x:scenario>
+        <x:scenario label="starts with ././">
+            <x:call function="local:removeLeadingDotSlash">
+                <x:param name="path" select="'././devel/test.xml'"/>
+            </x:call>
+            <x:expect select="'devel/test.xml'" label="removed the leading ./"/>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenario for testing function removeDoubleDot">
+        <x:scenario label="remove one instance">
+            <x:call function="local:removeDoubleDot">
+                <x:param name="path" select="'file:/home/cmarchand/devel/POC/../test.xml'"/>
+            </x:call>
+            <x:expect label=".. removed" select="'file:/home/cmarchand/devel/test.xml'"/>
+        </x:scenario>
+        <x:scenario label="remove two instances">
+            <x:call function="local:removeDoubleDot">
+                <x:param name="path" select="'file:/home/cmarchand/devel/POC/xsl-doc/../../test.xml'"/>
+            </x:call>
+            <x:expect label=".. removed" select="'file:/home/cmarchand/devel/test.xml'"/>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenario for testing function normalizeFilePath">
+        <x:scenario label="Empty path">
+            <x:call function="local:normalizeFilePath">
+                <x:param name="path" select="''"/>
+            </x:call>
+            <x:expect select="''" label="Empty string"/>
+        </x:scenario>
+        <x:scenario label="absolute full spec">
+            <x:call function="local:normalizeFilePath">
+                <x:param name="path" select="'file:/home/cmarchand/./POC/../test.xml'"/>
+            </x:call>
+            <x:expect label="Normalized path" select="'file:/home/cmarchand/test.xml'"/>
+        </x:scenario>
+        <x:scenario label="relative dirty URI">
+            <x:call function="local:normalizeFilePath">
+                <x:param name="path" select="'././POC/xsl-doc/../../test.xml'"/>
+            </x:call>
+            <x:expect label="Normalized path" select="'test.xml'"/>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenario for testing local:isAbsoluteUri">
+        <x:scenario label="Empty URI">
+            <x:call function="local:isAbsoluteUri">
+                <x:param name="path" select="''"/>
+            </x:call>
+            <x:expect label="false" select="false()"/>
+        </x:scenario>
+        <x:scenario label="relative URI">
+            <x:call function="local:isAbsoluteUri">
+                <x:param name="path" select="'src/main/xsl/makeTOC.xsl'"/>
+            </x:call>
+            <x:expect label="false" select="false()"/>
+        </x:scenario>
+        <x:scenario label="Absolute URI">
+            <x:call function="local:isAbsoluteUri">
+                <x:param name="path" select="'file:/home/cmarchand/devel/xsl-doc/src/main/xsl/makeTOC.xsl'"/>
+            </x:call>
+            <x:expect label="false" select="true()"/>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenario for testing local:getProtocol function">
+        <x:scenario label="non absolute URI" pending="pas la moindre idée dont on implémente ça">
+            <x:call function="local:getProtocol">
+                <x:param select="'src/main/pouet.xml'"/>
+            </x:call>
+            <x:expect label="Error" >
+                <!-- TODO -->
+            </x:expect>
+        </x:scenario>
+        <x:scenario label="file protocol">
+            <x:call function="local:getProtocol">
+                <x:param select="'file:/home/cmarchand/deve/xsl-doc/src/main/xsl/makeTOC.xsl'"/>
+            </x:call>
+            <x:expect label="file" select="'file'"/>
+        </x:scenario>
+        <x:scenario label="cp protocol">
+            <x:call function="local:getProtocol">
+                <x:param select="'cp:/makeTOC.xsl'"/>
+            </x:call>
+            <x:expect label="cp" select="'cp'"/>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenario for testing local:getNbEqualsElements function">
+        <x:scenario label="0">
+            <x:call function="local:getNbEqualsElements">
+                <x:param name="seq1" select="('a','b','c')"/>
+                <x:param name="seq2" select="(1, 2, 3)"/>
+            </x:call>
+            <x:expect select="0" label="0"/>
+        </x:scenario>
+        <x:scenario label="1">
+            <x:call function="local:getNbEqualsElements">
+                <x:param name="seq1" select="('a','b','c')"/>
+                <x:param name="seq2" select="('a', 2, 3)"/>
+            </x:call>
+            <x:expect select="1" label="1"/>
+        </x:scenario>
+        <x:scenario label="0">
+            <x:call function="local:getNbEqualsElements">
+                <x:param name="seq1" select="('a','b','c')"/>
+                <x:param name="seq2" select="()"/>
+            </x:call>
+            <x:expect select="0" label="0"/>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenario for testing local:getRelativePath function">
+        <x:scenario label="To down">
+            <x:call function="local:getRelativePath">
+                <x:param name="source" select="'file:/home/cmarchand/devel/xsl-doc'"/>
+                <x:param name="target" select="'file:/home/cmarchand/devel/xsl-doc/src/main/xsl/pouet.xsl'"/>
+            </x:call>
+            <x:expect label="src/main/xsl/pouet.xsl" select="'src/main/xsl/pouet.xsl'"/>
+        </x:scenario>
+        <x:scenario label="To up one level">
+            <x:call function="local:getRelativePath">
+                <x:param name="source" select="'file:/home/cmarchand/devel/xsl-doc'"/>
+                <x:param name="target" select="'file:/home/cmarchand/devel'"/>
+            </x:call>
+            <x:expect label=".." select="'..'"/>
+        </x:scenario>
+        <x:scenario label="To up one level and down two levels">
+            <x:call function="local:getRelativePath">
+                <x:param name="source" select="'file:/home/cmarchand/devel/xsl-doc'"/>
+                <x:param name="target" select="'file:/home/cmarchand/devel/xspec-maven-plugin/pom.xml'"/>
+            </x:call>
+            <x:expect label="../xspec-maven-plugin/pom.xml" select="'../xspec-maven-plugin/pom.xml'"/>
+        </x:scenario>
+    </x:scenario>
+</x:description>

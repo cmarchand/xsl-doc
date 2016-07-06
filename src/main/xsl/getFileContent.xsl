@@ -14,7 +14,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     version="3.0">
 
     <xsl:import href="identity.xsl"/>
-
+    
     <xd:doc scope="stylesheet">
         <xd:desc>
             <xd:p>This program extract from input files all (root+1) elements, and generates an ID fro each</xd:p>
@@ -59,7 +59,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         </element>
     </xsl:template>
     
-    <xsl:template match="xsl:param">
+    <!--xsl:template match="xsl:param">
         <element type="parameter" id="{generate-id(.)}">
             <xsl:copy-of select="local:extractName(@name)"/>
             <xsl:apply-templates select="@* except @name"/>
@@ -71,7 +71,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
             <xsl:copy-of select="local:extractName(@name)"/>
             <xsl:apply-templates select="@* except @name"/>
         </element>
-    </xsl:template>
+    </xsl:template-->
     
     <xsl:template match="xsl:function">
         <element type="function" id="{generate-id(.)}">
@@ -80,6 +80,17 @@ can obtain one at https://mozilla.org/MPL/2.0/.
             <xsl:copy-of select="local:calcSignature(.)"/>
         </element>
     </xsl:template>
+
+    <xsl:template match="xsl:accumulator | xs:attribute-set | 
+        xsl:character-map | xsl:decimal-format | xsl:import-schema | 
+        xsl:key | xsl:mode | xsl:namespace-alias | xsl:preserve-space | 
+        xsl:strip-space | xsl:param | xsl:variable">
+        <element type="{local-name(.)}" id="{generate-id(.)}">
+            <xsl:copy-of select="local:extractName(@name)"/>
+            <xsl:apply-templates select="@* except @name"/>
+        </element>
+    </xsl:template>
+
     <!-- here, we don't care -->
     <xsl:template match="xd:*"/>
     

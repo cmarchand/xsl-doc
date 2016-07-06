@@ -15,10 +15,10 @@
     
     <xsl:template match="/">
         <data>
-            <by-file>
+            <by-file label="file">
                 <xsl:apply-templates select="file" mode="by-file"/>
             </by-file>
-            <by-types>
+            <by-type label="type">
                 <xsl:for-each-group select=".//element" group-by="@type">
                     <group name="{current-grouping-key()}">
                         <xsl:apply-templates select="current-group()" mode="grouping">
@@ -26,8 +26,8 @@
                         </xsl:apply-templates>
                     </group>
                 </xsl:for-each-group>
-            </by-types>
-            <by-namespace>
+            </by-type>
+            <by-namespace label="namespace">
                 <xsl:for-each-group select=".//element" group-by="@namespace">
                     <group name="{current-grouping-key()}">
                         <xsl:apply-templates select="current-group()" mode="grouping">
@@ -36,7 +36,7 @@
                     </group>
                 </xsl:for-each-group>
             </by-namespace>
-            <by-mode>
+            <by-mode label="mode">
                 <xsl:for-each-group select=".//element[@type='template']" group-by="(@mode,'')[1]">
                     <group name="{current-grouping-key()}">
                         <xsl:apply-templates select="current-group()" mode="grouping">

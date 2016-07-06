@@ -5,7 +5,7 @@
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
     xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns:local="top:marchand:xml:local"
-    exclude-result-prefixes="xs math xd"
+    exclude-result-prefixes="#all"
     version="3.0">
     <xd:doc scope="stylesheet">
         <xd:desc>
@@ -16,13 +16,34 @@
         </xd:desc>
     </xd:doc>
     
+    <xsl:import href="lib/common.xsl"/>
+    
     <xsl:param name="outputFolder" as="xs:string" required="yes"/>
-    <xsl:variable name="outputFolderUri" as="xs:anyURI" select="if (ends-with($outputFolder,'/')) then $outputFolder else concat($outputFolder,'/')"/>
+    <xsl:variable name="outputFolderUri" as="xs:anyURI" select="resolve-uri(if (ends-with($outputFolder,'/')) then $outputFolder else concat($outputFolder,'/'))"/>
     
     <xsl:template match="/data">
         <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
                 <title>Table of Contents</title>
+                <style type="text/css">
+                    .niv1{
+                    border: 1px solid black;
+                    border-radius: 3px;
+                    padding:3px;
+                    }
+                    .niv2{
+                    border: 1px solid #777777;
+                    border-radius: 3px;
+                    padding: 3px;
+                    margin-left: 15px;
+                    }
+                    div.niv1<xsl:text disable-output-escaping="yes">></xsl:text>details<xsl:text disable-output-escaping="yes">></xsl:text>summary{
+                    background-color: #75baff;
+                    }
+                    div.niv2<xsl:text disable-output-escaping="yes">></xsl:text>details<xsl:text disable-output-escaping="yes">></xsl:text>summary{
+                    background-color: #99ccff;
+                    }
+                </style>
             </head>
             <body>
                 <xsl:apply-templates></xsl:apply-templates>
@@ -31,31 +52,27 @@
     </xsl:template>
     
     <xsl:template match="*[starts-with(local-name(), 'by-')]">
-        <details open="open">
-            <summary>Content by <xsl:value-of select="substring(local-name(),4)"/></summary>
-            <ul><xsl:apply-templates select="element"/></ul>
-        </details>
+        <div class="niv1" xmlns="http://www.w3.org/1999/xhtml">
+            <details open="open">
+                <summary>Content by <xsl:value-of select="substring(local-name(),4)"/></summary>
+                <xsl:apply-templates />
+            </details>
+        </div>
+    </xsl:template>
+    
+    <xsl:template match="group">
+        <div class="niv2" xmlns="http://www.w3.org/1999/xhtml">
+            <details>
+                <summary><xsl:value-of select="(@name[normalize-space()],concat('no ',../@label))[1]"/></summary>
+                <ul><xsl:apply-templates /></ul>
+            </details>
+        </div>
     </xsl:template>
     
     <xsl:template match="element">
-        <li>
-            <a href="{local:getHtmlFileName(@relUri)}#{@id}"><xsl:value-of select="@name"></xsl:value-of></a>
+        <li xmlns="http://www.w3.org/1999/xhtml">
+            <a href="{local:getHtmlFileURI(@relUri)}#{@id}"><xsl:value-of select="(@name,@match)[1]"/></a>
         </li>
     </xsl:template>
-    
-    
-    <!--xsl:function name="local:getImageDesc" as="xs:string">
-        <xsl:param name="type" as="xs:string"/>
-        <xsl:choose>
-            <xsl:when test="$type eq 'template'"><xsl:sequence select=""></xsl:sequence></xsl:when>
-        </xsl:choose>
-    </xsl:function-->
-    
-    <xsl:function name="local:getHtmlFileName" as="xs:string">
-        <xsl:param name="relUri" as="xs:string"/>
-        <xsl:variable name="relUriSeq" select="tokenize($relUri,'/')" as="xs:string*"/>
-        <xsl:variable name="sourceFileName" as="xs:string" select="$relUriSeq[last()]"/>
-        
-    </xsl:function>
     
 </xsl:stylesheet>

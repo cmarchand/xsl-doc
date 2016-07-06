@@ -8,7 +8,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
 <config xmlns="http://efl.fr/chaine/saxon-pipe/config"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://efl.fr/chaine/saxon-pipe/config gaulois-pipe:/fr/efl/chaine/xslt/schemas/gaulois-pipe_config.xsd">
-    <pipe mutiThreadMaxSourceSize="24349456" nbThreads="4">
+    <pipe mutiThreadMaxSourceSize="24349456" nbThreads="1">
         <xslt href="cp:/get-xfile-dependencies.xsl">
             <param name="includeContent" value="false"/>
         </xslt>
@@ -22,16 +22,29 @@ can obtain one at https://mozilla.org/MPL/2.0/.
                 <xslt href="cp:/makeTOC.xsl">
                     <param name="outputFolder" value="$[outputFolder]"/>
                 </xslt>
-                <output id="step1" indent="yes" method="xhtml">
+                <output id="toc" indent="yes" method="xhtml">
                     <folder relative="target/generated-test-files" to="${user.dir}"/>
-                    <fileName name="${basename}-toc.xhtml"/>
+                    <fileName name="${basename}-toc.html"/>
                 </output>
             </pipe1>
             <pipe2>
-                <output id="step2" indent="yes">
-                    <folder relative="target/generated-test-files" to="${user.dir}"/>
-                    <fileName name="step2-output.xml"/>
-                </output>
+                <xslt href="cp:/calculateHtmlOutputFile.xsl">
+                    <param name="outputFolder" value="$[outputFolder]"/>
+                </xslt>
+                <tee>
+                    <pipe1>
+                        <xslt href="cp:/makeDoc.xsl"/>
+                        <output id="terminaison">
+                            <null/>
+                        </output>
+                    </pipe1>
+                    <pipe2>
+                        <output indent="yes" method="xml">
+                            <folder relative="target/generated-test-files" to="${user.dir}"/>
+                            <fileName name="${basename}-content.xml"/>
+                        </output>
+                    </pipe2>
+                </tee>
             </pipe2>
         </tee>
     </pipe>
@@ -40,7 +53,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <param name="absoluteRootFolder" value="should give it to command line"/>
     </params>
     <sources>
-	<!-- on veut inclure les fichiers qui finissent par .xml, mais exclure les fichiers qui finissent par .out.xml -->
-        <folder href="./src/test/run" pattern=".*\.xsl" recurse="true"/>
+        <!--folder href="./src/test/run" pattern=".*\.xsl" recurse="true"/-->
+        <file href="./src/test/run/etat-DeveloppementDepense.xsl"/>
     </sources>
 </config>

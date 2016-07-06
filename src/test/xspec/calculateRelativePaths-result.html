@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:test="http://www.jenitennison.com/xslt/unit-test" xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>Test Report for home/ext-cmarchand/devel/github/xsl-doc/src/main/xsl/calculateRelativePaths.xsl (passed:21 / pending:1 / failed:0 / total:22)</title>
+      <link rel="stylesheet" type="text/css" href="file:/home/ext-cmarchand/applications/Oxygen%20XML%20Editor%2015/frameworks/xspec/src/reporter/test-report.css" />
+   </head>
+   <body>
+      <h1>Test Report</h1>
+      <p xmlns:oxy="http://www.oxygenxml.com/xslt/xspec">Stylesheet: <a href="file:/home/ext-cmarchand/devel/github/xsl-doc/src/main/xsl/calculateRelativePaths.xsl">home/ext-cmarchand/devel/github/xsl-doc/src/main/xsl/calculateRelativePaths.xsl</a></p>
+      <p xmlns:oxy="http://www.oxygenxml.com/xslt/xspec">Tested: 5 Juillet 2016 at 10:14</p>
+      <h2 xmlns:oxy="http://www.oxygenxml.com/xslt/xspec">Contents</h2>
+      <table xmlns:oxy="http://www.oxygenxml.com/xslt/xspec" class="xspec">
+         <col width="80%" />
+         <col width="5%" />
+         <col width="5%" />
+         <col width="5%" />
+         <col width="5%" />
+         <thead>
+            <tr>
+               <th></th>
+               <th class="result">passed:21</th>
+               <th class="result">pending:1</th>
+               <th class="result">failed:0</th>
+               <th class="result">total:22</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr class="successful">
+               <th><a href="#d4e4">Scenario for testing function removeSingleDot</a></th>
+               <th class="result">3</th>
+               <th class="result">0</th>
+               <th class="result">0</th>
+               <th class="result">3</th>
+            </tr>
+            <tr class="successful">
+               <th><a href="#d4e73">Scenario for testing function removeLeadingDotSlash</a></th>
+               <th class="result">2</th>
+               <th class="result">0</th>
+               <th class="result">0</th>
+               <th class="result">2</th>
+            </tr>
+            <tr class="successful">
+               <th><a href="#d4e121">Scenario for testing function removeDoubleDot</a></th>
+               <th class="result">2</th>
+               <th class="result">0</th>
+               <th class="result">0</th>
+               <th class="result">2</th>
+            </tr>
+            <tr class="successful">
+               <th><a href="#d4e169">Scenario for testing function normalizeFilePath</a></th>
+               <th class="result">3</th>
+               <th class="result">0</th>
+               <th class="result">0</th>
+               <th class="result">3</th>
+            </tr>
+            <tr class="successful">
+               <th><a href="#d4e238">Scenarion for testing local:isAbsoluteUri</a></th>
+               <th class="result">3</th>
+               <th class="result">0</th>
+               <th class="result">0</th>
+               <th class="result">3</th>
+            </tr>
+            <tr class="successful">
+               <th><a href="#d4e308">Scenario for testing local:getProtocol function</a></th>
+               <th class="result">2</th>
+               <th class="result">1</th>
+               <th class="result">0</th>
+               <th class="result">3</th>
+            </tr>
+            <tr class="successful">
+               <th><a href="#d4e373">Scenario for testing local:getNbEqualsElements function</a></th>
+               <th class="result">3</th>
+               <th class="result">0</th>
+               <th class="result">0</th>
+               <th class="result">3</th>
+            </tr>
+            <tr class="successful">
+               <th><a href="#d4e448">Scenario for testing local:getRelativePath function</a></th>
+               <th class="result">3</th>
+               <th class="result">0</th>
+               <th class="result">0</th>
+               <th class="result">3</th>
+            </tr>
+         </tbody>
+      </table>
+      <div xmlns:oxy="http://www.oxygenxml.com/xslt/xspec" id="d4e4">
+         <h2 class="successful">Scenario for testing function removeSingleDot<span class="scenario-totals">passed:3 / pending:0 / failed:0 / total:3</span></h2>
+         <table class="xspec" id="t-d4e4">
+            <col width="80%" />
+            <col width="20%" />
+            <tbody>
+               <tr class="successful">
+                  <th>Scenario for testing function removeSingleDot</th>
+                  <th>passed:3 / pending:0 / failed:0 / total:3</th>
+               </tr>
+               <tr class="successful">
+                  <th>Empty path</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>Empty string</td>
+                  <td>Success</td>
+               </tr>
+               <tr class="successful">
+                  <th>contains /./</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>removed the /./</td>
+                  <td>Success</td>
+               </tr>
+               <tr class="successful">
+                  <th>contains many /./</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>removed the /./</td>
+                  <td>Success</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div xmlns:oxy="http://www.oxygenxml.com/xslt/xspec" id="d4e73">
+         <h2 class="successful">Scenario for testing function removeLeadingDotSlash<span class="scenario-totals">passed:2 / pending:0 / failed:0 / total:2</span></h2>
+         <table class="xspec" id="t-d4e73">
+            <col width="80%" />
+            <col width="20%" />
+            <tbody>
+               <tr class="successful">
+                  <th>Scenario for testing function removeLeadingDotSlash</th>
+                  <th>passed:2 / pending:0 / failed:0 / total:2</th>
+               </tr>
+               <tr class="successful">
+                  <th>starts with ./</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>removed the leading ./</td>
+                  <td>Success</td>
+               </tr>
+               <tr class="successful">
+                  <th>starts with ././</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>removed the leading ./</td>
+                  <td>Success</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div xmlns:oxy="http://www.oxygenxml.com/xslt/xspec" id="d4e121">
+         <h2 class="successful">Scenario for testing function removeDoubleDot<span class="scenario-totals">passed:2 / pending:0 / failed:0 / total:2</span></h2>
+         <table class="xspec" id="t-d4e121">
+            <col width="80%" />
+            <col width="20%" />
+            <tbody>
+               <tr class="successful">
+                  <th>Scenario for testing function removeDoubleDot</th>
+                  <th>passed:2 / pending:0 / failed:0 / total:2</th>
+               </tr>
+               <tr class="successful">
+                  <th>remove one instance</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>.. removed</td>
+                  <td>Success</td>
+               </tr>
+               <tr class="successful">
+                  <th>remove two instances</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>.. removed</td>
+                  <td>Success</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div xmlns:oxy="http://www.oxygenxml.com/xslt/xspec" id="d4e169">
+         <h2 class="successful">Scenario for testing function normalizeFilePath<span class="scenario-totals">passed:3 / pending:0 / failed:0 / total:3</span></h2>
+         <table class="xspec" id="t-d4e169">
+            <col width="80%" />
+            <col width="20%" />
+            <tbody>
+               <tr class="successful">
+                  <th>Scenario for testing function normalizeFilePath</th>
+                  <th>passed:3 / pending:0 / failed:0 / total:3</th>
+               </tr>
+               <tr class="successful">
+                  <th>Empty path</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>Empty string</td>
+                  <td>Success</td>
+               </tr>
+               <tr class="successful">
+                  <th>absolute full spec</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>Normalized path</td>
+                  <td>Success</td>
+               </tr>
+               <tr class="successful">
+                  <th>relative dirty URI</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>Normalized path</td>
+                  <td>Success</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div xmlns:oxy="http://www.oxygenxml.com/xslt/xspec" id="d4e238">
+         <h2 class="successful">Scenarion for testing local:isAbsoluteUri<span class="scenario-totals">passed:3 / pending:0 / failed:0 / total:3</span></h2>
+         <table class="xspec" id="t-d4e238">
+            <col width="80%" />
+            <col width="20%" />
+            <tbody>
+               <tr class="successful">
+                  <th>Scenarion for testing local:isAbsoluteUri</th>
+                  <th>passed:3 / pending:0 / failed:0 / total:3</th>
+               </tr>
+               <tr class="successful">
+                  <th>Empty URI</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>false</td>
+                  <td>Success</td>
+               </tr>
+               <tr class="successful">
+                  <th>relative URI</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>false</td>
+                  <td>Success</td>
+               </tr>
+               <tr class="successful">
+                  <th>Absolute URI</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>false</td>
+                  <td>Success</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div xmlns:oxy="http://www.oxygenxml.com/xslt/xspec" id="d4e308">
+         <h2 class="successful">Scenario for testing local:getProtocol function<span class="scenario-totals">passed:2 / pending:1 / failed:0 / total:3</span></h2>
+         <table class="xspec" id="t-d4e308">
+            <col width="80%" />
+            <col width="20%" />
+            <tbody>
+               <tr class="successful">
+                  <th>Scenario for testing local:getProtocol function</th>
+                  <th>passed:2 / pending:1 / failed:0 / total:3</th>
+               </tr>
+               <tr class="pending">
+                  <th>(<strong>pas la moindre idée dont on implémente ça</strong>) non absolute URI
+                  </th>
+                  <th>passed:0 / pending:1 / failed:0 / total:1</th>
+               </tr>
+               <tr class="pending">
+                  <td>(<strong>pas la moindre idée dont on implémente ça</strong>) Error
+                  </td>
+                  <td>Pending</td>
+               </tr>
+               <tr class="successful">
+                  <th>file protocol</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>file</td>
+                  <td>Success</td>
+               </tr>
+               <tr class="successful">
+                  <th>cp protocol</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>cp</td>
+                  <td>Success</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div xmlns:oxy="http://www.oxygenxml.com/xslt/xspec" id="d4e373">
+         <h2 class="successful">Scenario for testing local:getNbEqualsElements function<span class="scenario-totals">passed:3 / pending:0 / failed:0 / total:3</span></h2>
+         <table class="xspec" id="t-d4e373">
+            <col width="80%" />
+            <col width="20%" />
+            <tbody>
+               <tr class="successful">
+                  <th>Scenario for testing local:getNbEqualsElements function</th>
+                  <th>passed:3 / pending:0 / failed:0 / total:3</th>
+               </tr>
+               <tr class="successful">
+                  <th>0</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>0</td>
+                  <td>Success</td>
+               </tr>
+               <tr class="successful">
+                  <th>1</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>1</td>
+                  <td>Success</td>
+               </tr>
+               <tr class="successful">
+                  <th>0</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>0</td>
+                  <td>Success</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div xmlns:oxy="http://www.oxygenxml.com/xslt/xspec" id="d4e448">
+         <h2 class="successful">Scenario for testing local:getRelativePath function<span class="scenario-totals">passed:3 / pending:0 / failed:0 / total:3</span></h2>
+         <table class="xspec" id="t-d4e448">
+            <col width="80%" />
+            <col width="20%" />
+            <tbody>
+               <tr class="successful">
+                  <th>Scenario for testing local:getRelativePath function</th>
+                  <th>passed:3 / pending:0 / failed:0 / total:3</th>
+               </tr>
+               <tr class="successful">
+                  <th>To down</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>src/main/xsl/pouet.xsl</td>
+                  <td>Success</td>
+               </tr>
+               <tr class="successful">
+                  <th>To up one level</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>..</td>
+                  <td>Success</td>
+               </tr>
+               <tr class="successful">
+                  <th>To up one level and down two levels</th>
+                  <th>passed:1 / pending:0 / failed:0 / total:1</th>
+               </tr>
+               <tr class="successful">
+                  <td>../xspec-maven-plugin/pom.xml</td>
+                  <td>Success</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </body>
+</html>

@@ -84,7 +84,7 @@
             <xsl:param name="p" as="xs:string"/>
         </x:context>
         <x:expect label="element type param">
-            <element type="parameter" name="p" id="..." as="xs:string" namespace=""/>
+            <element type="param" name="p" id="..." as="xs:string" namespace=""/>
         </x:expect>
     </x:scenario>
 

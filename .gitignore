@@ -1,4 +1,4 @@
 target/
 catalog.xml
 output.txt
-src/test/xspec/*.html
+src/test/xspec/**/*.html
