@@ -6,7 +6,16 @@
 <!ENTITY agrave "&#224;">
 <!ENTITY eacute "&#233;">
 ]>
-<xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" xmlns:n="http://www.xemelios.org/namespaces#cge" xmlns:added="http://www.xemelios.org/namespaces#added" version="2.0">
+<xsl:transform 
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:n="http://www.xemelios.org/namespaces#cge" 
+    xmlns:added="http://www.xemelios.org/namespaces#added"
+    xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+    version="2.0">
+    <xd:doc scope="stylesheet">
+        <xd:desc><xd:p>Cette XSL permet la conversion au format HTML de l'état de développement des soldes.</xd:p></xd:desc>
+    </xd:doc>
     <xsl:character-map name="accents">
         <xsl:output-character character="à" string="&amp;#224;"/>
         <xsl:output-character character="é" string="&amp;#233;"/>

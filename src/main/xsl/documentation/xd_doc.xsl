@@ -28,21 +28,21 @@
     </xsl:template>
     <xsl:template match="xd:param">
         <div xmlns="http://www.w3.org/1999/xhtml" class="xd§docParam">
-            <span class="xd§docLabel">param</span><span class="xd§docName"><xsl:value-of select="@name"/></span><xsl:apply-templates/>
+            <span class="xd§docLabel">param</span><span class="xd§docName"><xsl:value-of select="@name"/></span><xsl:apply-templates mode="#current"/>
         </div>
     </xsl:template>
     <xsl:template match="xd:return">
         <div xmlns="http://www.w3.org/1999/xhtml" class="xd§docParam">
-            <span class="xd§docLabel">return</span><span class="xd§docName"><xsl:value-of select="@name"/><xsl:apply-templates/></span>
+            <span class="xd§docLabel">return</span><span class="xd§docName"><xsl:value-of select="@name"/><xsl:apply-templates mode="#current"/></span>
         </div>
     </xsl:template>
     <xsl:template match="xd:p | xd:b | xd:i | xd:a | xd:pre">
         <xsl:element name="{local-name(.)}" namespace="http://www.w3.org/1999/xhtml">
             <xsl:apply-templates select="@*"/>
-            <xsl:apply-templates/>
+            <xsl:apply-templates mode="#current"/>
         </xsl:element>
     </xsl:template>
-    <xsl:template match="@*"><xsl:copy-of select="."/></xsl:template>
+    <xsl:template match="@* | text()"><xsl:copy-of select="."/></xsl:template>
     
     <xsl:function name="xd:getCssCode" as="xs:string?">
         <xsl:sequence>

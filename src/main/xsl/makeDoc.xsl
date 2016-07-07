@@ -5,7 +5,9 @@
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" 
     xmlns:local="top:marchand:xml:local"
     xmlns:generic="http://marchand.top/xml/xsl/documentation/generic"
-    xmlns:idgen="top:marchand:xml:idgen" exclude-result-prefixes="xs math xd" version="3.0">
+    xmlns:idgen="top:marchand:xml:idgen" 
+    xmlns:sc="top:marchand:xml:source-code"
+    exclude-result-prefixes="xs math xd" version="3.0">
     <xd:doc scope="stylesheet">
         <xd:desc>
             <xd:p><xd:b>Created on:</xd:b> Jul 6, 2016</xd:p>
@@ -16,6 +18,7 @@
 
     <xsl:import href="lib/id-generator.xsl"/>
     <xsl:import href="documentation/xd_doc.xsl"/>
+    <xsl:import href="source-code.xsl"/>
 
     <xsl:template match="/">
         <xsl:for-each-group select="//file" group-by="@htmlOutputUri">
@@ -24,10 +27,8 @@
     </xsl:template>
 
     <xsl:template match="file">
-        <!--xsl:message>while processing <xsl:value-of select="base-uri(.)"/>, creating <xsl:value-of select="@htmlOutputUri"/></xsl:message-->
         <xsl:result-document method="xhtml" version="5" indent="yes" href="{@htmlOutputUri}">
             <xsl:variable name="xsl" select="document(@base-uri)"/>
-            <!--xsl:message>root element of <xsl:value-of select="@base-uri"/> is Q{<xsl:value-of select="namespace-uri($xsl/*)"/>}<xsl:value-of select="local-name($xsl/*)"/></xsl:message-->
             <html xmlns="http://www.w3.org/1999/xhtml">
                 <head>
                     <title>Documentation of <xsl:value-of select="@root-rel-uri"/></title>
@@ -59,11 +60,13 @@
                             background-color:#e6e6e6;
                         }<!-- insert here calls to various *:getCssCode functions from various implementation of documentation processing -->
                         <xsl:value-of select="xd:getCssCode()"/>
+                        <xsl:value-of select="sc:getCssCode()"/>
                     </style>
                 </head>
                 <body>
                     <h2>Documentation of <xsl:value-of select="@root-rel-uri"/></h2>
                     <xsl:apply-templates select="$xsl//*[@scope='stylesheet']" mode="documentation"/>
+                    <xsl:message><xsl:copy-of select="$xsl//*[@scope='stylesheet']"/></xsl:message>
                     <xsl:apply-templates select="$xsl" mode="doc">
                         <xsl:with-param name="file" select="." tunnel="yes"/>
                     </xsl:apply-templates>
@@ -92,7 +95,7 @@
         <xsl:variable name="path" select="idgen:getXPath(.)"/>
         <xsl:variable name="element" select="$file/element[@path eq $path]"/>
         <xsl:variable name="documentation-element" as="element()?"
-            select="preceding-sibling::*[not(self::text())][not(namespace-uri(.) eq 'http://www.w3.org/1999/XSL/Transform')][1]"/>
+            select="preceding-sibling::*[not(namespace-uri(.) eq 'http://www.w3.org/1999/XSL/Transform')][not(@scope='stylesheet')][1]"/>
         <xsl:variable name="documentation-comment" as="comment()?"
             select="preceding-sibling::comment()[1]"/>
         <xsl:variable name="documentation" as="item()?">
@@ -112,7 +115,7 @@
         </xsl:variable>
         <xsl:variable name="code" as="element()">
             <div class="code" xmlns="http://www.w3.org/1999/xhtml">
-                <xsl:apply-templates mode="code" select="."/>
+                <xsl:apply-templates mode="source-code" select="."/>
             </div>
         </xsl:variable>
         <xsl:apply-templates select="$element" mode="doc">
@@ -168,6 +171,8 @@
             <xsl:value-of select="."/>
         </div>
     </xsl:template>
+    
+    <xsl:template match="text()" mode="doc"/>
 
     <xsl:function name="local:decodeTypeElement">
         <xsl:param name="type" as="xs:string"/>
