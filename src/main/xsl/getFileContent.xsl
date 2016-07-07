@@ -10,10 +10,12 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
     xmlns:local="top:marchand:xml:local"
+    xmlns:idgen="top:marchand:xml:idgen"
     exclude-result-prefixes="#all"
     version="3.0">
 
     <xsl:import href="identity.xsl"/>
+    <xsl:import href="lib/id-generator.xsl"/>
     
     <xd:doc scope="stylesheet">
         <xd:desc>
@@ -40,7 +42,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <xsl:param name="xsl-name" as="xs:string" tunnel="yes"/>
         <xsl:param name="base-uri" as="xs:string" tunnel="yes"/>
         <xsl:param name="rel-uri" as="xs:string?" tunnel="yes"/>
-        <element type="template" id="{generate-id(.)}">
+        <element type="template" id="{generate-id(.)}" path="{idgen:getXPath(.)}">
             <xsl:choose>
                 <xsl:when test="exists(@match)">
                     <xsl:attribute name="match" select="@match"/>
@@ -85,7 +87,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         xsl:character-map | xsl:decimal-format | xsl:import-schema | 
         xsl:key | xsl:mode | xsl:namespace-alias | xsl:preserve-space | 
         xsl:strip-space | xsl:param | xsl:variable">
-        <element type="{local-name(.)}" id="{generate-id(.)}">
+        <element type="{local-name(.)}" id="{generate-id(.)}" path="{idgen:getXPath(.)}">
             <xsl:copy-of select="local:extractName(@name)"/>
             <xsl:apply-templates select="@* except @name"/>
         </element>
