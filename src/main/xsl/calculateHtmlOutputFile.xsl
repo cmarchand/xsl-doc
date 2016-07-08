@@ -23,7 +23,8 @@
     <xsl:template match="file">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
-            <xsl:attribute name="htmlOutputUri" select="resolve-uri(local:getHtmlFileURI(string-join(($outputFolderURI,@root-rel-uri),'/')))"/>
+            <xsl:attribute name="htmlOutputUri" select="resolve-uri(local:getDocumentationFileURI(string-join(($outputFolderURI,@root-rel-uri),'/')))"/>
+            <xsl:attribute name="indexOutputUri" select="resolve-uri(local:getIndexFileURI(string-join(($outputFolderURI,@root-rel-uri),'/')))"/>
             <xsl:apply-templates select="node()"/>
         </xsl:copy>
     </xsl:template>
