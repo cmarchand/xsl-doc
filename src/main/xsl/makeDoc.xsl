@@ -94,10 +94,11 @@
         <xsl:param name="file" as="element(file)" tunnel="yes"/>
         <xsl:variable name="path" select="idgen:getXPath(.)"/>
         <xsl:variable name="element" select="$file/element[@path eq $path]"/>
+        <xsl:variable name="this" select="."/>
         <xsl:variable name="documentation-element" as="element()?"
-            select="preceding-sibling::*[not(namespace-uri(.) eq 'http://www.w3.org/1999/XSL/Transform')][not(@scope='stylesheet')][1]"/>
+            select="preceding-sibling::*[1][not(namespace-uri(.) eq 'http://www.w3.org/1999/XSL/Transform')][not(@scope='stylesheet')]"/>
         <xsl:variable name="documentation-comment" as="comment()?"
-            select="preceding-sibling::comment()[1]"/>
+            select="preceding-sibling::comment()[1][following-sibling::*[1][. is $this]]"/>
         <xsl:variable name="documentation" as="item()?">
             <xsl:choose>
                 <xsl:when test="empty($documentation-comment)">
@@ -115,7 +116,10 @@
         </xsl:variable>
         <xsl:variable name="code" as="element()">
             <div class="code" xmlns="http://www.w3.org/1999/xhtml">
-                <xsl:apply-templates mode="source-code" select="."/>
+                <details>
+                    <summary>Source code</summary>
+                    <xsl:apply-templates mode="source-code" select="."/>
+                </details>
             </div>
         </xsl:variable>
         <xsl:apply-templates select="$element" mode="doc">
@@ -140,7 +144,7 @@
                     </xsl:if>
                 </summary>
                 <div class="content">
-                    <table xmlns="http://www.w3.org/1999/xhtml">
+                    <!--table xmlns="http://www.w3.org/1999/xhtml">
                         <xsl:for-each select="@* except (@name, @id, @path)">
                             <xsl:if test="normalize-space(.)">
                                 <tr>
@@ -153,7 +157,7 @@
                                 </tr>
                             </xsl:if>
                         </xsl:for-each>
-                    </table>
+                    </table-->
                     <xsl:apply-templates select="$documentation" mode="documentation"/>
                     <xsl:copy-of select="$code"/>
                 </div>

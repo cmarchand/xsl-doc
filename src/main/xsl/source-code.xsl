@@ -17,14 +17,29 @@
     
     <xsl:template match="*">
         <div xmlns="http://www.w3.org/1999/xhtml" class="sc§element">
-            <span class="sc§marker">&lt;</span><span class="sc§elName"><xsl:value-of select="name(.)"/></span><xsl:text> </xsl:text>
+            <span class="sc§marker">&lt;</span><span class="sc§elName"><xsl:value-of select="name(.)"/></span>
             <xsl:choose>
                 <xsl:when test="sc:getAttrLength(@*) gt 100">
                     <div class="sc§attributes"><xsl:apply-templates select="@*"><xsl:with-param name="retLine" select="true()"/></xsl:apply-templates></div>
                 </xsl:when>
-                <xsl:otherwise><xsl:apply-templates select="@*"><xsl:with-param name="retLine" select="false()"/></xsl:apply-templates></xsl:otherwise>
+                <xsl:otherwise>
+                    <xsl:if test="@*"><xsl:text> </xsl:text></xsl:if>
+                    <xsl:apply-templates select="@*">
+                        <xsl:with-param name="retLine" select="false()"/>
+                    </xsl:apply-templates></xsl:otherwise>
+            </xsl:choose>
+            <xsl:choose>
+                <xsl:when test="empty(node())"><span xmlns="http://www.w3.org/1999/xhtml" class="sc§marker">/&gt;</span></xsl:when>
+                <xsl:otherwise>
+                    <span xmlns="http://www.w3.org/1999/xhtml" class="sc§marker">&gt;</span>
+                    <xsl:apply-templates mode="#current"/>
+                    <span class="sc§marker">&lt;/</span><span class="sc§elName"><xsl:value-of select="name(.)"/></span><span class="sc§marker">&gt;</span>
+                </xsl:otherwise>
             </xsl:choose>
         </div>
+    </xsl:template>
+    <xsl:template match="comment() | processing-instruction()">
+        <xsl:copy-of select="."/>
     </xsl:template>
     
     <xsl:template match="@*">
@@ -33,10 +48,6 @@
         <xsl:choose>
             <xsl:when test="$retLine"><br xmlns="http://www.w3.org/1999/xhtml"/></xsl:when>
             <xsl:otherwise><xsl:text> </xsl:text></xsl:otherwise>
-        </xsl:choose>
-        <xsl:choose>
-            <xsl:when test="empty(node())"><span xmlns="http://www.w3.org/1999/xhtml" class="sc§marker">/&gt;</span></xsl:when>
-            <xsl:otherwise><span xmlns="http://www.w3.org/1999/xhtml" class="sc§marker">&gt;</span><xsl:apply-templates mode="#current"/></xsl:otherwise>
         </xsl:choose>
     </xsl:template>
     
