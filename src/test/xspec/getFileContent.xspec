@@ -14,7 +14,11 @@
             <file dependance-type="first-doc"
                 name="premier.xsl"
                 base-uri="../../test/resources/premier.xsl">
-                <element type="template" id="..." match="/"></element>
+                <element 
+                    type="template" 
+                    id="..." 
+                    path="..."
+                    match="/"></element>
             </file>
         </x:expect>
     </x:scenario>
@@ -47,7 +51,7 @@
                 <xsl:template match="/"/>
             </x:context>
             <x:expect label="element type template" >
-                <element type="template" match="/" id="..."/>
+                <element type="template" match="/" id="..." path="..."/>
             </x:expect>
         </x:scenario>
         <x:scenario label="with doc">
@@ -61,7 +65,7 @@
                 <xsl:template match="/"/>
             </x:context>
             <x:expect label="element type template" >
-                <element type="template" match="/" id="...">
+                <element type="template" match="/" id="..." path="...">
                     <xd:doc>
                         <xd:desc><xd:p>This is the documentation</xd:p></xd:desc>
                     </xd:doc>
@@ -84,7 +88,7 @@
             <xsl:param name="p" as="xs:string"/>
         </x:context>
         <x:expect label="element type param">
-            <element type="param" name="p" id="..." as="xs:string" namespace=""/>
+            <element type="param" name="p" id="..." as="xs:string" namespace="" path="..."/>
         </x:expect>
     </x:scenario>
 
@@ -93,7 +97,7 @@
             <xsl:variable name="v" as="xs:string" select="'toto'"/>
         </x:context>
         <x:expect label="element type variable">
-            <element type="variable" name="v" id="..." as="xs:string" namespace="" select="'toto'"/>
+            <element type="variable" name="v" id="..." as="xs:string" namespace="" select="'toto'" path="..."/>
         </x:expect>
     </x:scenario>
 

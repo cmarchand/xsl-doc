@@ -39,9 +39,11 @@ can obtain one at https://mozilla.org/MPL/2.0/.
                         </output>
                     </pipe1>
                     <pipe2>
-                        <output indent="yes" method="xml">
-                            <folder relative="target/generated-test-files" to="${user.dir}"/>
-                            <fileName name="${basename}-content.xml"/>
+                        <xslt href="cp:/makeIndex.xsl"/>
+                        <output indent="yes" method="xml" id="index-terminaison">
+                            <!--folder relative="target/generated-test-files" to="${user.dir}"/>
+                            <fileName name="${basename}-content.xml"/-->
+                            <null/>
                         </output>
                     </pipe2>
                 </tee>

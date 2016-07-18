@@ -5,16 +5,16 @@
     stylesheet="../../../main/xsl/lib/common.xsl" xslt-version="3.0">
     <x:scenario label="Scenario for testing local:getHtmlFileName">
         <x:scenario label="Simple file name">
-            <x:call function="local:getHtmlFileURI">
+            <x:call function="local:getDocumentationFileURI">
                 <x:param name="relUri" select="'test.xsl'"/>
             </x:call>
-            <x:expect label="test_xsl.html" select="'test_xsl.html'"/>
+            <x:expect label="test_xsl-doc.html" select="'test_xsl-doc.html'"/>
         </x:scenario>
         <x:scenario label="Relative path">
-            <x:call function="local:getHtmlFileURI">
+            <x:call function="local:getDocumentationFileURI">
                 <x:param name="relUri" select="'../overthere/test.xsl'"/>
             </x:call>
-            <x:expect label="../overthere/test_xsl.html" select="'../overthere/test_xsl.html'"/>
+            <x:expect label="../overthere/test_xsl-doc.html" select="'../overthere/test_xsl-doc.html'"/>
         </x:scenario>
     </x:scenario>
     <x:scenario label="Scenario for testing function removeSingleDot">
