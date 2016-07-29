@@ -8,7 +8,7 @@
     exclude-result-prefixes="xs math xd"
     version="3.0">
     
-    <xsl:import href="identity.xsl"/>
+    <xsl:import href="lib/identity.xsl"/>
     <xsl:import href="lib/common.xsl"/>
     
     <xd:doc scope="stylesheet">

@@ -14,7 +14,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     exclude-result-prefixes="#all"
     version="3.0">
 
-    <xsl:import href="identity.xsl"/>
+    <xsl:import href="lib/identity.xsl"/>
     <xsl:import href="lib/id-generator.xsl"/>
     
     <xd:doc scope="stylesheet">

@@ -14,17 +14,18 @@
         </xd:desc>
     </xd:doc>
     
-    <xsl:import href="identity.xsl"/>
+    <xsl:import href="lib/identity.xsl"/>
     <xsl:import href="lib/common.xsl"/>
     
     <xsl:param name="outputFolder" as="xs:string"/>
-    <xsl:param name="outputFolderURI" as="xs:anyURI" select="resolve-uri($outputFolder)"/>
+    <xsl:variable name="outputFolderURI" as="xs:anyURI" select="resolve-uri($outputFolder)"/>
     
     <xsl:template match="file">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
             <xsl:attribute name="htmlOutputUri" select="resolve-uri(local:getDocumentationFileURI(string-join(($outputFolderURI,@root-rel-uri),'/')))"/>
             <xsl:attribute name="indexOutputUri" select="resolve-uri(local:getIndexFileURI(string-join(($outputFolderURI,@root-rel-uri),'/')))"/>
+            <xsl:attribute name="welcomeOutputUri" select="resolve-uri(local:getWelcomeFileURI(string-join(($outputFolderURI,@root-rel-uri),'/')))"></xsl:attribute>
             <xsl:apply-templates select="node()"/>
         </xsl:copy>
     </xsl:template>

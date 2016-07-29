@@ -71,7 +71,7 @@
     
     <xsl:template match="element">
         <li xmlns="http://www.w3.org/1999/xhtml">
-            <a href="{local:getHtmlFileURI(@relUri)}#{@id}"><xsl:value-of select="(@name,@match)[1]"/></a>
+            <a href="{local:getDocumentationFileURI(@relUri)}#{@id}" target="doc"><xsl:value-of select="(@name,@match)[1]"/></a>
         </li>
     </xsl:template>
     

@@ -41,6 +41,18 @@
         <xsl:sequence select="string-join(($relUriSeq[position() &lt; last()],$targetFileName),'/')"/>
     </xsl:function>
     
+    <xd:doc>
+        <xd:desc>Returns the relative URI of wecome HTML file</xd:desc>
+        <xd:param name="relUri">The XSL relative URI</xd:param>
+        <xd:return>The computed HTML file relative URI</xd:return>
+    </xd:doc>
+    <xsl:function name="local:getWelcomeFileURI" as="xs:string">
+        <xsl:param name="relUri" as="xs:string"/>
+        <xsl:variable name="relUriSeq" select="tokenize($relUri,'/')" as="xs:string*"/>
+        <xsl:variable name="sourceFileName" as="xs:string" select="$relUriSeq[last()]"/>
+        <xsl:variable name="targetFileName" as="xs:string" select="concat(replace($sourceFileName, '\..*',''),'.html')"/>
+        <xsl:sequence select="string-join(($relUriSeq[position() &lt; last()],$targetFileName),'/')"/>
+    </xsl:function>
     
     <xd:doc>
         <xd:desc>Normalize the URI path. I.E. removes any /./ and folder/.. moves</xd:desc>

@@ -18,7 +18,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         </xslt>
         <tee>
             <pipe1>
-                <xslt href="cp:/prepareTOC.xsl"></xslt>
+                <xslt href="cp:/prepareTOC.xsl"/>
                 <xslt href="cp:/makeTOC.xsl">
                     <param name="outputFolder" value="$[outputFolder]"/>
                 </xslt>
@@ -39,10 +39,12 @@ can obtain one at https://mozilla.org/MPL/2.0/.
                         </output>
                     </pipe1>
                     <pipe2>
+                        <!--output id="data" method="xml" indent="yes">
+                            <folder absolute="$[outputFolder]"/>
+                            <fileName name="data.xml"/>
+                        </output-->
                         <xslt href="cp:/makeIndex.xsl"/>
-                        <output indent="yes" method="xml" id="index-terminaison">
-                            <!--folder relative="target/generated-test-files" to="${user.dir}"/>
-                            <fileName name="${basename}-content.xml"/-->
+                        <output id="end">
                             <null/>
                         </output>
                     </pipe2>
@@ -55,7 +57,6 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <param name="absoluteRootFolder" value="should give it to command line"/>
     </params>
     <sources>
-        <!--folder href="./src/test/run" pattern=".*\.xsl" recurse="true"/-->
-        <file href="./src/test/run/etat-DeveloppementDepense.xsl"/>
+        <folder href="src/main/xsl" pattern=".*\.xsl" recurse="true"/>
     </sources>
 </config>

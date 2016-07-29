@@ -16,7 +16,7 @@
       <level value="WARN"/>
   </logger>
   <logger name="fr.efl.chaine">
-      <level value="DEBUG"/>
+      <level value="INFO"/>
   </logger>
   <root>
     <level value="DEBUG"/>

@@ -66,7 +66,7 @@
                 <body>
                     <h2>Documentation of <xsl:value-of select="@root-rel-uri"/></h2>
                     <xsl:apply-templates select="$xsl//*[@scope='stylesheet']" mode="documentation"/>
-                    <xsl:message><xsl:copy-of select="$xsl//*[@scope='stylesheet']"/></xsl:message>
+                    <!--xsl:message><xsl:copy-of select="$xsl//*[@scope='stylesheet']"/></xsl:message-->
                     <xsl:apply-templates select="$xsl" mode="doc">
                         <xsl:with-param name="file" select="." tunnel="yes"/>
                     </xsl:apply-templates>
@@ -87,7 +87,7 @@
     </xsl:template>
 
     <xsl:template mode="doc"
-        match="xsl:accumulator | xs:attribute-set | 
+        match="xsl:accumulator | xsl:attribute-set | 
         xsl:character-map | xsl:decimal-format | xsl:import-schema | 
         xsl:key | xsl:mode | xsl:namespace-alias | xsl:preserve-space | 
         xsl:strip-space | xsl:param | xsl:variable | xsl:template | xsl:function">
@@ -138,7 +138,7 @@
                 <summary>
                     <xsl:copy-of select="local:decodeTypeElement(@type)"/>
                     <xsl:text> </xsl:text>
-                    <xsl:value-of select="@name"/>
+                    <xsl:value-of select="(@name, @match)[1]"/>
                     <xsl:if test="@mode">
                         <br/><strong>mode</strong> : <xsl:value-of select="@mode"/>
                     </xsl:if>

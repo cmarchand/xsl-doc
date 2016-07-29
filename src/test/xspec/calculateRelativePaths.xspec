@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:local="top:marchand:xml:local"
     stylesheet="../../main/xsl/calculateRelativePaths.xsl" xslt-version="3.0">
-    <x:param name="absoluteRootFolder" select="'no_value'"/>
+    <x:param name="absoluteRootFolder" select="'file:/home/cmarchand/'"/>
+    
+    <x:scenario label="Scenario for testing template match @base-uri">
+        <x:context>
+            <file base-uri="devel/./here"/>
+        </x:context>
+        <x:expect label="devel/here" test="*/@base-uri eq 'devel/here'">
+            <file base-uri="devel/here"/>
+        </x:expect>
+    </x:scenario>
 </x:description>
