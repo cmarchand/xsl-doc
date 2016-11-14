@@ -103,7 +103,7 @@
 
     <x:scenario label="Scenario for testing template with match 'xsl:function'">
         <x:context>
-            <xsl:function name="local:myFunction" as="xs:string">
+            <xsl:function name="local:myFunction" as="xs:string" xmlns:local="top:marchand:xml:local">
                 <xsl:param name="p1" as="xs:string"/>
                 <xsl:param name="p2" as="xs:integer*"/>
                 <xsl:param name="p3"/>

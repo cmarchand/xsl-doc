@@ -21,4 +21,34 @@
         <xsl:sequence select="$path"/>
     </xsl:function>
     
+    <xsl:function name="idgen:calcSignature" as="xs:string">
+        <xsl:param name="function" as="element(xsl:function)"/>
+        <xsl:variable name="qname" as="xs:string" select="$function/@name"/>
+        <xsl:variable name="prefix" as="xs:string" select="substring-before($qname,':')"/>
+        <xsl:variable name="NS" as="xs:anyURI">
+            <xsl:choose>
+                <xsl:when test="string-length($prefix) gt 0">
+                    <xsl:value-of select="$function/ancestor-or-self::*/namespace::*[name() eq $prefix][1]"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$function/ancestor-or-self::*/namespace::*[name() eq ''][1]"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="name" as="xs:string">
+            <xsl:choose>
+                <xsl:when test="contains($qname,':')"><xsl:value-of select="substring-after($qname,':')"/></xsl:when>
+                <xsl:otherwise><xsl:value-of select="$qname"/></xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="functionName" as="xs:string" select="concat('Q{',$NS,'}',$name,'(')"/>
+        <xsl:variable name="parameters" as="xs:string*" select="for $i in $function/xsl:param return idgen:getType($i)"/>
+        <xsl:sequence select="concat($functionName, string-join($parameters,','),')')"/>
+    </xsl:function>
+    
+    <xsl:function name="idgen:getType" as="xs:string" visibility="private">
+        <xsl:param name="param" as="element(xsl:param)"/>
+        <xsl:sequence select="if($param/@as) then $param/@as else 'item()'"/>
+    </xsl:function>
+    
 </xsl:stylesheet>

@@ -102,7 +102,7 @@
             <x:call function="local:isAbsoluteUri">
                 <x:param name="path" select="'file:/home/cmarchand/devel/xsl-doc/src/main/xsl/makeTOC.xsl'"/>
             </x:call>
-            <x:expect label="false" select="true()"/>
+            <x:expect label="true" select="true()"/>
         </x:scenario>
     </x:scenario>
     <x:scenario label="Scenario for testing local:getProtocol function">

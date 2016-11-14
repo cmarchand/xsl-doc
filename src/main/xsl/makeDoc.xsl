@@ -93,7 +93,19 @@
         xsl:strip-space | xsl:param | xsl:variable | xsl:template | xsl:function">
         <xsl:param name="file" as="element(file)" tunnel="yes"/>
         <xsl:variable name="path" select="idgen:getXPath(.)"/>
-        <xsl:variable name="element" select="$file/element[@path eq $path]"/>
+        <!--xsl:text>XPath = </xsl:text><xsl:value-of select="$path"/-->
+        <xsl:variable name="element" as="element(element)">
+            <xsl:choose>
+                <xsl:when test="self::xsl:function">
+                    <xsl:variable name="signature" as="xs:string" select="idgen:calcSignature(.)"/>
+                    <xsl:sequence select="$file/element[@signature eq $signature]" />
+                </xsl:when>
+                <xsl:otherwise><xsl:sequence select="$file/element[@path eq $path]"/></xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <!--xsl:if test="empty($element)">
+            <xsl:text>Element est vide</xsl:text>
+        </xsl:if-->
         <xsl:variable name="this" select="."/>
         <xsl:variable name="documentation-element" as="element()?"
             select="preceding-sibling::*[1][not(namespace-uri(.) eq 'http://www.w3.org/1999/XSL/Transform')][not(@scope='stylesheet')]"/>

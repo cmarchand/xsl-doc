@@ -122,19 +122,9 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     
     <xsl:function name="local:calcSignature" as="attribute(signature)">
         <xsl:param name="function" as="element(xsl:function)"/>
-        <xsl:variable name="qname" as="xs:QName" select="xs:QName($function/@name)"/>
-        <xsl:variable name="NS" select="namespace-uri-from-QName($qname)" as="xs:anyURI"/>
-        <xsl:variable name="name" select="local-name-from-QName($qname)"/>
-        <xsl:variable name="functionName" as="xs:string" select="concat('Q{',$NS,'}',$name,'(')"/>
-        <xsl:variable name="parameters" as="xs:string*" select="for $i in $function/xsl:param return local:getType($i)"/>
         <xsl:sequence>
-            <xsl:attribute name="signature" select="concat($functionName, string-join($parameters,','),')')"/>
+            <xsl:attribute name="signature" select="idgen:calcSignature($function)"/>
         </xsl:sequence>
-    </xsl:function>
-    
-    <xsl:function name="local:getType" as="xs:string">
-        <xsl:param name="param" as="element(xsl:param)"/>
-        <xsl:sequence select="if($param/@as) then $param/@as else 'item()'"/>
     </xsl:function>
         
 </xsl:stylesheet>

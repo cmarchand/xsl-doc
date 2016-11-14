@@ -108,7 +108,7 @@
             <plugin>
                 <groupId>com.oxiane.xml</groupId>
                 <artifactId>catalogBuilder-maven-plugin</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0.2-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>main</id>
@@ -125,6 +125,23 @@
                         <configuration>
                             <catalogFileName>target/classes/catalog.xml</catalogFileName>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>clean</phase>
+                        <configuration>
+                            <target>
+                                <delete file="catalog.xml"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -152,7 +169,7 @@
                         <argument>XSL-DOC</argument>
                         <argument>PARAMS</argument>
                         <argument>outputFolder=file:${project.build.directory}/generated-test-files</argument>
-                        <argument>absoluteRootFolder=file:${basedir}/src/test/run</argument>
+                        <argument>absoluteRootFolder=file:${basedir}/src/main/xsl</argument>
                     </arguments>
                 </configuration>
             </plugin>

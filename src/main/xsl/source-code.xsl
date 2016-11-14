@@ -51,7 +51,7 @@
         </xsl:choose>
     </xsl:template>
     
-    <xsl:function name="sc:getCssCode" as="xs:string">
+    <xsl:function name="sc:getCssCode" as="xs:string" visibility="public">
         <xsl:sequence>
             div.sc§element { margin-left: 12px; font-name: "Lucida Console", Monaco, monospace; }
             div.sc§attributes { margin-left: 24px; }
