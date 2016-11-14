@@ -28,12 +28,12 @@
     </xsl:template>
     <xsl:template match="xd:param">
         <div xmlns="http://www.w3.org/1999/xhtml" class="xd§docParam">
-            <span class="xd§docLabel">param</span><span class="xd§docName"><xsl:value-of select="@name"/></span><xsl:apply-templates mode="#current"/>
+            <span class="xd§docLabel">param </span><span class="xd§docName"><xsl:value-of select="@name"/></span><xsl:apply-templates mode="#current"/>
         </div>
     </xsl:template>
     <xsl:template match="xd:return">
         <div xmlns="http://www.w3.org/1999/xhtml" class="xd§docParam">
-            <span class="xd§docLabel">return</span><span class="xd§docName"><xsl:value-of select="@name"/><xsl:apply-templates mode="#current"/></span>
+            <span class="xd§docLabel">return </span><span class="xd§docName"><xsl:value-of select="@name"/><xsl:apply-templates mode="#current"/></span>
         </div>
     </xsl:template>
     <xsl:template match="xd:p | xd:b | xd:i | xd:a | xd:pre">
@@ -47,8 +47,8 @@
     <xsl:function name="xd:getCssCode" as="xs:string?">
         <xsl:sequence>
             .xd§docDesc {border: solid 1px #4d4d4d; border-radius: 2px;}
-            .xd§docName {text-weight: bold; background-color: #ffe6e6; color: white;}
-            .xd§docLabel {background-color: #ffe6e6; color: white;}
+            .xd§docName {text-weight: bold; background-color: #ffe6e6; color: black; }
+            .xd§docLabel {background-color: #ffe6e6; color: black;}
         </xsl:sequence>
     </xsl:function>
     

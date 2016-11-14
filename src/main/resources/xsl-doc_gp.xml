@@ -17,7 +17,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
             <param name="absoluteRootFolder" value="$[absoluteRootFolder]"/>
         </xslt>
         <tee>
-            <pipe1>
+            <pipe>
                 <xslt href="cp:/prepareTOC.xsl"/>
                 <xslt href="cp:/makeTOC.xsl">
                     <param name="outputFolder" value="$[outputFolder]"/>
@@ -26,42 +26,38 @@ can obtain one at https://mozilla.org/MPL/2.0/.
                     <folder relative="target/generated-test-files" to="${user.dir}"/>
                     <fileName name="${basename}-toc.html"/>
                 </output>
-            </pipe1>
-            <pipe2>
+            </pipe>
+            <pipe>
                 <xslt href="cp:/calculateHtmlOutputFile.xsl">
                     <param name="outputFolder" value="$[outputFolder]"/>
                 </xslt>
                 <tee>
-                    <pipe1>
+                    <!--pipe>
                         <output id="debug" indent="yes" method="xml">
                             <folder absolute="$[outputFolder]"/>
                             <fileName name="${basename}-relativePaths.xml"/>
                         </output>
-                    </pipe1>
-                    <pipe2>
-                        <tee>
-                            <pipe1>
-                                <xslt href="cp:/makeDoc.xsl"/>
-                                <output id="terminaison">
-                                    <null/>
-                                </output>
-                            </pipe1>
-                            <pipe2>
-                                <xslt href="cp:/makeIndex.xsl"/>
-                                <output id="end">
-                                    <null/>
-                                </output>
-                            </pipe2>
-                        </tee>
-                    </pipe2>
+                    </pipe-->
+                    <pipe>
+                        <xslt href="cp:/makeDoc.xsl"/>
+                        <output id="terminaison">
+                            <null/>
+                        </output>
+                    </pipe>
+                    <pipe>
+                        <xslt href="cp:/makeIndex.xsl"/>
+                        <output id="end">
+                            <null/>
+                        </output>
+                    </pipe>
                 </tee>
-            </pipe2>
+            </pipe>
         </tee>
     </pipe>
-    <!--params>
-        <param name="outputFolder" value="should give it to command line"/>
-        <param name="absoluteRootFolder" value="should give it to command line"/>
-    </params-->
+    <params>
+        <param name="outputFolder" value="should give it via command line"/>
+        <param name="absoluteRootFolder" value="should give it via command line"/>
+    </params>
     <sources>
         <folder href="src/main/xsl" pattern=".*\.xsl" recurse="true"/>
     </sources>
