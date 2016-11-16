@@ -57,7 +57,7 @@
         <dependency>
             <groupId>top.marchand.xml</groupId>
             <artifactId>gaulois-pipe</artifactId>
-            <version>1.01.01</version>
+            <version>1.01.02</version>
         </dependency>
     </dependencies>
 
@@ -115,6 +115,9 @@
                         <goals>
                             <goal>catalog</goal>
                         </goals>
+                        <configuration>
+                            <catalogFileName>target/classes/catalog.xml</catalogFileName>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>toRun</id>
@@ -137,6 +140,7 @@
                         <configuration>
                             <target>
                                 <delete file="catalog.xml"/>
+                                <delete dir="debug"/>
                             </target>
                         </configuration>
                         <goals>
@@ -160,6 +164,7 @@
                     <executable>java</executable>
                     <longClasspath>true</longClasspath>
                     <arguments>
+                        <argument>-Dgaulois.debug.dir=debug</argument>
                         <argument>-classpath</argument>
                         <classpath/>
                         <argument>fr.efl.chaine.xslt.GauloisPipe</argument>

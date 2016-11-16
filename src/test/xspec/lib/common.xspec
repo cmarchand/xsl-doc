@@ -8,13 +8,27 @@
             <x:call function="local:getDocumentationFileURI">
                 <x:param name="relUri" select="'test.xsl'"/>
             </x:call>
-            <x:expect label="test_xsl-doc.html" select="'test_xsl-doc.html'"/>
+            <x:expect label="_test/test_xsl-doc.html" select="'_test/test_xsl-doc.html'"/>
         </x:scenario>
         <x:scenario label="Relative path">
             <x:call function="local:getDocumentationFileURI">
                 <x:param name="relUri" select="'../overthere/test.xsl'"/>
             </x:call>
-            <x:expect label="../overthere/test_xsl-doc.html" select="'../overthere/test_xsl-doc.html'"/>
+            <x:expect label="../overthere/_test/test_xsl-doc.html" select="'../overthere/_test/test_xsl-doc.html'"/>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenario for testing local:getTocFileUri">
+        <x:scenario label="Simple file name">
+            <x:call function="local:getTocFileUri">
+                <x:param name="relUri" select="'test.xsl'"/>
+            </x:call>
+            <x:expect label="_test/test-toc.html" select="'_test/test-toc.html'"/>
+        </x:scenario>
+        <x:scenario label="Relative path">
+            <x:call function="local:getTocFileUri">
+                <x:param name="relUri" select="'../overthere/test.xsl'"/>
+            </x:call>
+            <x:expect label="../overthere/_test/test-toc.html" select="'../overthere/_test/test-toc.html'"/>
         </x:scenario>
     </x:scenario>
     <x:scenario label="Scenario for testing function removeSingleDot">

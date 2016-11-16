@@ -14,7 +14,7 @@
     </xd:doc>
     
     <xsl:template match="/">
-        <data>
+        <data tocOutputUri="{file/@tocOutputUri}">
             <by-file label="file">
                 <xsl:apply-templates select="file" mode="by-file"/>
             </by-file>

@@ -24,8 +24,9 @@
         <xsl:param name="relUri" as="xs:string"/>
         <xsl:variable name="relUriSeq" select="tokenize($relUri,'/')" as="xs:string*"/>
         <xsl:variable name="sourceFileName" as="xs:string" select="$relUriSeq[last()]"/>
+        <xsl:variable name="intermediaryDirectory" as="xs:string" select="local:getIntermediaryDirectory($sourceFileName)"/>
         <xsl:variable name="targetFileName" as="xs:string" select="concat(replace($sourceFileName, '\.','_'),'-doc.html')"/>
-        <xsl:sequence select="string-join(($relUriSeq[position() &lt; last()],$targetFileName),'/')"/>
+        <xsl:sequence select="string-join(($relUriSeq[position() &lt; last()],$intermediaryDirectory,$targetFileName),'/')"/>
     </xsl:function>
     
     <xd:doc>
@@ -37,8 +38,9 @@
         <xsl:param name="relUri" as="xs:string"/>
         <xsl:variable name="relUriSeq" select="tokenize($relUri,'/')" as="xs:string*"/>
         <xsl:variable name="sourceFileName" as="xs:string" select="$relUriSeq[last()]"/>
+        <xsl:variable name="intermediaryDirectory" as="xs:string" select="local:getIntermediaryDirectory($sourceFileName)"/>
         <xsl:variable name="targetFileName" as="xs:string" select="concat(replace($sourceFileName, '\.','_'),'-index.html')"/>
-        <xsl:sequence select="string-join(($relUriSeq[position() &lt; last()],$targetFileName),'/')"/>
+        <xsl:sequence select="string-join(($relUriSeq[position() &lt; last()],$intermediaryDirectory,$targetFileName),'/')"/>
     </xsl:function>
     
     <xd:doc>
@@ -52,6 +54,30 @@
         <xsl:variable name="sourceFileName" as="xs:string" select="$relUriSeq[last()]"/>
         <xsl:variable name="targetFileName" as="xs:string" select="concat(replace($sourceFileName, '\..*',''),'.html')"/>
         <xsl:sequence select="string-join(($relUriSeq[position() &lt; last()],$targetFileName),'/')"/>
+    </xsl:function>
+    
+    <xd:doc>
+        <xd:desc>Returns the relative URI of TOC HTML file</xd:desc>
+        <xd:param name="relUri">The XSL relative URI</xd:param>
+        <xd:return>The computed relative URI to TOC file</xd:return>
+    </xd:doc>
+    <xsl:function name="local:getTocFileUri" as="xs:string">
+        <xsl:param name="relUri" as="xs:string"/>
+        <xsl:variable name="relUriSeq" select="tokenize($relUri,'/')" as="xs:string*"/>
+        <xsl:variable name="sourceFileName" as="xs:string" select="$relUriSeq[last()]"/>
+        <xsl:variable name="intermediaryDirectory" as="xs:string" select="local:getIntermediaryDirectory($sourceFileName)"/>
+        <xsl:variable name="targetFileName" as="xs:string" select="concat(replace($sourceFileName, '\..*',''),'-toc.html')"/>
+        <xsl:sequence select="string-join(($relUriSeq[position() &lt; last()],$intermediaryDirectory,$targetFileName),'/')"/>
+    </xsl:function>
+    
+    <xd:doc>
+        <xd:desc>Returns the file name, without extension, preceded by an underscore</xd:desc>
+        <xd:param>The source file name</xd:param>
+        <xd:return>The intermediary directory name</xd:return>
+    </xd:doc>
+    <xsl:function name="local:getIntermediaryDirectory" as="xs:string">
+        <xsl:param name="sourceFileName" as="xs:string"/>
+        <xsl:sequence select="concat('_',replace($sourceFileName, '\..*',''))"/>
     </xsl:function>
     
     <xd:doc>

@@ -3,8 +3,11 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+    xmlns:local="top:marchand:xml:local"
     exclude-result-prefixes="xs math xd"
     version="3.0">
+    
+    <xsl:include href="lib/common.xsl"/>
     <xd:doc scope="stylesheet">
         <xd:desc>
             <xd:p><xd:b>Created on:</xd:b> Jul 25, 2016</xd:p>
@@ -14,7 +17,6 @@
     </xd:doc>
         
     <xsl:template match="/file">
-        <xsl:message select="'[makeIndex.xsl] '|| @welcomeOutputUri"></xsl:message>
         <xsl:result-document method="html" indent="yes" encoding="UTF-8" href="{@welcomeOutputUri}" doctype-public="-//W3C//DTD HTML 4.01 Frameset//EN http://www.w3.org/TR/html4/frameset.dtd">
             <html xmlns="http://www.w3.org/1999/xhtml">
                 <head>
@@ -40,8 +42,11 @@
                     </style>
                 </head>
                     <frameset cols="25%,75%">
-                        <frame name="toc" src="{concat(string-join(tokenize(@name,'\.')[position() &lt; last()],'.'),'-toc.html')}"/>
-                        <frame name="doc" src="{tokenize(@htmlOutputUri,'/')[last()]}"/>
+                        <xsl:variable name="intermediaryDirectory" as="xs:string" select="local:getIntermediaryDirectory(@name)"/>
+                        <!--frame name="toc" src="{concat(string-join(($intermediaryDirectory,tokenize(@name,'\.')[position() &lt; last()]),'/'),'-toc.html')}"/>
+                        <frame name="doc" src="{string-join(($intermediaryDirectory,tokenize(@htmlOutputUri,'/')[last()]),'/')}"/-->
+                        <frame name="toc" src="{@tocOutputUri}"/>
+                        <frame name="doc" src="{@htmlOutputUri}"/>
                     </frameset>
             </html>
         </xsl:result-document>
