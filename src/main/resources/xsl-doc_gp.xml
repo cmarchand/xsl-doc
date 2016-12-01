@@ -48,10 +48,11 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         </tee>
     </pipe>
     <params>
+        <param name="sources" value="src/main/xsl"/>
         <param name="outputFolder" value="should give it via command line"/>
-        <param name="absoluteRootFolder" value="should give it via command line"/>
+        <param name="absoluteRootFolder" value="file:$[basedir]/$[sources]"/>
     </params>
     <sources>
-        <folder href="src/main/xsl" pattern=".*\.xsl" recurse="true"/>
+        <folder href="$[sources]" pattern=".*\.xsl" recurse="true"/>
     </sources>
 </config>

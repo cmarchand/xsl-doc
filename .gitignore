@@ -1,4 +1,5 @@
 target/
+debug/
 catalog.xml
 output.txt
 src/test/xspec/**/*.html

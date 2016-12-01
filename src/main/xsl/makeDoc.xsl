@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+This Source Code Form is subject to the terms of 
+the Mozilla Public License, v. 2.0. If a copy of 
+the MPL was not distributed with this file, You 
+can obtain one at https://mozilla.org/MPL/2.0/.
+-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
@@ -12,7 +18,7 @@
         <xd:desc>
             <xd:p><xd:b>Created on:</xd:b> Jul 6, 2016</xd:p>
             <xd:p><xd:b>Author:</xd:b> cmarchand</xd:p>
-            <xd:p>Generates the documentation</xd:p>
+            <xd:p>Generates the documentation of each file</xd:p>
         </xd:desc>
     </xd:doc>
 

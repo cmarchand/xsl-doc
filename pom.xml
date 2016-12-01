@@ -174,9 +174,26 @@
                         <argument>XSL-DOC</argument>
                         <argument>PARAMS</argument>
                         <argument>outputFolder=file:${project.build.directory}/generated-test-files</argument>
-                        <argument>absoluteRootFolder=file:${basedir}/src/main/xsl</argument>
+                        <argument>basedir=${basedir}</argument>
+                        <!--argument>absoluteRootFolder=file:$[basedir]/$[sources]</argument-->
+                        <argument>sources=src/main/xsl</argument>
                     </arguments>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>top.marchand.xml</groupId>
+                <artifactId>xslDoc-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>xsl-doc</goal>
+                        </goals>
+                        <configuration>
+                            <keepConfigFile>true</keepConfigFile>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
