@@ -57,7 +57,7 @@
         <dependency>
             <groupId>top.marchand.xml</groupId>
             <artifactId>gaulois-pipe</artifactId>
-            <version>1.01.02</version>
+            <version>1.01.03-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -183,7 +183,7 @@
             <plugin>
                 <groupId>top.marchand.xml</groupId>
                 <artifactId>xslDoc-maven-plugin</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.1-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <goals>
