@@ -20,6 +20,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
             <param name="outputFolder" value="$[outputFolder]"/>
         </xslt>
         <tee>
+            <java class="top.marchand.xml.xsl.doc.AccumulatorStep"/>
             <pipe>
                 <xslt href="cp:/prepareTOC.xsl" id="prepareToc"/>
                 <xslt href="cp:/makeTOC.xsl">

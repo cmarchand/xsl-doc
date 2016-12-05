@@ -7,7 +7,7 @@
     </layout>
   </appender>
   <logger name="org.xmlresolver">
-    <level value="DEBUG"/>
+    <level value="INFO"/>
   </logger>
   <logger name="org.apache">
       <level value="WARN"/>
@@ -16,7 +16,10 @@
       <level value="WARN"/>
   </logger>
   <logger name="fr.efl.chaine">
-      <level value="INFO"/>
+      <level value="DEBUG"/>
+  </logger>
+  <logger name="top.marchand.xml.xsl.doc">
+      <level value="DEBUG"/>
   </logger>
   <root>
     <level value="DEBUG"/>

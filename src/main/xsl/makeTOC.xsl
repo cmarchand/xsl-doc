@@ -73,7 +73,7 @@
                 <summary>
                     <xsl:choose>
                         <xsl:when test="$type eq 'file'">
-                            <xsl:message>local:getDocumentationFileURI(<xsl:value-of select="element[1]/@relUri"/>)-&lt;<xsl:value-of select="local:getDocumentationFileURI(element[1]/@relUri)"/></xsl:message>
+                            <!--xsl:message>local:getDocumentationFileURI(<xsl:value-of select="element[1]/@relUri"/>)-&lt;<xsl:value-of select="local:getDocumentationFileURI(element[1]/@relUri)"/></xsl:message-->
                             <a href="{local:getDocumentationFileURI(element[1]/@relUri)}" target="doc"><xsl:value-of select="(@name[normalize-space()],concat('no ',../@label))[1]"/></a>                            
                         </xsl:when>
                         <xsl:otherwise>
