@@ -19,8 +19,8 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <xslt href="cp:/calculateHtmlOutputFile.xsl" id="outputPaths">
             <param name="outputFolder" value="$[outputFolder]"/>
         </xslt>
+        <java class="top.marchand.xml.xsl.doc.AccumulatorStep"/>
         <tee>
-            <java class="top.marchand.xml.xsl.doc.AccumulatorStep"/>
             <pipe>
                 <xslt href="cp:/prepareTOC.xsl" id="prepareToc"/>
                 <xslt href="cp:/makeTOC.xsl">
@@ -49,8 +49,8 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         </tee>
     </pipe>
     <params>
-        <param name="sources" value="src/main/xsl"/>
-        <param name="outputFolder" value="should give it via command line"/>
+        <!--param name="sources" value="src/main/xsl"/>
+        <param name="outputFolder" value="should give it via command line"/-->
         <param name="absoluteRootFolder" value="file:$[basedir]/$[sources]"/>
     </params>
     <sources>

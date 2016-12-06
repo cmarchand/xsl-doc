@@ -7,6 +7,7 @@
 package top.marchand.xml.xsl.doc;
 
 import fr.efl.chaine.xslt.StepJava;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Stack;
 import net.sf.saxon.Configuration;
@@ -32,10 +33,12 @@ public class AccumulatorStep extends StepJava {
     private static final Logger LOGGER = LoggerFactory.getLogger(AccumulatorStep.class);
     private static final HashMap<String,CharSequence> inputFiles = new HashMap<>();
     String currentInputFile;
+    private static String outputDir;
 
     @Override
     public Receiver getReceiver(Configuration c) throws SaxonApiException {
         currentInputFile = getParameter(new QName("input-absolute")).toString();
+        outputDir = getParameter(new QName("outputFolder")).toString();
         return new AccumulatorStepReceiver(getNextReceiver(c));
     }
     
@@ -46,7 +49,6 @@ public class AccumulatorStep extends StepJava {
         public AccumulatorStepReceiver(Receiver nextReceiver) {
             super(nextReceiver);
             stack = new Stack<>();
-            LOGGER.debug("[Accumulator] new");
         }
 
         @Override
@@ -54,7 +56,6 @@ public class AccumulatorStep extends StepJava {
             super.startElement(elemName, typeCode, location, properties);
             currentElementName = elemName.getLocalPart();
             stack.push(elemName);
-            LOGGER.debug("AccumulatorStepReceiver.startElement("+currentElementName+")");
         }
 
         @Override
@@ -75,13 +76,13 @@ public class AccumulatorStep extends StepJava {
                 }
             }
         }
-
-        @Override
-        protected void finalize() throws Throwable {
-            super.finalize();
-            for(String input:inputFiles.keySet()) {
-                System.out.println(input+"->"+inputFiles.get(input));
-            }
+    }
+    static void generateIndex() throws IOException {
+        LOGGER.info("outputDir="+outputDir);
+        if(!outputDir.endsWith("/")) outputDir+="/";
+        for(String input:inputFiles.keySet()) {
+            String relativeUri = inputFiles.get(input).subSequence(outputDir.length(), 1000).toString();
+            LOGGER.info(input+" -> "+relativeUri);
         }
     }
 }

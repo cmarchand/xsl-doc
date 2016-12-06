@@ -78,8 +78,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -115,9 +115,6 @@
                         <goals>
                             <goal>catalog</goal>
                         </goals>
-                        <configuration>
-                            <catalogFileName>target/classes/catalog.xml</catalogFileName>
-                        </configuration>
                     </execution>
                     <execution>
                         <id>toRun</id>
@@ -167,6 +164,7 @@
                         <argument>-Dgaulois.debug.dir=debug</argument>
                         <argument>-classpath</argument>
                         <classpath/>
+                        <argument>top.marchand.xml.xsl.doc.GauloisPipeRunner</argument>
                         <argument>fr.efl.chaine.xslt.GauloisPipe</argument>
                         <argument>--config</argument>
                         <argument>cp:/xsl-doc_gp.xml</argument>
@@ -174,9 +172,9 @@
                         <argument>XSL-DOC</argument>
                         <argument>PARAMS</argument>
                         <argument>outputFolder=file:${project.build.directory}/generated-test-files</argument>
-                        <argument>basedir=${basedir}</argument>
-                        <!--argument>absoluteRootFolder=file:$[basedir]/$[sources]</argument-->
                         <argument>sources=src/main/xsl</argument>
+                        <argument>PARAMS</argument>
+                        <argument>basedir=${basedir}</argument>
                     </arguments>
                 </configuration>
             </plugin>
