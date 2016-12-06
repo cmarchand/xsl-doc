@@ -165,6 +165,7 @@
                         <argument>-classpath</argument>
                         <classpath/>
                         <argument>top.marchand.xml.xsl.doc.GauloisPipeRunner</argument>
+                        <argument>${project.name}</argument>
                         <argument>fr.efl.chaine.xslt.GauloisPipe</argument>
                         <argument>--config</argument>
                         <argument>cp:/xsl-doc_gp.xml</argument>

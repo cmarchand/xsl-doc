@@ -7,16 +7,26 @@
 package top.marchand.xml.xsl.doc;
 
 import fr.efl.chaine.xslt.StepJava;
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Stack;
+import javax.xml.transform.stream.StreamSource;
 import net.sf.saxon.Configuration;
 import net.sf.saxon.event.ProxyReceiver;
 import net.sf.saxon.event.Receiver;
 import net.sf.saxon.expr.parser.Location;
 import net.sf.saxon.om.NodeName;
+import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.SaxonApiException;
+import net.sf.saxon.s9api.Serializer;
+import net.sf.saxon.s9api.XdmAtomicValue;
+import net.sf.saxon.s9api.XsltExecutable;
+import net.sf.saxon.s9api.XsltTransformer;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.type.SchemaType;
 import net.sf.saxon.type.SimpleType;
@@ -30,15 +40,19 @@ import org.slf4j.LoggerFactory;
  * @author cmarchand
  */
 public class AccumulatorStep extends StepJava {
+    public static final String NS = "top:marchand:xml:xsl:doc";
     private static final Logger LOGGER = LoggerFactory.getLogger(AccumulatorStep.class);
     private static final HashMap<String,CharSequence> inputFiles = new HashMap<>();
-    String currentInputFile;
     private static String outputDir;
+    private static String absoluteRootFolder;
+
+    String currentInputFile;
 
     @Override
     public Receiver getReceiver(Configuration c) throws SaxonApiException {
         currentInputFile = getParameter(new QName("input-absolute")).toString();
         outputDir = getParameter(new QName("outputFolder")).toString();
+        absoluteRootFolder = getParameter(new QName("absoluteRootFolder")).toString();
         return new AccumulatorStepReceiver(getNextReceiver(c));
     }
     
@@ -69,7 +83,7 @@ public class AccumulatorStep extends StepJava {
             super.attribute(nameCode, typeCode, value, locationId, properties);
             if("file".equals(currentElementName)) {
                 if(stack.size()==1) {
-                    if(nameCode.getLocalPart().equals("indexOutputUri")) {
+                    if(nameCode.getLocalPart().equals("welcomeOutputUri")) {
                         inputFiles.put(currentInputFile, value);
                         LOGGER.debug("[Accumulator] "+currentInputFile+"->"+value);
                     }
@@ -77,12 +91,36 @@ public class AccumulatorStep extends StepJava {
             }
         }
     }
-    static void generateIndex() throws IOException {
-        LOGGER.info("outputDir="+outputDir);
-        if(!outputDir.endsWith("/")) outputDir+="/";
+    static void generateIndex(String projectName) throws IOException, SaxonApiException, URISyntaxException {
+        // we do not work with absolute anymore, only relatives
+        String outputPath = new File(new URI(outputDir)).getAbsolutePath();
+        LOGGER.info("outputPath="+outputPath);
+        String absoluteRootPath = new File(new URI(absoluteRootFolder)).getAbsolutePath();
+        LOGGER.debug("absoluteRootPath="+absoluteRootPath);
+        StringBuilder sb = new StringBuilder();
         for(String input:inputFiles.keySet()) {
-            String relativeUri = inputFiles.get(input).subSequence(outputDir.length(), 1000).toString();
-            LOGGER.info(input+" -> "+relativeUri);
+            String targetReadUri = new File(new URI(inputFiles.get(input).toString())).getAbsolutePath();
+            String targetUri = targetReadUri.subSequence(outputPath.length()+1, targetReadUri.length()).toString();
+            String sourceUri = input.substring(absoluteRootPath.length()+1);
+//            LOGGER.info(sourceUri+" -> "+targetUri);
+            LOGGER.info(input);
+            LOGGER.info(sourceUri);
+            LOGGER.info(targetReadUri);
+            LOGGER.info(targetUri);
+            LOGGER.info("-------");
+            sb.append(sourceUri).append("@").append(targetUri).append("|");
         }
+        String data = sb.deleteCharAt(sb.length()-1).toString();
+        LOGGER.debug("data="+data);
+        Processor proc = new Processor(Configuration.newConfiguration());
+        XsltExecutable exec = proc.newXsltCompiler().compile(new StreamSource(new URL("cp:/generateWholeIndex.xsl").openStream()));
+        XsltTransformer transformer = exec.load();
+        transformer.setInitialTemplate(new QName(NS,"main"));
+        transformer.setParameter(new QName(NS,"programName"), new XdmAtomicValue(projectName));
+        transformer.setParameter(new QName(NS, "absoluteRootDir"), new XdmAtomicValue(absoluteRootFolder));
+        transformer.setParameter(new QName(NS, "sData"), new XdmAtomicValue(data));
+        Serializer serializer = proc.newSerializer(new File(new File(outputPath), "index.html"));
+        transformer.setDestination(serializer);
+        transformer.transform();
     }
 }
