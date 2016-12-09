@@ -94,20 +94,12 @@ public class AccumulatorStep extends StepJava {
     static void generateIndex(String projectName) throws IOException, SaxonApiException, URISyntaxException {
         // we do not work with absolute anymore, only relatives
         String outputPath = new File(new URI(outputDir)).getAbsolutePath();
-        LOGGER.info("outputPath="+outputPath);
         String absoluteRootPath = new File(new URI(absoluteRootFolder)).getAbsolutePath();
-        LOGGER.debug("absoluteRootPath="+absoluteRootPath);
         StringBuilder sb = new StringBuilder();
         for(String input:inputFiles.keySet()) {
             String targetReadUri = new File(new URI(inputFiles.get(input).toString())).getAbsolutePath();
             String targetUri = targetReadUri.subSequence(outputPath.length()+1, targetReadUri.length()).toString();
             String sourceUri = input.substring(absoluteRootPath.length()+1);
-//            LOGGER.info(sourceUri+" -> "+targetUri);
-            LOGGER.info(input);
-            LOGGER.info(sourceUri);
-            LOGGER.info(targetReadUri);
-            LOGGER.info(targetUri);
-            LOGGER.info("-------");
             sb.append(sourceUri).append("@").append(targetUri).append("|");
         }
         String data = sb.deleteCharAt(sb.length()-1).toString();
@@ -119,7 +111,7 @@ public class AccumulatorStep extends StepJava {
         transformer.setParameter(new QName(NS,"programName"), new XdmAtomicValue(projectName));
         transformer.setParameter(new QName(NS, "absoluteRootDir"), new XdmAtomicValue(absoluteRootFolder));
         transformer.setParameter(new QName(NS, "sData"), new XdmAtomicValue(data));
-        Serializer serializer = proc.newSerializer(new File(new File(outputPath), "index.html"));
+        Serializer serializer = proc.newSerializer(new File(new File(outputPath), "entries.xml"));
         transformer.setDestination(serializer);
         transformer.transform();
     }

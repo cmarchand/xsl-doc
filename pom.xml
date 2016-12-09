@@ -38,9 +38,9 @@
     <inceptionYear>2016</inceptionYear>
     
     <scm>
-        <connection>https://github.com/cmarchand/xsl-doc.git</connection>
-        <url>https://github.com/cmarchand/xsl-doc.git</url>
-        <developerConnection>git@github.com:cmarchand/xsl-doc.git</developerConnection>
+        <connection>scm:git:https://github.com/cmarchand/xsl-doc.git</connection>
+        <url>scm:git:https://github.com/cmarchand/xsl-doc.git</url>
+        <developerConnection>scm:git:git@github.com:cmarchand/xsl-doc.git</developerConnection>
     </scm>
     
     <properties>
@@ -57,7 +57,7 @@
         <dependency>
             <groupId>top.marchand.xml</groupId>
             <artifactId>gaulois-pipe</artifactId>
-            <version>1.01.03-SNAPSHOT</version>
+            <version>1.01.03</version>
         </dependency>
     </dependencies>
 
@@ -196,5 +196,13 @@
             </plugin>
         </plugins>
     </build>
-    
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>top.marchand.xml</groupId>
+                <artifactId>xslDoc-maven-plugin</artifactId>
+                <version>0.1-SNAPSHOT</version>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
