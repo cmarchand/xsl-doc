@@ -13,6 +13,8 @@
     
     <name>xsl-doc</name>
     
+    <url>https://github.com/cmarchand/xsl-doc</url>
+    
     <description>A project to generate documentation from a XSL</description>
     
     <developers>
@@ -39,6 +41,13 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <licenses>
+        <license>
+            <name>MPL 2.0</name>
+            <url>https://www.mozilla.org/en-US/MPL/2.0/</url>
+        </license>
+    </licenses>
     
     <dependencies>
         <dependency>
