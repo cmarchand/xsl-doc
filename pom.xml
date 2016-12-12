@@ -26,13 +26,6 @@
             <timezone>UTC+1</timezone>
             <url>https://github.com/cmarchand/</url>
         </developer>
-        <developer>
-            <name>Matthieu Ricaud-Dussarget</name>
-            <roles>
-                <role>developer</role>
-                <role>XML expert, guru</role>
-            </roles>
-        </developer>
     </developers>
     
     <inceptionYear>2016</inceptionYear>
@@ -46,12 +39,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
-
-    <dependencyManagement>
-        <dependencies>
-        </dependencies>
-    </dependencyManagement>
     
     <dependencies>
         <dependency>
@@ -196,7 +183,53 @@
             </plugin>
         </plugins>
     </build>
-    <reporting>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.7</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    
+    <!--reporting>
         <plugins>
             <plugin>
                 <groupId>top.marchand.xml</groupId>
@@ -204,5 +237,5 @@
                 <version>0.1-SNAPSHOT</version>
             </plugin>
         </plugins>
-    </reporting>
+    </reporting-->
 </project>
