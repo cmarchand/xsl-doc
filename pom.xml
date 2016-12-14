@@ -8,7 +8,7 @@
     
     <groupId>top.marchand.xml</groupId>
     <artifactId>xsl-doc</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     
     <name>xsl-doc</name>
@@ -53,7 +53,7 @@
         <dependency>
             <groupId>top.marchand.xml</groupId>
             <artifactId>gaulois-pipe</artifactId>
-            <version>1.01.03</version>
+            <version>1.01.04-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -175,10 +175,10 @@
                     </arguments>
                 </configuration>
             </plugin>
-            <!--plugin>
+            <plugin>
                 <groupId>top.marchand.xml</groupId>
                 <artifactId>xslDoc-maven-plugin</artifactId>
-                <version>0.1-SNAPSHOT</version>
+                <version>0.2-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <goals>
@@ -186,10 +186,14 @@
                         </goals>
                         <configuration>
                             <keepConfigFile>true</keepConfigFile>
+                            <xslDirectories>
+                                <xslDirectory>src/main/xsl</xslDirectory>
+                                <xslDirectory>src/main/resources</xslDirectory>
+                            </xslDirectories>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin-->
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
