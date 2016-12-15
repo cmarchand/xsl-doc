@@ -8,7 +8,7 @@
     
     <groupId>top.marchand.xml</groupId>
     <artifactId>xsl-doc</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
     
     <name>xsl-doc</name>
@@ -53,7 +53,7 @@
         <dependency>
             <groupId>top.marchand.xml</groupId>
             <artifactId>gaulois-pipe</artifactId>
-            <version>1.01.04-SNAPSHOT</version>
+            <version>1.01.04</version>
         </dependency>
     </dependencies>
 
@@ -98,29 +98,6 @@
                         <goals>
                             <goal>run-xspec</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.oxiane.xml</groupId>
-                <artifactId>catalogBuilder-maven-plugin</artifactId>
-                <version>1.0.2-SNAPSHOT</version>
-                <executions>
-                    <execution>
-                        <id>main</id>
-                        <goals>
-                            <goal>catalog</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>toRun</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>catalog</goal>
-                        </goals>
-                        <configuration>
-                            <catalogFileName>target/classes/catalog.xml</catalogFileName>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -175,7 +152,7 @@
                     </arguments>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--plugin>
                 <groupId>top.marchand.xml</groupId>
                 <artifactId>xslDoc-maven-plugin</artifactId>
                 <version>0.2-SNAPSHOT</version>
@@ -185,7 +162,7 @@
                             <goal>xsl-doc</goal>
                         </goals>
                         <configuration>
-                            <keepConfigFile>true</keepConfigFile>
+                            <keepConfigFile>false</keepConfigFile>
                             <xslDirectories>
                                 <xslDirectory>src/main/xsl</xslDirectory>
                                 <xslDirectory>src/main/resources</xslDirectory>
@@ -193,7 +170,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
