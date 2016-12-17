@@ -43,10 +43,8 @@
                 </head>
                     <frameset cols="25%,75%">
                         <xsl:variable name="intermediaryDirectory" as="xs:string" select="local:getIntermediaryDirectory(@name)"/>
-                        <!--frame name="toc" src="{concat(string-join(($intermediaryDirectory,tokenize(@name,'\.')[position() &lt; last()]),'/'),'-toc.html')}"/>
-                        <frame name="doc" src="{string-join(($intermediaryDirectory,tokenize(@htmlOutputUri,'/')[last()]),'/')}"/-->
-                        <frame name="toc" src="{@tocOutputUri}"/>
-                        <frame name="doc" src="{@htmlOutputUri}"/>
+                        <frame name="toc" src="{string-join(($intermediaryDirectory,tokenize(@tocOutputUri,'/')[last()]),'/')}"/>
+                        <frame name="doc" src="{string-join(($intermediaryDirectory,tokenize(@htmlOutputUri,'/')[last()]),'/')}"/>
                     </frameset>
             </html>
         </xsl:result-document>
