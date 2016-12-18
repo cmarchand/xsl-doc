@@ -113,4 +113,22 @@
             <element type="function" id="..." namespace="top:marchand:xml:local" name="myFunction" as="xs:string" signature="Q{{top:marchand:xml:local}}myFunction(xs:string,xs:integer*,item())"/>
         </x:expect>
     </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'xsl:strip-space'">
+        <x:context>
+            <xsl:strip-space elements="#all"/>
+        </x:context>
+        <x:expect label="a not null name">
+            <element type="strip-space" id="..." path="..." name="#all" elements="#all"/>
+        </x:expect>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'xsl:preserve-space'">
+        <x:context>
+            <xsl:preserve-space elements="#all"/>
+        </x:context>
+        <x:expect label="a not null name">
+            <element type="preserve-space" id="..." path="..." name="#all" elements="#all"/>
+        </x:expect>
+    </x:scenario>
 </x:description>

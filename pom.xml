@@ -146,8 +146,7 @@
                         <argument>XSL-DOC</argument>
                         <argument>PARAMS</argument>
                         <argument>outputFolder=file:${project.build.directory}/generated-test-files</argument>
-                        <argument>sources=src/main/xsl</argument>
-                        <argument>PARAMS</argument>
+                        <argument>sources=src/test/run</argument>
                         <argument>basedir=${basedir}</argument>
                     </arguments>
                 </configuration>

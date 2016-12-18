@@ -19,7 +19,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     
     <xd:doc scope="stylesheet">
         <xd:desc>
-            <xd:p>This program extract from input files all (root+1) elements, and generates an ID fro each</xd:p>
+            <xd:p>This program extract from input files all (root+1) elements, and generates an ID for each</xd:p>
             <xd:p><xd:b>Created on:</xd:b> Jun 28, 2016</xd:p>
             <xd:p><xd:b>Author:</xd:b> Christophe Marchand - christophe@marchand.top</xd:p>
             <xd:p></xd:p>
@@ -88,7 +88,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         xsl:key | xsl:mode | xsl:namespace-alias | xsl:preserve-space | 
         xsl:strip-space | xsl:param | xsl:variable">
         <element type="{local-name(.)}" id="{generate-id(.)}" path="{idgen:getXPath(.)}">
-            <xsl:copy-of select="local:extractName(@name)"/>
+            <xsl:copy-of select="local:extractName((@name, @elements, @schema-location, @stylesheet-prefix, 'unnamed')[1])"/>    <!-- patch for strip-spaces -->
             <xsl:apply-templates select="@* except @name"/>
         </element>
     </xsl:template>
