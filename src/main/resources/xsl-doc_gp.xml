@@ -16,10 +16,6 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <xslt href="cp:/calculateRelativePaths.xsl">
             <param name="absoluteRootFolder" value="$[absoluteRootFolder]"/>
         </xslt>
-        <!--output id="fake">
-            <folder absolute="${user.dir}"/>
-            <fileName name="fake.xml"/>
-        </output-->
         <xslt href="cp:/calculateHtmlOutputFile.xsl" id="outputPaths">
             <param name="outputFolder" value="$[outputFolder]"/>
         </xslt>
@@ -59,5 +55,6 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     </params>
     <sources>
         <folder href="$[sources]" pattern=".*\.xsl" recurse="true"/>
+        <!--folder href="$[sources]" pattern="SuppressionInutilesOM\.xsl" recurse="true"/-->
     </sources>
 </config>

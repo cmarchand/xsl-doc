@@ -100,50 +100,55 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <xsl:param name="file" as="element(file)" tunnel="yes"/>
         <xsl:variable name="path" select="idgen:getXPath(.)"/>
         <!--xsl:text>XPath = </xsl:text><xsl:value-of select="$path"/-->
-        <xsl:variable name="element" as="element(element)">
-            <xsl:choose>
-                <xsl:when test="self::xsl:function">
-                    <xsl:variable name="signature" as="xs:string" select="idgen:calcSignature(.)"/>
-                    <xsl:sequence select="$file/element[@signature eq $signature]" />
-                </xsl:when>
-                <xsl:otherwise><xsl:sequence select="$file/element[@path eq $path]"/></xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <!--xsl:if test="empty($element)">
-            <xsl:text>Element est vide</xsl:text>
-        </xsl:if-->
-        <xsl:variable name="this" select="."/>
-        <xsl:variable name="documentation-element" as="element()?"
-            select="preceding-sibling::*[1][not(namespace-uri(.) eq 'http://www.w3.org/1999/XSL/Transform')][not(@scope='stylesheet')]"/>
-        <xsl:variable name="documentation-comment" as="comment()?"
-            select="preceding-sibling::comment()[1][following-sibling::*[1][. is $this]]"/>
-        <xsl:variable name="documentation" as="item()?">
-            <xsl:choose>
-                <xsl:when test="empty($documentation-comment)">
-                    <xsl:sequence select="$documentation-element"/>
-                </xsl:when>
-                <xsl:when test="empty($documentation-element)">
-                    <xsl:sequence select="$documentation-comment"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:sequence
-                        select="$documentation-comment[$documentation-element = preceding-sibling::*] union $documentation-element[$documentation-comment = preceding-sibling::comment()]"
-                    />
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="code" as="element()">
-            <div class="code" xmlns="http://www.w3.org/1999/xhtml">
-                <details>
-                    <summary>Source code</summary>
-                    <xsl:apply-templates mode="source-code" select="."/>
-                </details>
-            </div>
-        </xsl:variable>
-        <xsl:apply-templates select="$element" mode="doc">
-            <xsl:with-param name="documentation" select="$documentation"/>
-            <xsl:with-param name="code" select="$code"/>
-        </xsl:apply-templates>
+        <xsl:choose>
+            <xsl:when test="ancestor::xd:*"><xsl:next-match></xsl:next-match></xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="element" as="element(element)">
+                    <xsl:choose>
+                        <xsl:when test="self::xsl:function">
+                            <xsl:variable name="signature" as="xs:string" select="idgen:calcSignature(.)"/>
+                            <xsl:sequence select="$file/element[@signature eq $signature]" />
+                        </xsl:when>
+                        <xsl:otherwise><xsl:sequence select="$file/element[@path eq $path]"/></xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                <!--xsl:if test="empty($element)">
+                    <xsl:text>Element est vide</xsl:text>
+                </xsl:if-->
+                <xsl:variable name="this" select="."/>
+                <xsl:variable name="documentation-element" as="element()?"
+                    select="preceding-sibling::*[1][not(namespace-uri(.) eq 'http://www.w3.org/1999/XSL/Transform')][not(@scope='stylesheet')]"/>
+                <xsl:variable name="documentation-comment" as="comment()?"
+                    select="preceding-sibling::comment()[1][following-sibling::*[1][. is $this]]"/>
+                <xsl:variable name="documentation" as="item()?">
+                    <xsl:choose>
+                        <xsl:when test="empty($documentation-comment)">
+                            <xsl:sequence select="$documentation-element"/>
+                        </xsl:when>
+                        <xsl:when test="empty($documentation-element)">
+                            <xsl:sequence select="$documentation-comment"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence
+                                select="$documentation-comment[$documentation-element = preceding-sibling::*] union $documentation-element[$documentation-comment = preceding-sibling::comment()]"
+                            />
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                <xsl:variable name="code" as="element()">
+                    <div class="code" xmlns="http://www.w3.org/1999/xhtml">
+                        <details>
+                            <summary>Source code</summary>
+                            <xsl:apply-templates mode="source-code" select="."/>
+                        </details>
+                    </div>
+                </xsl:variable>
+                <xsl:apply-templates select="$element" mode="doc">
+                    <xsl:with-param name="documentation" select="$documentation"/>
+                    <xsl:with-param name="code" select="$code"/>
+                </xsl:apply-templates>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="element" mode="doc">

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    stylesheet="../../main/xsl/makeDoc.xsl" xslt-version="3.0">
+    <x:scenario label="Scenarion to validate case where a xsl:* element is in a xd:doc"
+        xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" 
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <x:context>
+            <file base-uri="eflCommon.xsl">
+                <element type="template" id="d14e129"
+                    path="/Q{http://www.w3.org/1999/XSL/Transform}stylesheet[1]/Q{http://www.w3.org/1999/XSL/Transform}template[1]"
+                    name="efl:log">
+                <xd:doc>
+                    <xd:desc>
+                        <xd:p>Log des erreurs ou warning xslt</xd:p>
+                    </xd:desc>
+                    <xd:param name="xsltName">Nom de la xslt appelante. Typiquement : "<xsl:variable name="xsltName"
+                        select="tokenize(static-base-uri(),'/')[last()]"/>"</xd:param>
+                </xd:doc>
+                </element>
+            </file>
+        </x:context>
+    </x:scenario>
+    
+</x:description>
