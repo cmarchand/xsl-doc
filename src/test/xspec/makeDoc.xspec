@@ -7,7 +7,7 @@
         <x:context>
             <file base-uri="eflCommon.xsl">
                 <element type="template" id="d14e129"
-                    path="/Q{http://www.w3.org/1999/XSL/Transform}stylesheet[1]/Q{http://www.w3.org/1999/XSL/Transform}template[1]"
+                    path="/Q{{http://www.w3.org/1999/XSL/Transform}}stylesheet[1]/Q{{http://www.w3.org/1999/XSL/Transform}}template[1]"
                     name="efl:log">
                 <xd:doc>
                     <xd:desc>

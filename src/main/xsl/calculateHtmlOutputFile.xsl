@@ -26,7 +26,6 @@
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
             <xsl:variable name="uri" as="xs:string" select="string-join(($outputFolderURI,@root-rel-uri),'/')" />
-            <xsl:message select="concat('[DEBUGING] @root-rel-uri=',@root-rel-uri,' $uri=',$uri)"></xsl:message>
             <xsl:attribute name="htmlOutputUri" select="resolve-uri(local:getDocumentationFileURI($uri))"/>
             <xsl:attribute name="indexOutputUri" select="resolve-uri(local:getIndexFileURI($uri))"/>
             <xsl:attribute name="welcomeOutputUri" select="resolve-uri(local:getWelcomeFileURI($uri))"/>
