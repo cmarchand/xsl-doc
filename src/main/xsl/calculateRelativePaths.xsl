@@ -21,7 +21,9 @@
     
     <!-- the root folder where all xsl sources are in the project -->
     <xsl:param name="absoluteRootFolder" as="xs:string" required="yes"/>
+    <xsl:param name="levelsToKeep" as="xs:string"/>
     <xsl:variable name="absoluteRootUri" as="xs:anyURI" select="resolve-uri($absoluteRootFolder)"/>
+    <xsl:variable name="nLevelsToKeep" as="xs:integer" select="number($levelsToKeep) cast as xs:integer"></xsl:variable>
     
     <xsl:template match="/">
         <xsl:comment><xsl:value-of select="$absoluteRootUri"/></xsl:comment>
@@ -32,6 +34,8 @@
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
             <xsl:attribute name="root-rel-uri" select="local:normalizeFilePath(local:getRelativePath($absoluteRootUri,@base-uri))"/>
+            <xsl:variable name="decoupe" as="xs:string+" select="tokenize(@base-uri,'/')"/>
+            <xsl:attribute name="index-label" select="string-join($decoupe[position() ge (count($decoupe)-$nLevelsToKeep)],'/')"/>
             <xsl:apply-templates select="*"/>
         </xsl:copy>
     </xsl:template>

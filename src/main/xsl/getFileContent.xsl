@@ -17,6 +17,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     <xsl:import href="lib/identity.xsl"/>
     <xsl:import href="lib/id-generator.xsl"/>
     
+    <xsl:param name="levelsToKeep" as="xs:string"/>
     <xd:doc scope="stylesheet">
         <xd:desc>
             <xd:p>This program extract from input files all (root+1) elements, and generates an ID for each</xd:p>
@@ -26,6 +27,19 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         </xd:desc>
     </xd:doc>
     
+    <xsl:template match="/file" priority="+1">
+        <xsl:copy>
+            <xsl:attribute name="levelsToKeep" select="$levelsToKeep"/>
+            <xsl:apply-templates select="@*"/>
+            <xsl:apply-templates select="document(resolve-uri(@base-uri))">
+                <xsl:with-param name="xsl-name" select="@name" tunnel="yes"/>
+                <xsl:with-param name="base-uri" select="@base-uri" tunnel="yes"/>
+                <xsl:with-param name="rel-uri" select="@rel-uri" tunnel="yes"/>
+            </xsl:apply-templates>
+            <xsl:apply-templates select="node()"/>
+        </xsl:copy>
+    </xsl:template>
+
     <xsl:template match="file">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>

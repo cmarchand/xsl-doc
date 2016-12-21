@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Stack;
 import javax.xml.transform.stream.StreamSource;
 import net.sf.saxon.Configuration;
@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 public class AccumulatorStep extends StepJava {
     public static final String NS = "top:marchand:xml:xsl:doc";
     private static final Logger LOGGER = LoggerFactory.getLogger(AccumulatorStep.class);
-    private static final HashMap<String,CharSequence> inputFiles = new HashMap<>();
+    private static final Stack<Triple> INPUT_FILES = new Stack<>();
     private static String outputDir;
     private static String absoluteRootFolder;
 
@@ -70,6 +70,11 @@ public class AccumulatorStep extends StepJava {
             super.startElement(elemName, typeCode, location, properties);
             currentElementName = elemName.getLocalPart();
             stack.push(elemName);
+            if("file".equals(currentElementName)) {
+                if(stack.size()==1) {
+                    INPUT_FILES.push(new Triple(currentInputFile, null, absoluteRootFolder));
+                }
+            }
         }
 
         @Override
@@ -84,8 +89,12 @@ public class AccumulatorStep extends StepJava {
             if("file".equals(currentElementName)) {
                 if(stack.size()==1) {
                     if(nameCode.getLocalPart().equals("welcomeOutputUri")) {
-                        inputFiles.put(currentInputFile, value);
-                        LOGGER.debug("[Accumulator] "+currentInputFile+"->"+value);
+                        LOGGER.debug("setting targetUri="+value.toString());
+                        INPUT_FILES.peek().targetUri = value.toString();
+                    } else if(nameCode.getLocalPart().equals("levelsToKeep")) {
+                        INPUT_FILES.peek().levelsToKeep = Integer.parseInt(value.toString());
+                    } else if(nameCode.getLocalPart().equals("index-label")) {
+                        INPUT_FILES.peek().label = value.toString();
                     }
                 }
             }
@@ -94,13 +103,14 @@ public class AccumulatorStep extends StepJava {
     static void generateIndex(String projectName) throws IOException, SaxonApiException, URISyntaxException {
         // we do not work with absolute anymore, only relatives
         String outputPath = new File(new URI(outputDir)).getAbsolutePath();
-        String absoluteRootPath = new File(new URI(absoluteRootFolder)).getAbsolutePath();
         StringBuilder sb = new StringBuilder();
-        for(String input:inputFiles.keySet()) {
-            String targetReadUri = new File(new URI(inputFiles.get(input).toString())).getAbsolutePath();
+        for(Triple triple:INPUT_FILES) {
+            LOGGER.debug(triple.toString());
+            String targetReadUri = new File(new URI(triple.targetUri)).getAbsolutePath();
             String targetUri = targetReadUri.subSequence(outputPath.length()+1, targetReadUri.length()).toString();
-            String sourceUri = input.substring(absoluteRootPath.length()+1);
-            sb.append(sourceUri).append("@").append(targetUri).append("|");
+//            String absoluteSourceUri = new File(triple.label).toURI().toURL().toExternalForm();
+            String sourceUri = triple.label;
+            sb.append(sourceUri).append("@").append(targetUri).append("@").append(triple.levelsToKeep).append("|");
         }
         String data = sb.deleteCharAt(sb.length()-1).toString();
         LOGGER.debug("data="+data);
@@ -114,5 +124,26 @@ public class AccumulatorStep extends StepJava {
         Serializer serializer = proc.newSerializer(new File(new File(outputPath), "entries.xml"));
         transformer.setDestination(serializer);
         transformer.transform();
+    }
+    
+    private static class Triple {
+        String label;
+        String targetUri;
+        String absoluteRootPath;
+        int levelsToKeep;
+        
+        Triple(String label, String targetUri, String absoluteRootPath) {
+            super();
+            this.label=label;
+            this.targetUri=targetUri;
+            this.absoluteRootPath=absoluteRootPath;
+        }
+
+        @Override
+        public String toString() {
+            return "label="+label+"\ntargetUri="+targetUri+"\nabsoluteRootFolder="+absoluteRootFolder;
+        }
+        
+        
     }
 }

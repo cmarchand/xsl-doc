@@ -46,7 +46,7 @@
         <xsl:sequence select="concat($functionName, string-join($parameters,','),')')"/>
     </xsl:function>
     
-    <xsl:function name="idgen:getType" as="xs:string" visibility="private">
+    <xsl:function name="idgen:getType" as="xs:string">
         <xsl:param name="param" as="element(xsl:param)"/>
         <xsl:sequence select="if($param/@as) then $param/@as else 'item()'"/>
     </xsl:function>
