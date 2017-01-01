@@ -34,8 +34,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class accumulates the files that are processed, and on termination,
- * generates a index.html.
+ * This class accumulates the files that are processed, and on then,
+ * is able to generates a entries list as an XML file.
  * 
  * @author cmarchand
  */
