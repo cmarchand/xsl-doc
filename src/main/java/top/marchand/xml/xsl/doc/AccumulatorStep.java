@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Stack;
 import javax.xml.transform.stream.StreamSource;
 import net.sf.saxon.Configuration;
@@ -34,8 +33,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class accumulates the files that are processed, and on termination,
- * generates a index.html.
+ * This class accumulates the files that are processed, and on then,
+ * is able to generates a entries list as an XML file.
  * 
  * @author cmarchand
  */
@@ -117,7 +116,6 @@ public class AccumulatorStep extends StepJava {
                 LOGGER.debug(triple.toString());
                 String targetReadUri = new File(new URI(triple.targetUri)).getAbsolutePath();
                 String targetUri = targetReadUri.subSequence(outputPath.length()+1, targetReadUri.length()).toString();
-    //            String absoluteSourceUri = new File(triple.label).toURI().toURL().toExternalForm();
                 String sourceUri = triple.label;
                 sb.append(sourceUri).append("@").append(targetUri).append("@").append(triple.levelsToKeep).append("|");
             }
