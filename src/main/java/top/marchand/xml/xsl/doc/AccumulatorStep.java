@@ -100,30 +100,45 @@ public class AccumulatorStep extends StepJava {
             }
         }
     }
-    static void generateIndex(String projectName) throws IOException, SaxonApiException, URISyntaxException {
+    /**
+     * Generates the index File
+     * @param projectName
+     * @return The generated index file, or null if it was impossible to generate it.
+     * @throws IOException
+     * @throws SaxonApiException
+     * @throws URISyntaxException 
+     */
+    static File generateIndex(String projectName) throws IOException, SaxonApiException, URISyntaxException {
         // we do not work with absolute anymore, only relatives
-        String outputPath = new File(new URI(outputDir)).getAbsolutePath();
-        StringBuilder sb = new StringBuilder();
-        for(Triple triple:INPUT_FILES) {
-            LOGGER.debug(triple.toString());
-            String targetReadUri = new File(new URI(triple.targetUri)).getAbsolutePath();
-            String targetUri = targetReadUri.subSequence(outputPath.length()+1, targetReadUri.length()).toString();
-//            String absoluteSourceUri = new File(triple.label).toURI().toURL().toExternalForm();
-            String sourceUri = triple.label;
-            sb.append(sourceUri).append("@").append(targetUri).append("@").append(triple.levelsToKeep).append("|");
+        if(outputDir!=null) {
+            String outputPath = new File(new URI(outputDir)).getAbsolutePath();
+            StringBuilder sb = new StringBuilder();
+            for(Triple triple:INPUT_FILES) {
+                LOGGER.debug(triple.toString());
+                String targetReadUri = new File(new URI(triple.targetUri)).getAbsolutePath();
+                String targetUri = targetReadUri.subSequence(outputPath.length()+1, targetReadUri.length()).toString();
+    //            String absoluteSourceUri = new File(triple.label).toURI().toURL().toExternalForm();
+                String sourceUri = triple.label;
+                sb.append(sourceUri).append("@").append(targetUri).append("@").append(triple.levelsToKeep).append("|");
+            }
+            String data = sb.deleteCharAt(sb.length()-1).toString();
+            LOGGER.debug("data="+data);
+            Processor proc = new Processor(Configuration.newConfiguration());
+            XsltExecutable exec = proc.newXsltCompiler().compile(new StreamSource(new URL("cp:/generateWholeIndex.xsl").openStream()));
+            XsltTransformer transformer = exec.load();
+            transformer.setInitialTemplate(new QName(NS,"main"));
+            transformer.setParameter(new QName(NS,"programName"), new XdmAtomicValue(projectName));
+            transformer.setParameter(new QName(NS, "absoluteRootDir"), new XdmAtomicValue(absoluteRootFolder));
+            transformer.setParameter(new QName(NS, "sData"), new XdmAtomicValue(data));
+            File ret = new File(new File(outputPath), "entries.xml");
+            Serializer serializer = proc.newSerializer(ret);
+            transformer.setDestination(serializer);
+            transformer.transform();
+            return ret;
+        } else {
+            // here there was nothing to generate, so returns null
+            return null;
         }
-        String data = sb.deleteCharAt(sb.length()-1).toString();
-        LOGGER.debug("data="+data);
-        Processor proc = new Processor(Configuration.newConfiguration());
-        XsltExecutable exec = proc.newXsltCompiler().compile(new StreamSource(new URL("cp:/generateWholeIndex.xsl").openStream()));
-        XsltTransformer transformer = exec.load();
-        transformer.setInitialTemplate(new QName(NS,"main"));
-        transformer.setParameter(new QName(NS,"programName"), new XdmAtomicValue(projectName));
-        transformer.setParameter(new QName(NS, "absoluteRootDir"), new XdmAtomicValue(absoluteRootFolder));
-        transformer.setParameter(new QName(NS, "sData"), new XdmAtomicValue(data));
-        Serializer serializer = proc.newSerializer(new File(new File(outputPath), "entries.xml"));
-        transformer.setDestination(serializer);
-        transformer.transform();
     }
     
     private static class Triple {
