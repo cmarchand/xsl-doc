@@ -29,9 +29,9 @@
         <xsl:variable name="intermediaryDirectory" as="xs:string" select="local:getIntermediaryDirectory($sourceFileName)"/>
         <xsl:variable name="targetFileName" as="xs:string" select="concat(replace($sourceFileName, '\.','_'),'-doc.html')"/>
         <xsl:variable name="ret" as="xs:string" select="string-join(($relUriSeq[position() &lt; last()],$intermediaryDirectory,$targetFileName),'/')"/>
-        <xsl:if test="$_debug">
+        <!--xsl:if test="$_debug">
             <xsl:message select="concat('documentationFileUri -> ',$ret)"/>
-        </xsl:if>
+        </xsl:if-->
         <xsl:sequence select="$ret"/>
     </xsl:function>
     
@@ -65,7 +65,7 @@
         <xsl:variable name="targetFileName" as="xs:string" select="concat(replace($sourceFileName, '\..*',''),'.html')"/>
         <xsl:variable name="ret" as="xs:string" select="string-join(($relUriSeq[position() &lt; last()],$targetFileName),'/')"/>
         <xsl:if test="$_debug">
-            <xsl:message select="concat('welocomeFileURI -> ',$ret)"/>
+            <xsl:message select="concat('welcomeFileURI -> ',$ret)"/>
         </xsl:if>
         <xsl:sequence select="$ret"/>
     </xsl:function>
@@ -95,6 +95,14 @@
     </xd:doc>
     <xsl:function name="local:getIntermediaryDirectory" as="xs:string">
         <xsl:param name="sourceFileName" as="xs:string"/>
+        <xsl:choose>
+            <xsl:when test="contains($sourceFileName,'/')">
+                <xsl:sequence select="error(QName('top:marchand:xml:local','getIntermediaryDirectory_1'),'Q{top:marchand:xml:local}getIntermediaryDirectory(xs:string) does not accept qualified file names')"/>
+            </xsl:when>
+            <xsl:when test="contains($sourceFileName,'\\')">
+                <xsl:sequence select="error(QName('top:marchand:xml:local','getIntermediaryDirectory_2'),'Q{top:marchand:xml:local}getIntermediaryDirectory(xs:string) does not accept qualified file names')"/>
+            </xsl:when>
+        </xsl:choose>
         <xsl:sequence select="concat('_',replace($sourceFileName, '\..*',''))"/>
     </xsl:function>
     
@@ -171,7 +179,7 @@
     
     <xd:doc>
         <xd:desc>
-            <xd:p>Returns the relative apth from source to target.</xd:p>
+            <xd:p>Returns the relative path from source to target.</xd:p>
             <xd:p>Both source and target must be absolute URI</xd:p>
             <xd:p>If there is no way to walk a relative path from source to target, then absolute target URI is returned</xd:p>
         </xd:desc>
@@ -182,11 +190,23 @@
     <xsl:function name="local:getRelativePath" as="xs:string">
         <xsl:param name="source" as="xs:string"/>
         <xsl:param name="target" as="xs:string"/>
+        <xsl:if test="$_debug">
+            <xsl:message>getRelativePath(<xsl:value-of select="$source"/>, <xsl:value-of select="$target"/>) -></xsl:message>
+        </xsl:if>
         <xsl:choose>
-            <xsl:when test="$source eq ''"><xsl:message error-code="GRP001">local:getRelativePath('','<xsl:value-of select="$target"/>') : first argument must not be an empty string</xsl:message></xsl:when>
+            <xsl:when test="$source eq ''">
+                <xsl:sequence 
+                    select="error(
+                    QName('top:marchand:xml:local','getRelativePath_1'),
+                    concat('local:getRelativePath(&quot;&quot;,&quot;',
+                        $target,
+                        '&quot;) : first argument must not be an empty string'))"/>
+            </xsl:when>
             <xsl:when test="local:isAbsoluteUri($source)">
                 <xsl:choose>
-                    <xsl:when test="not(local:isAbsoluteUri($target))"><xsl:sequence select="string-join((tokenize($source,'/'),tokenize($target,'/')),'/')"/></xsl:when>
+                    <xsl:when test="not(local:isAbsoluteUri($target))">
+                        <xsl:sequence select="string-join((tokenize($source,'/'),tokenize($target,'/')),'/')"/>
+                    </xsl:when>
                     <xsl:otherwise>
                         <!-- si les protocoles sont differents, on renvoie $target -->
                         <xsl:variable name="protocole" select="local:getProtocol($source)"/>
@@ -211,7 +231,12 @@
                     <xsl:when test="local:isAbsoluteUri($absoluteSource)">
                         <xsl:sequence select="local:getRelativePath($absoluteSource, $target)"/>
                     </xsl:when>
-                    <xsl:otherwise><xsl:message error-code="GRP002"><xsl:value-of select="$source"/> can not be resolved as an absolute URI</xsl:message></xsl:otherwise>
+                    <xsl:otherwise>
+                        <xsl:sequence 
+                            select="error(
+                            QName('top:marchand:xml:local','getRelativePath_1'),
+                            concat($source, ' can not be resolved as an absolute URI'))"/>
+                    </xsl:otherwise>
                 </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
@@ -227,7 +252,12 @@
         <xsl:variable name="protocol" select="substring-before($path,':')"/>
         <xsl:choose>
             <xsl:when test="string-length($protocol) gt 0"><xsl:sequence select="$protocol"/></xsl:when>
-            <xsl:otherwise><xsl:message error-code="GPR001">local:protocol('<xsl:value-of select="$path"/>') : path must be an absolute URI</xsl:message></xsl:otherwise>
+            <xsl:otherwise>
+                <xsl:sequence 
+                    select="error(
+                    QName('top:marchand:xml:local','getProtocol'),
+                    concat('protocol(',$path,') : path must be an absolute URI'))"/>
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
     

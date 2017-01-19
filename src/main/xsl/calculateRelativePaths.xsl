@@ -22,7 +22,17 @@
     <!-- the root folder where all xsl sources are in the project -->
     <xsl:param name="absoluteRootFolder" as="xs:string" required="yes"/>
     <xsl:param name="levelsToKeep" as="xs:string"/>
-    <xsl:variable name="absoluteRootUri" as="xs:anyURI" select="resolve-uri($absoluteRootFolder)"/>
+    <xsl:variable name="absoluteRootUri" as="xs:anyURI">
+        <xsl:choose>
+            <xsl:when test="starts-with($absoluteRootFolder,'file:/')">
+                <xsl:sequence select="resolve-uri($absoluteRootFolder)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- if starts with file:, but not with file:/, add the missing / -->
+                <xsl:sequence select="resolve-uri(concat('file:/',substring($absoluteRootFolder,6)))"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable> 
     <xsl:variable name="nLevelsToKeep" as="xs:integer" select="number($levelsToKeep) cast as xs:integer"></xsl:variable>
     
     <xsl:template match="/">

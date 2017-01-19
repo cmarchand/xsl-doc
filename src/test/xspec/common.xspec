@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:local="top:marchand:xml:local"
+    stylesheet="../../main/xsl/lib/common.xsl" xslt-version="3.0">
+    <x:scenario pending="Not yet implemented"
+        label="Scenario for testing function getDocumentationFileURI">
+        <x:call function="local:getDocumentationFileURI">
+            <x:param name="relUri" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented" label="Scenario for testing function getIndexFileURI">
+        <x:call function="local:getIndexFileURI">
+            <x:param name="relUri" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented"
+        label="Scenario for testing function getWelcomeFileURI">
+        <x:call function="local:getWelcomeFileURI">
+            <x:param name="relUri" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented" label="Scenario for testing function getTocFileUri">
+        <x:call function="local:getTocFileUri">
+            <x:param name="relUri" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing function getIntermediaryDirectory">
+        <x:scenario label="local filename">
+            <x:call function="local:getIntermediaryDirectory">
+                <x:param name="sourceFileName" select="'toto.xsl'"/>
+            </x:call>
+            <x:expect label="_toto" select="'_toto'"/>
+        </x:scenario>
+        <x:scenario label="qualifed linux filename" pending="Not yet implemented in XSpec">
+            <x:call function="local:getIntermediaryDirectory">
+                <x:param name="sourceFileName" select="'src/main/xsl/toto.xsl'"/>
+            </x:call>
+            <x:expect label="src/main/xsl/_toto" select="'src/main/xsl/_toto'"/>
+        </x:scenario>
+        <x:scenario label="qualifed windows filename" pending="Not yet implemented in XSpec">
+            <x:call function="local:getIntermediaryDirectory">
+                <x:param name="sourceFileName" select="'src\main\xsl\toto.xsl'"/>
+            </x:call>
+            <x:expect label="src\main\xsl\_toto" select="'src\main\xsl\_toto'"/>
+        </x:scenario>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented"
+        label="Scenario for testing function normalizeFilePath">
+        <x:call function="local:normalizeFilePath">
+            <x:param name="path" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented" label="Scenario for testing function removeSingleDot">
+        <x:call function="local:removeSingleDot">
+            <x:param name="path" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented"
+        label="Scenario for testing function removeLeadingDotSlash">
+        <x:call function="local:removeLeadingDotSlash">
+            <x:param name="path" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented" label="Scenario for testing function removeDoubleDot">
+        <x:call function="local:removeDoubleDot">
+            <x:param name="path" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented" label="Scenario for testing function isAbsoluteUri">
+        <x:call function="local:isAbsoluteUri">
+            <x:param name="path" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented" label="Scenario for testing function getRelativePath">
+        <x:call function="local:getRelativePath">
+            <x:param name="source" select="''"/>
+            <x:param name="target" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented" label="Scenario for testing function getProtocol">
+        <x:call function="local:getProtocol">
+            <x:param name="path" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented"
+        label="Scenario for testing function getNbEqualsElements">
+        <x:call function="local:getNbEqualsElements">
+            <x:param name="seq1" select="''"/>
+            <x:param name="seq2" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+</x:description>

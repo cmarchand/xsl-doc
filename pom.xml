@@ -78,10 +78,10 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>uk.org.adamretter.maven</groupId>
+            <!--plugin>
+                <groupId>io.xspec.maven</groupId>
                 <artifactId>xspec-maven-plugin</artifactId>
-                <version>1.4.1-SNAPSHOT</version>
+                <version>1.4.1-RC1</version>
                 <dependencies>
                     <dependency>
                         <groupId>net.sf.saxon</groupId>
@@ -100,7 +100,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin-->
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.8</version>
