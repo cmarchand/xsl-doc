@@ -23,6 +23,7 @@
     <xsl:variable name="outputFolderURI" as="xs:anyURI" select="resolve-uri($outputFolder)"/>
     
     <xsl:template match="file">
+        <xsl:message select="concat('[calculateHtmlOutputFile] outputFolder=',$outputFolder,', outputFolderURI=',$outputFolderURI,', @root-rel-uri=',@root-rel-uri)"></xsl:message>
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
             <xsl:variable name="uri" as="xs:string" select="string-join(($outputFolderURI,@root-rel-uri),'/')" />

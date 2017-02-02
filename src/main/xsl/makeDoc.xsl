@@ -28,7 +28,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
 
     <xsl:template match="/">
         <xsl:for-each-group select="//file" group-by="@htmlOutputUri">
-            <xsl:apply-templates select="//file[@htmlOutputUri=current-grouping-key()][1]"/>
+            <xsl:apply-templates select="(//file[@htmlOutputUri=current-grouping-key()])[1]"/>
         </xsl:for-each-group>
     </xsl:template>
 

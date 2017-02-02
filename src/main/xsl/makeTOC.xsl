@@ -71,10 +71,14 @@
         <div class="niv2" xmlns="http://www.w3.org/1999/xhtml">
             <details>
                 <summary>
+                    <xsl:variable name="uri" as="xs:string" select="(element[1]/@relUri,@rel-uri)[1]"/>
                     <xsl:choose>
                         <xsl:when test="$type eq 'file'">
-                            <!--xsl:message>local:getDocumentationFileURI(<xsl:value-of select="element[1]/@relUri"/>)-&lt;<xsl:value-of select="local:getDocumentationFileURI(element[1]/@relUri)"/></xsl:message-->
-                            <a href="{local:getDocumentationFileURI(element[1]/@relUri)}" target="doc"><xsl:value-of select="(@name[normalize-space()],concat('no ',../@label))[1]"/></a>                            
+                            <xsl:message>local:getDocumentationFileURI(<xsl:value-of select="$uri"/>)-&lt;<xsl:value-of select="local:getDocumentationFileURI($uri)"/></xsl:message>
+                                <xsl:message>
+                                    <xsl:copy-of select="."/>
+                                </xsl:message>
+                            <a href="{local:getDocumentationFileURI($uri)}" target="doc"><xsl:value-of select="(@name[normalize-space()],concat('no ',../@label))[1]"/></a>                            
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="(@name[normalize-space()],concat('no ',../@label))[1]"/>
