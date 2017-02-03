@@ -8,7 +8,7 @@
     
     <groupId>top.marchand.xml</groupId>
     <artifactId>xsl-doc</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.6</version>
     <packaging>jar</packaging>
     
     <name>xsl-doc</name>
@@ -53,7 +53,7 @@
         <dependency>
             <groupId>top.marchand.xml</groupId>
             <artifactId>gaulois-pipe</artifactId>
-            <version>1.01.07-SNAPSHOT</version>
+            <version>1.01.07</version>
         </dependency>
     </dependencies>
 
