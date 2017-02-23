@@ -29,21 +29,21 @@
             <x:call function="local:extractName">
                 <x:param name="name" as="xs:string" select="'toto'"/>
             </x:call>
-            <x:expect label="two attributes, @name and @namespace" select="/*/@*">
-                <result name="toto" namespace=""/>
+            <x:expect label="two attributes, @name and @namespace" select="_null/@*">
+                <_null name="toto" namespace=""/>
             </x:expect>
         </x:scenario>
         <x:scenario label="local: namespace">
             <x:call function="local:extractName">
                 <x:param name="name" as="xs:string" select="'local:toto'"/>
             </x:call>
-            <x:expect label="two attributes, @name and @namespace" select="/*/@*">
+            <x:expect label="two attributes, @name and @namespace" select="result/@*">
                 <result name="toto" namespace="top:marchand:xml:local"/>
             </x:expect>
         </x:scenario>
     </x:scenario>
 
-    <x:scenario label="Scenario for testing template with match 'xsl:template">
+    <x:scenario label="Scenario for testing template with match 'xsl:template'">
         <x:scenario label="without doc">
             <x:context>
                 <x:param name="xsl-name" select="'no_value'" tunnel="yes"/>
@@ -81,7 +81,7 @@
                 <xd:p>Bla bla bla</xd:p>
             </xd:doc>
         </x:context>
-        <x:expect label="empty" />
+        <x:expect label="empty" test="empty($x:result)"/>
     </x:scenario>
 
     <x:scenario label="Scenario for testing template with match 'xsl:param">

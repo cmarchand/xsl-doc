@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
     stylesheet="../../main/xsl/makeDoc.xsl" xslt-version="3.0">
-    <x:scenario label="Scenarion to validate case where a xsl:* element is in a xd:doc"
+    <x:scenario label="Scenario to validate case where a xsl:* element is in a xd:doc"
         xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" 
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <x:context>

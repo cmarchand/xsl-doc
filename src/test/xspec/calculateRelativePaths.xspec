@@ -9,7 +9,7 @@
             <file base-uri="devel/./here"/>
         </x:context>
         <x:expect label="devel/here" test="*/@base-uri eq 'devel/here'">
-            <file base-uri="devel/here"/>
+            <file base-uri="devel/here" root-rel-uri="..." index-label="..."/>
         </x:expect>
     </x:scenario>
 </x:description>

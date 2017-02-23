@@ -8,7 +8,7 @@
     
     <groupId>top.marchand.xml</groupId>
     <artifactId>xsl-doc</artifactId>
-    <version>1.6</version>
+    <version>1.6-SNAPSHOT</version>
     <packaging>jar</packaging>
     
     <name>xsl-doc</name>
@@ -78,10 +78,10 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-            <!--plugin>
+            <plugin>
                 <groupId>io.xspec.maven</groupId>
                 <artifactId>xspec-maven-plugin</artifactId>
-                <version>1.4.1-RC1</version>
+                <version>1.5.0-RC2-SNAPSHOT</version>
                 <dependencies>
                     <dependency>
                         <groupId>net.sf.saxon</groupId>
@@ -100,7 +100,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin-->
+            </plugin>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.8</version>
