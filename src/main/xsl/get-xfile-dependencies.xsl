@@ -26,7 +26,7 @@
 	<xsl:template match="/">
 		<xsl:param name="dependance-type" select="'first-doc'" as="xs:string"/>
 		<xsl:param name="rel-uri" as="xs:string?"/>
-		<xsl:variable name="uri" select="document-uri(/)"/>
+		<xsl:variable name="uri" select="base-uri(/)"/>
 		<file dependance-type="{$dependance-type}" name="{local:get-fileName(string($uri))}" base-uri="{$uri}">
 			<xsl:if test="not(empty($rel-uri))">
 				<xsl:attribute name="rel-uri" select="$rel-uri"/>

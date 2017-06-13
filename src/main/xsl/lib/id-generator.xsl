@@ -43,7 +43,8 @@
         </xsl:variable>
         <xsl:variable name="functionName" as="xs:string" select="concat('Q{',$NS,'}',$name,'(')"/>
         <xsl:variable name="parameters" as="xs:string*" select="for $i in $function/xsl:param return idgen:getType($i)"/>
-        <xsl:sequence select="concat($functionName, string-join($parameters,','),')')"/>
+        <xsl:variable name="useWhenClause" as="xs:string?" select="if ($function/@use-when and $function/@use-when != '') then (concat('/',$function/@use-when)) else ()"/>
+        <xsl:sequence select="concat($functionName, string-join($parameters,','),')',$useWhenClause)"/>
     </xsl:function>
     
     <xsl:function name="idgen:getType" as="xs:string">
