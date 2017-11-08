@@ -3,12 +3,11 @@
     xmlns="http://maven.apache.org/POM/4.0.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    
     <modelVersion>4.0.0</modelVersion>
     
     <groupId>top.marchand.xml</groupId>
     <artifactId>xsl-doc</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.6</version>
     <packaging>jar</packaging>
     
     <name>xsl-doc</name>
@@ -81,7 +80,7 @@
             <plugin>
                 <groupId>io.xspec.maven</groupId>
                 <artifactId>xspec-maven-plugin</artifactId>
-                <version>1.5.0-RC2-SNAPSHOT</version>
+                <version>1.5.0</version>
                 <dependencies>
                     <dependency>
                         <groupId>net.sf.saxon</groupId>
