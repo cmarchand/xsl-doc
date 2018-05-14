@@ -22,6 +22,8 @@
     <!-- the root folder where all xsl sources are in the project -->
     <xsl:param name="absoluteRootFolder" as="xs:string" required="yes"/>
     <xsl:param name="levelsToKeep" as="xs:string"/>
+    <xsl:param name="projectName" as="xs:string"/>
+    
     <xsl:variable name="absoluteRootUri" as="xs:anyURI">
         <xsl:choose>
             <xsl:when test="starts-with($absoluteRootFolder,'file:/')">
@@ -43,7 +45,17 @@
     <xsl:template match="file">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
-            <xsl:attribute name="root-rel-uri" select="local:normalizeFilePath(local:getRelativePath($absoluteRootUri,@base-uri))"/>
+            <xsl:attribute name="root-rel-uri">
+                <xsl:choose>
+                    <xsl:when test="(@catalog-name,@package-name)[1][matches(.,'^http://www\.daisy\.org/')]">
+                        <xsl:sequence select="replace((@catalog-name,@package-name)[1],'^http://www\.daisy\.org/','org/daisy/')"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:sequence select="concat(replace($projectName,'[^a-zA-Z0-9\.-]','_'),
+                                                     '/',local:normalizeFilePath(local:getRelativePath($absoluteRootUri,@base-uri)))"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
             <xsl:variable name="decoupe" as="xs:string+" select="tokenize(@base-uri,'/')"/>
             <xsl:attribute name="index-label" select="string-join($decoupe[position() ge (count($decoupe)-$nLevelsToKeep)],'/')"/>
             <xsl:apply-templates select="*"/>

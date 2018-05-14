@@ -24,14 +24,10 @@
     </xd:doc>
     <xsl:function name="local:getDocumentationFileURI" as="xs:string">
         <xsl:param name="relUri" as="xs:string"/>
-        <xsl:variable name="relUriSeq" select="tokenize($relUri,'/')" as="xs:string*"/>
-        <xsl:variable name="sourceFileName" as="xs:string" select="$relUriSeq[last()]"/>
-        <xsl:variable name="intermediaryDirectory" as="xs:string" select="local:getIntermediaryDirectory($sourceFileName)"/>
-        <xsl:variable name="targetFileName" as="xs:string" select="concat(replace($sourceFileName, '\.','_'),'-doc.html')"/>
-        <xsl:variable name="ret" as="xs:string" select="string-join(($relUriSeq[position() &lt; last()],$intermediaryDirectory,$targetFileName),'/')"/>
-        <!--xsl:if test="$_debug">
+        <xsl:variable name="ret" as="xs:string" select="concat($relUri,'/doc.html')"/>
+        <xsl:if test="$_debug">
             <xsl:message select="concat('documentationFileUri -> ',$ret)"/>
-        </xsl:if-->
+        </xsl:if>
         <xsl:sequence select="$ret"/>
     </xsl:function>
     
@@ -42,10 +38,7 @@
     </xd:doc>
     <xsl:function name="local:getWelcomeFileURI" as="xs:string">
         <xsl:param name="relUri" as="xs:string"/>
-        <xsl:variable name="relUriSeq" select="tokenize($relUri,'/')" as="xs:string*"/>
-        <xsl:variable name="sourceFileName" as="xs:string" select="$relUriSeq[last()]"/>
-        <xsl:variable name="targetFileName" as="xs:string" select="concat(replace($sourceFileName, '\..*',''),'.html')"/>
-        <xsl:variable name="ret" as="xs:string" select="string-join(($relUriSeq[position() &lt; last()],$targetFileName),'/')"/>
+        <xsl:variable name="ret" as="xs:string" select="concat($relUri,'.html')"/>
         <xsl:if test="$_debug">
             <xsl:message select="concat('welcomeFileURI -> ',$ret)"/>
         </xsl:if>
@@ -59,33 +52,11 @@
     </xd:doc>
     <xsl:function name="local:getTocFileUri" as="xs:string">
         <xsl:param name="relUri" as="xs:string"/>
-        <xsl:variable name="relUriSeq" select="tokenize($relUri,'/')" as="xs:string*"/>
-        <xsl:variable name="sourceFileName" as="xs:string" select="$relUriSeq[last()]"/>
-        <xsl:variable name="intermediaryDirectory" as="xs:string" select="local:getIntermediaryDirectory($sourceFileName)"/>
-        <xsl:variable name="targetFileName" as="xs:string" select="concat(replace($sourceFileName, '\..*',''),'-toc.html')"/>
-        <xsl:variable name="ret" as="xs:string" select="string-join(($relUriSeq[position() &lt; last()],$intermediaryDirectory,$targetFileName),'/')"/>
+        <xsl:variable name="ret" as="xs:string" select="concat($relUri,'/toc.html')"/>
         <xsl:if test="$_debug">
             <xsl:message select="concat('tocFileUri -> ',$ret)"/>
         </xsl:if>
         <xsl:sequence select="$ret"/>
-    </xsl:function>
-    
-    <xd:doc>
-        <xd:desc>Returns the file name, without extension, preceded by an underscore</xd:desc>
-        <xd:param>The source file name</xd:param>
-        <xd:return>The intermediary directory name</xd:return>
-    </xd:doc>
-    <xsl:function name="local:getIntermediaryDirectory" as="xs:string">
-        <xsl:param name="sourceFileName" as="xs:string"/>
-        <xsl:choose>
-            <xsl:when test="contains($sourceFileName,'/')">
-                <xsl:sequence select="error(QName('top:marchand:xml:local','getIntermediaryDirectory_1'),'Q{top:marchand:xml:local}getIntermediaryDirectory(xs:string) does not accept qualified file names')"/>
-            </xsl:when>
-            <xsl:when test="contains($sourceFileName,'\\')">
-                <xsl:sequence select="error(QName('top:marchand:xml:local','getIntermediaryDirectory_2'),'Q{top:marchand:xml:local}getIntermediaryDirectory(xs:string) does not accept qualified file names')"/>
-            </xsl:when>
-        </xsl:choose>
-        <xsl:sequence select="concat('_',replace($sourceFileName, '\..*',''))"/>
     </xsl:function>
     
     <xd:doc>

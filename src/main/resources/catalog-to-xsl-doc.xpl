@@ -73,6 +73,7 @@
 			</p:input>
 			<p:with-param name="absoluteRootFolder" select="$absoluteRootFolder"/>
 			<p:with-param name="levelsToKeep" select="'0'"/>
+			<p:with-param name="projectName" select="$projectName"/>
 		</p:xslt>
 		<p:xslt>
 			<p:input port="stylesheet">
