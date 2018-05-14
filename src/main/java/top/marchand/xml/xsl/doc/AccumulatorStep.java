@@ -9,21 +9,31 @@ package top.marchand.xml.xsl.doc;
 import fr.efl.chaine.xslt.StepJava;
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Stack;
 import javax.xml.transform.stream.StreamSource;
+import com.xmlcalabash.core.XProcRuntime;
+import com.xmlcalabash.io.ReadablePipe;
+import com.xmlcalabash.io.WritablePipe;
+import com.xmlcalabash.library.DefaultStep;
+import com.xmlcalabash.runtime.XAtomicStep;
 import net.sf.saxon.Configuration;
+import net.sf.saxon.event.PipelineConfiguration;
 import net.sf.saxon.event.ProxyReceiver;
 import net.sf.saxon.event.Receiver;
+import net.sf.saxon.event.Sink;
 import net.sf.saxon.expr.parser.Location;
 import net.sf.saxon.om.NodeName;
+import net.sf.saxon.s9api.Destination;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.Serializer;
 import net.sf.saxon.s9api.XdmAtomicValue;
+import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
 import net.sf.saxon.trans.XPathException;
@@ -55,7 +65,7 @@ public class AccumulatorStep extends StepJava {
         return new AccumulatorStepReceiver(getNextReceiver(c));
     }
     
-    private class AccumulatorStepReceiver extends ProxyReceiver {
+    class AccumulatorStepReceiver extends ProxyReceiver {
         private final Stack<NodeName> stack;
         private String currentElementName;
 
@@ -158,5 +168,81 @@ public class AccumulatorStep extends StepJava {
         }
         
         
+    }
+    
+    public static class CalabashStep extends DefaultStep {
+        
+        public CalabashStep(XProcRuntime runtime, XAtomicStep step) {
+            super(runtime, step);
+        }
+        
+        private static final QName _absoluteRootFolder = new QName("absoluteRootFolder");
+        
+        private ReadablePipe source = null;
+        private WritablePipe result = null;
+        
+        public void setInput(String port, ReadablePipe pipe) {
+            source = pipe;
+        }
+        
+        public void setOutput(String port, WritablePipe pipe) {
+            result = pipe;
+        }
+        
+        public void reset() {
+            source.resetReader();
+            result.resetWriter();
+        }
+        
+        public void run() throws SaxonApiException {
+            super.run();
+            try {
+                absoluteRootFolder = getOption(_absoluteRootFolder).getString();
+                while (source.moreDocuments()) {
+                    final XdmNode doc = source.read();
+                    Configuration configuration = runtime.getConfiguration().getProcessor().getUnderlyingConfiguration();
+                    final Receiver accumulator = new AccumulatorStep() {{
+                        currentInputFile = doc.getBaseURI().toASCIIString();
+                    }}.new AccumulatorStepReceiver(new Sink(new PipelineConfiguration(configuration)));
+                    XsltTransformer identity = new Processor(configuration)
+                        .newXsltCompiler()
+                        .compile(new StreamSource(new URL("cp:/lib/identity.xsl").openStream()))
+                        .load();
+                    identity.setInitialContextNode(doc);
+                    identity.setDestination(new Destination() {
+                            public void close() {}
+                            public Receiver getReceiver(Configuration c) { return accumulator; }
+                        });
+                    identity.transform();
+                    result.write(doc);
+                }
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }
+    }
+    
+    public static class GenerateIndexStep extends DefaultStep {
+        
+        public GenerateIndexStep(XProcRuntime runtime, XAtomicStep step) {
+            super(runtime, step);
+        }
+        
+        private static final QName _projectName = new QName("projectName");
+        private static final QName _outputFolder = new QName("outputFolder");
+        
+        public void reset() {}
+        
+        public void run() throws SaxonApiException {
+            super.run();
+            try {
+                outputDir = getOption(_outputFolder).getString();
+                File indexFile = generateIndex(getOption(_projectName).getString());
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }
     }
 }

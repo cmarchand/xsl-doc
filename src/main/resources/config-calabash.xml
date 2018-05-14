@@ -1,0 +1,4 @@
+<xproc-config xmlns="http://xmlcalabash.com/ns/configuration" xmlns:xsldoc="top:marchand:xml:xsl:doc">
+  <implementation type="xsldoc:accumulate" class-name="top.marchand.xml.xsl.doc.AccumulatorStep$CalabashStep"/>
+  <implementation type="xsldoc:generate-index" class-name="top.marchand.xml.xsl.doc.AccumulatorStep$GenerateIndexStep"/>
+</xproc-config>

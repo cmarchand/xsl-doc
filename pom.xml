@@ -7,7 +7,7 @@
     
     <groupId>top.marchand.xml</groupId>
     <artifactId>xsl-doc</artifactId>
-    <version>1.7</version>
+    <version>1.8-SNAPSHOT</version>
     <packaging>jar</packaging>
     
     <name>xsl-doc</name>
@@ -53,6 +53,11 @@
             <groupId>top.marchand.xml</groupId>
             <artifactId>gaulois-pipe</artifactId>
             <version>1.01.07</version>
+        </dependency>
+        <dependency>
+            <groupId>com.xmlcalabash</groupId>
+            <artifactId>xmlcalabash</artifactId>
+            <version>1.1.20-98</version>
         </dependency>
     </dependencies>
 
