@@ -26,7 +26,7 @@
             <html xmlns="http://www.w3.org/1999/xhtml">
                 <head>
                     <title>Table of Contents</title>
-                    <base href=".."/>
+                    <base href="{string-join(for $i in 2 to count(tokenize(local:getTocFileUri(@root-rel-uri),'/')) return '..','/')}"/>
                     <style type="text/css">
                         .niv1{
                         border: 1px solid black;
@@ -71,14 +71,13 @@
         <div class="niv2" xmlns="http://www.w3.org/1999/xhtml">
             <details>
                 <summary>
-                    <xsl:variable name="uri" as="xs:string" select="(element[1]/@relUri,@rel-uri)[1]"/>
                     <xsl:choose>
                         <xsl:when test="$type eq 'file'">
-                            <xsl:message>local:getDocumentationFileURI(<xsl:value-of select="$uri"/>)-&lt;<xsl:value-of select="local:getDocumentationFileURI($uri)"/></xsl:message>
+                            <xsl:message>local:getDocumentationFileURI(<xsl:value-of select="@rel-uri"/>)-&lt;<xsl:value-of select="local:getDocumentationFileURI(@rel-uri)"/></xsl:message>
                                 <xsl:message>
                                     <xsl:copy-of select="."/>
                                 </xsl:message>
-                            <a href="{local:getDocumentationFileURI($uri)}" target="doc"><xsl:value-of select="(@name[normalize-space()],concat('no ',../@label))[1]"/></a>                            
+                            <a href="{local:getDocumentationFileURI(@rel-uri)}" target="doc"><xsl:value-of select="@name"/></a>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="(@name[normalize-space()],concat('no ',../@label))[1]"/>

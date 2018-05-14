@@ -21,6 +21,7 @@
             <html xmlns="http://www.w3.org/1999/xhtml">
                 <head>
                     <title>Documentation of <xsl:value-of select="@name"/></title>
+                    <base href="{string-join(for $i in 2 to count(tokenize(local:getWelcomeFileURI(@root-rel-uri),'/')) return '..','/')}"/>
                     <style type="text/css">
                         .niv1{
                         border: 1px solid black;
@@ -42,9 +43,8 @@
                     </style>
                 </head>
                     <frameset cols="25%,75%">
-                        <xsl:variable name="intermediaryDirectory" as="xs:string" select="local:getIntermediaryDirectory(@name)"/>
-                        <frame name="toc" src="{string-join(($intermediaryDirectory,tokenize(@tocOutputUri,'/')[last()]),'/')}"/>
-                        <frame name="doc" src="{string-join(($intermediaryDirectory,tokenize(@htmlOutputUri,'/')[last()]),'/')}"/>
+                        <frame name="toc" src="{local:getTocFileUri(@root-rel-uri)}"/>
+                        <frame name="doc" src="{local:getDocumentationFileURI(@root-rel-uri)}"/>
                     </frameset>
             </html>
         </xsl:result-document>
