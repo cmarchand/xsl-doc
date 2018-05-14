@@ -55,15 +55,20 @@
     </xsl:template>
     
     <xsl:template match="*[starts-with(local-name(), 'by-')]">
-        <div class="niv1" xmlns="http://www.w3.org/1999/xhtml">
-            <details open="open">
-                <xsl:variable name="type" as="xs:string" select="substring(local-name(),4)"/>
-                <summary>Content by <xsl:value-of select="$type"/></summary>
-                <xsl:apply-templates >
-                    <xsl:with-param name="type" select="$type"/>
-                </xsl:apply-templates>
-            </details>
-        </div>
+        <xsl:variable name="type" as="xs:string" select="substring(local-name(),4)"/>
+        <xsl:variable name="non-empty-groups" as="element()*">
+            <xsl:apply-templates>
+                <xsl:with-param name="type" select="$type"/>
+            </xsl:apply-templates>
+        </xsl:variable>
+        <xsl:if test="exists($non-empty-groups)">
+            <div class="niv1" xmlns="http://www.w3.org/1999/xhtml">
+                <details open="open">
+                    <summary>Content by <xsl:value-of select="$type"/></summary>
+                    <xsl:sequence select="$non-empty-groups"/>
+                </details>
+            </div>
+        </xsl:if>
     </xsl:template>
     
     <xsl:template match="group">
