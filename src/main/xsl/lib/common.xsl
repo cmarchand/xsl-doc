@@ -277,4 +277,59 @@
         </xsl:choose>
     </xsl:function>
     
+    <xsl:template match="xsl:*" mode="visibility" as="attribute(visibility)?">
+        <xsl:call-template name="visibility">
+            <xsl:with-param name="type" select="local-name()"/>
+            <xsl:with-param name="name" select="@name"/>
+            <xsl:with-param name="declared-visibility" select="@visibility"/>
+            <xsl:with-param name="expose" select="/*/xsl:expose"/>
+        </xsl:call-template>
+    </xsl:template>
+    
+    <xsl:template name="visibility" as="attribute(visibility)?">
+        <xsl:param name="type" as="xs:string" required="yes"/>
+        <xsl:param name="name" as="attribute(name)?"/>
+        <xsl:param name="declared-visibility" as="attribute(visibility)?"/>
+        <xsl:param name="expose" as="element(xsl:expose)*"/>
+        <xsl:choose>
+            <xsl:when test="$type='param'">
+                <xsl:attribute name="visibility" select="'public'"/>
+            </xsl:when>
+            <xsl:when test="$type=('template',
+                                   'function',
+                                   'attribute-set',
+                                   'variable',
+                                   'mode')">
+                <xsl:variable name="expose" as="element(xsl:expose)*" select="$expose[@component=('*',$type)]"/>
+                <xsl:variable name="explicit-exposed-visibility" as="attribute(visibility)*"
+                              select="$expose[$name=tokenize(@names,'\s+')]/@visibility"/>
+                <xsl:choose>
+                    <xsl:when test="$explicit-exposed-visibility">
+                        <xsl:sequence select="$explicit-exposed-visibility[last()]"/>
+                    </xsl:when>
+                    <xsl:when test="$declared-visibility">
+                        <xsl:sequence select="$declared-visibility"/>
+                    </xsl:when>
+                    <xsl:when test="$name">
+                        <xsl:variable name="prefix" as="xs:string?"
+                                      select="if (contains($name,':')) then substring-before($name,':') else ()"/>
+                        <xsl:variable name="local-name" as="xs:string"
+                                      select="if (contains($name,':')) then substring-after($name,':') else $name"/>
+                        <xsl:variable name="exposed-visibility" as="attribute(visibility)?"
+                                      select="$expose[some $name in tokenize(@names,'\s+')
+                                                      satisfies (
+                                                        $name='*'
+                                                        or exists($prefix) and $name=concat($prefix,':*')
+                                                        or $name=concat('*:',$local-name)
+                                                      )]
+                                              /@visibility"/>
+                        <xsl:if test="$exposed-visibility">
+                            <xsl:sequence select="$exposed-visibility"/>
+                        </xsl:if>
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:template>
+    
 </xsl:stylesheet>

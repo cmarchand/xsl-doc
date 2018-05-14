@@ -15,6 +15,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     version="3.0">
 
     <xsl:import href="lib/identity.xsl"/>
+    <xsl:import href="lib/common.xsl"/>
     <xsl:import href="lib/id-generator.xsl"/>
     
     <xsl:param name="levelsToKeep" as="xs:string"/>
@@ -81,7 +82,8 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         xsl:strip-space | xsl:param | xsl:variable | xsl:function">
         <component type="{local-name(.)}" id="{generate-id(.)}" path="{idgen:getXPath(.)}">
             <xsl:copy-of select="local:extractName((@name, @elements, @schema-location, @stylesheet-prefix, 'unnamed')[1])"/>    <!-- patch for strip-spaces -->
-            <xsl:apply-templates select="@* except @name"/>
+            <xsl:apply-templates select="." mode="visibility"/>
+            <xsl:apply-templates select="@* except (@name|@visibility)"/>
             <xsl:if test="self::xsl:function">
                 <xsl:copy-of select="local:calcSignature(.)"/>
             </xsl:if>

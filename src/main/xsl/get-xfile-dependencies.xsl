@@ -28,6 +28,10 @@
 		<xsl:param name="rel-uri" as="xs:string?"/>
 		<xsl:variable name="uri" select="base-uri(/)"/>
 		<file dependance-type="{$dependance-type}" name="{local:get-fileName(string($uri))}" base-uri="{$uri}">
+			<xsl:attribute name="type" select="if (/xsl:package) then 'package' else 'module'"/>
+			<xsl:if test="/xsl:package/@name">
+				<xsl:attribute name="package-name" select="/xsl:package/@name"/>
+			</xsl:if>
 			<xsl:if test="not(empty($rel-uri))">
 				<xsl:attribute name="rel-uri" select="$rel-uri"/>
 			</xsl:if>
@@ -95,14 +99,23 @@
 	
 	<!--XSLT MATCHING-->
 
-	<xsl:template match="xslt:import | xslt:include">
+	<xsl:template match="xslt:import | xslt:include | xslt:use-package">
 		<xsl:param name="caller.uri" tunnel="yes"/>
 		<xsl:variable name="this.uri" select="resolve-uri(@href,base-uri(.))"/>
 		<xsl:if test="$caller.uri != $this.uri">
-			<xsl:apply-templates select="document($this.uri)">
-				<xsl:with-param name="dependance-type" select="name()"/>
-				<xsl:with-param name="rel-uri" select="@href"/>
-			</xsl:apply-templates>
+			<xsl:choose>
+				<xsl:when test="doc-available($this.uri)">
+					<xsl:apply-templates select="document($this.uri)">
+						<xsl:with-param name="dependance-type" select="name()"/>
+						<xsl:with-param name="rel-uri" select="@href"/>
+					</xsl:apply-templates>
+				</xsl:when>
+				<xsl:when test="self::xslt:use-package and not(xslt:accept[@visibility=('public','final')])">
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes" select="concat(name(),' can not be resolved: ',@href)"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:if>
 	</xsl:template>
 	

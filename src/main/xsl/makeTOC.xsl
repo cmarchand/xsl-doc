@@ -68,31 +68,46 @@
     
     <xsl:template match="group">
         <xsl:param name="type" as="xs:string"/>
-        <div class="niv2" xmlns="http://www.w3.org/1999/xhtml">
-            <details>
-                <summary>
-                    <xsl:choose>
-                        <xsl:when test="$type eq 'file'">
-                            <xsl:message>local:getDocumentationFileURI(<xsl:value-of select="@rel-uri"/>)-&lt;<xsl:value-of select="local:getDocumentationFileURI(@rel-uri)"/></xsl:message>
+        <xsl:variable name="visible-components" as="element()*">
+            <xsl:apply-templates />
+        </xsl:variable>
+        <xsl:if test="exists($visible-components)">
+            <div class="niv2" xmlns="http://www.w3.org/1999/xhtml">
+                <details>
+                    <summary>
+                        <xsl:choose>
+                            <xsl:when test="$type eq 'file'">
+                                <xsl:message>local:getDocumentationFileURI(<xsl:value-of select="@root-rel-uri"/>)-&lt;<xsl:value-of select="local:getDocumentationFileURI(@root-rel-uri)"/></xsl:message>
                                 <xsl:message>
                                     <xsl:copy-of select="."/>
                                 </xsl:message>
-                            <a href="{local:getDocumentationFileURI(@rel-uri)}" target="doc"><xsl:value-of select="@name"/></a>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="(@name[normalize-space()],concat('no ',../@label))[1]"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </summary>
-                <ul><xsl:apply-templates /></ul>
-            </details>
-        </div>
+                                <a href="{local:getDocumentationFileURI(@root-rel-uri)}" target="doc"><xsl:value-of select="@name"/></a>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="(@name[normalize-space()],concat('no ',../@label))[1]"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </summary>
+                    <ul>
+                        <xsl:sequence select="$visible-components"/>
+                    </ul>
+                </details>
+            </div>
+        </xsl:if>
     </xsl:template>
     
     <xsl:template match="component">
-        <li xmlns="http://www.w3.org/1999/xhtml">
-            <a href="{local:getDocumentationFileURI(@relUri)}#{@id}" target="doc"><xsl:value-of select="(@name,@match)[1]"/></a>
-        </li>
+        <xsl:variable name="visibility" select="(@visibility,'private')[1]"/>
+        <xsl:variable name="visibility-when-used"
+                      select="if (/data/@type='package')
+                              then if ($visibility=('public','final'))
+                                   then 'private' else 'hidden'
+                              else $visibility"/>
+        <xsl:if test="not($visibility-when-used='hidden')">
+            <li xmlns="http://www.w3.org/1999/xhtml">
+                <a href="{local:getDocumentationFileURI(/data/@root-rel-uri)}#{@id}" target="doc"><xsl:value-of select="(@name,@match)[1]"/></a>
+            </li>
+        </xsl:if>
     </xsl:template>
     
 </xsl:stylesheet>

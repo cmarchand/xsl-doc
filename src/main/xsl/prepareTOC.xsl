@@ -13,69 +13,40 @@
         </xd:desc>
     </xd:doc>
     
-    <xsl:template match="/">
-        <data tocOutputUri="{file/@tocOutputUri}" root-rel-uri="{file/@root-rel-uri}">
+    <xsl:template match="/file">
+        <data>
+            <xsl:sequence select="@tocOutputUri|@root-rel-uri|@type"/>
             <by-file label="file">
-                <xsl:apply-templates select="file" mode="by-file"/>
+                <xsl:for-each-group select="component" group-by="(@rel-uri,/file/@rel-uri)[1]">
+                    <group name="{current-grouping-key()}">
+                        <xsl:sequence select="(current-group()[1]/@rel-uri,/file/@rel-uri)[1]"/>
+                        <xsl:sequence select="(current-group()[1]/@root-rel-uri,/file/@root-rel-uri)[1]"/>
+                        <xsl:sequence select="current-group()"/>
+                    </group>
+                </xsl:for-each-group>
             </by-file>
             <by-type label="type">
-                <xsl:for-each-group select=".//component" group-by="@type">
+                <xsl:for-each-group select="component" group-by="@type">
                     <group name="{current-grouping-key()}">
-                        <xsl:apply-templates select="current-group()" mode="grouping">
-                            <xsl:with-param name="groupName" select="current-grouping-key()"/>
-                        </xsl:apply-templates>
+                        <xsl:sequence select="current-group()"/>
                     </group>
                 </xsl:for-each-group>
             </by-type>
             <by-namespace label="namespace">
-                <xsl:for-each-group select=".//component" group-by="@namespace">
+                <xsl:for-each-group select="component" group-by="@namespace">
                     <group name="{current-grouping-key()}">
-                        <xsl:apply-templates select="current-group()" mode="grouping">
-                            <xsl:with-param name="groupName" select="current-grouping-key()"/>
-                        </xsl:apply-templates>
+                        <xsl:sequence select="current-group()"/>
                     </group>
                 </xsl:for-each-group>
             </by-namespace>
             <by-mode label="mode">
-                <xsl:for-each-group select=".//component[@type='template']" group-by="(@mode,'')[1]">
+                <xsl:for-each-group select="component[@type='template']" group-by="(@mode,'')[1]">
                     <group name="{current-grouping-key()}">
-                        <xsl:apply-templates select="current-group()" mode="grouping">
-                            <xsl:with-param name="groupName" select="current-grouping-key()"/>
-                        </xsl:apply-templates>
+                        <xsl:sequence select="current-group()"/>
                     </group>
                 </xsl:for-each-group>
             </by-mode>
         </data>
-    </xsl:template>
-    
-    <xsl:template match="file" mode="by-file">
-        <xsl:variable name="relUri" select="@root-rel-uri"/>
-        <xsl:variable name="absUri" select="@base-uri"/>
-        <group name="{$relUri}" rel-uri="{$relUri}" base-uri="{$absUri}">
-            <xsl:apply-templates select="component" mode="by-file">
-                <xsl:with-param name="relUri" select="$relUri"/>
-            </xsl:apply-templates>
-        </group>
-        <xsl:apply-templates select="file" mode="#current"/>
-    </xsl:template>
-    
-    <xsl:template match="component" mode="by-file">
-        <xsl:param name="relUri" as="xs:string"/>
-        <xsl:copy>
-            <xsl:attribute name="relUri" select="$relUri"/>
-            <xsl:apply-templates select="@*" mode="#default"/>
-        </xsl:copy>
-    </xsl:template>
-    <xsl:template match="component" mode="grouping">
-        <xsl:param name="groupName" as="xs:string"/>
-        <xsl:copy>
-            <xsl:attribute name="relUri" select="../@root-rel-uri"/>
-            <xsl:apply-templates select="@*" mode="#default"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <xsl:template match="@*" mode="#default">
-        <xsl:copy-of select="."/>
     </xsl:template>
     
 </xsl:stylesheet>

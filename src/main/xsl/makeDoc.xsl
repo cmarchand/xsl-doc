@@ -22,6 +22,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         </xd:desc>
     </xd:doc>
 
+    <xsl:import href="lib/common.xsl"/>
     <xsl:import href="lib/id-generator.xsl"/>
     <xsl:import href="documentation/xd_doc.xsl"/>
     <xsl:import href="source-code.xsl"/>
@@ -37,7 +38,8 @@ can obtain one at https://mozilla.org/MPL/2.0/.
             <xsl:variable name="xsl" select="document(@base-uri)"/>
             <html xmlns="http://www.w3.org/1999/xhtml">
                 <head>
-                    <title>Documentation of <xsl:value-of select="@root-rel-uri"/></title>
+                    <title>Documentation of <xsl:value-of select="@type"/><xsl:text> </xsl:text><xsl:value-of select="(@package-name,@name)[1]"/></title>
+                    <base href="{string-join(for $i in 2 to count(tokenize(local:getDocumentationFileURI(@root-rel-uri),'/')) return '..','/')}"/>
                     <style type="text/css">
                         table{
                             border-collapse:collapse;
@@ -57,6 +59,9 @@ can obtain one at https://mozilla.org/MPL/2.0/.
                             margin-bottom:5px;
                             padding:3px;
                         }
+                        .visibility-hidden{
+                            display:none;
+                        }
                         .content{
                             padding-left:7px;
                         }<!-- generic documentation style, mostly for comments -->
@@ -70,7 +75,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
                     </style>
                 </head>
                 <body>
-                    <h2>Documentation of <xsl:value-of select="@root-rel-uri"/></h2>
+                    <h2>Documentation of <xsl:value-of select="@type"/><xsl:text> </xsl:text><xsl:value-of select="(@package-name,@name)[1]"/></h2>
                     <xsl:apply-templates select="$xsl//*[@scope='stylesheet']" mode="documentation"/>
                     <!--xsl:message><xsl:copy-of select="$xsl//*[@scope='stylesheet']"/></xsl:message-->
                     <xsl:apply-templates select="$xsl" mode="doc">
@@ -85,9 +90,13 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <xsl:apply-templates mode="#current"/>
     </xsl:template>
 
-    <xsl:template match="xsl:import | xsl:include"/>
+    <xsl:template match="xsl:import | xsl:include | xsl:use-package" mode="doc">
+        <xsl:param name="file" as="element(file)" tunnel="yes"/>
+        <xsl:variable name="components" as="element(component)*" select="$file/component[@rel-uri=current()/@href]"/>
+        <xsl:apply-templates select="$components" mode="#current"/>
+    </xsl:template>
 
-    <xsl:template match="xsl:stylesheet | xsl:transform" mode="doc">
+    <xsl:template match="xsl:stylesheet | xsl:transform | xsl:package" mode="doc">
         <xsl:param name="file" as="element(file)" tunnel="yes"/>
         <xsl:apply-templates select="*" mode="#current"/>
     </xsl:template>
@@ -153,38 +162,55 @@ can obtain one at https://mozilla.org/MPL/2.0/.
 
     <xsl:template match="component" mode="doc">
         <xsl:param name="documentation" as="item()?"/>
-        <xsl:param name="code" as="element()"/>
+        <xsl:param name="code" as="element()?"/>
         <xsl:variable name="id" select="@id"/>
+        <xsl:variable name="visibility" select="(@visibility,'private')[1]"/>
+        <xsl:variable name="visibility-when-used"
+                      select="if (../@type='package')
+                              then if ($visibility=('public','final'))
+                                   then 'private' else 'hidden'
+                              else $visibility"/>
         <a id="{$id}" xmlns="http://www.w3.org/1999/xhtml"/>
-        <div xmlns="http://www.w3.org/1999/xhtml" class="hideable">
-            <details open="open" xmlns="http://www.w3.org/1999/xhtml">
-                <summary>
-                    <xsl:copy-of select="local:decodeTypeComponent(@type)"/>
-                    <xsl:text> </xsl:text>
-                    <xsl:value-of select="(@name, @match)[1]"/>
-                    <xsl:if test="@mode">
-                        <br/><strong>mode</strong> : <xsl:value-of select="@mode"/>
-                    </xsl:if>
-                </summary>
-                <div class="content">
-                    <!--table xmlns="http://www.w3.org/1999/xhtml">
-                        <xsl:for-each select="@* except (@name, @id, @path)">
-                            <xsl:if test="normalize-space(.)">
-                                <tr>
-                                    <th>
-                                        <xsl:value-of select="local-name(.)"/>
-                                    </th>
-                                    <td>
-                                        <xsl:value-of select="."/>
-                                    </td>
-                                </tr>
+        <div xmlns="http://www.w3.org/1999/xhtml" class="hideable visibility-{$visibility-when-used}">
+            <xsl:choose>
+                <xsl:when test="@idref">
+                    <a href="{local:getDocumentationFileURI(@root-rel-uri)}#{@idref}">
+                        <xsl:copy-of select="local:decodeTypeComponent(@type)"/>
+                        <xsl:text> </xsl:text>
+                        <xsl:value-of select="(@name, @match)[1]"/>
+                    </a>
+                </xsl:when>
+                <xsl:otherwise>
+                    <details open="open" xmlns="http://www.w3.org/1999/xhtml">
+                        <summary>
+                            <xsl:copy-of select="local:decodeTypeComponent(@type)"/>
+                            <xsl:text> </xsl:text>
+                            <xsl:value-of select="(@name, @match)[1]"/>
+                            <xsl:if test="@mode">
+                                <br/><strong>mode</strong> : <xsl:value-of select="@mode"/>
                             </xsl:if>
-                        </xsl:for-each>
-                    </table-->
-                    <xsl:apply-templates select="$documentation" mode="documentation"/>
-                    <xsl:copy-of select="$code"/>
-                </div>
-            </details>
+                        </summary>
+                        <div class="content">
+                            <!--table xmlns="http://www.w3.org/1999/xhtml">
+                                <xsl:for-each select="@* except (@name, @id, @path)">
+                                    <xsl:if test="normalize-space(.)">
+                                        <tr>
+                                            <th>
+                                                <xsl:value-of select="local-name(.)"/>
+                                            </th>
+                                            <td>
+                                                <xsl:value-of select="."/>
+                                            </td>
+                                        </tr>
+                                    </xsl:if>
+                                </xsl:for-each>
+                            </table-->
+                            <xsl:apply-templates select="$documentation" mode="documentation"/>
+                            <xsl:copy-of select="$code"/>
+                        </div>
+                    </details>
+                </xsl:otherwise>
+            </xsl:choose>
         </div>
     </xsl:template>
 

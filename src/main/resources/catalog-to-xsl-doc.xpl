@@ -71,6 +71,14 @@
 		</p:xslt>
 		<p:xslt>
 			<p:input port="stylesheet">
+				<p:document href="exposeComponents.xsl"/>
+			</p:input>
+			<p:input port="parameters">
+				<p:empty/>
+			</p:input>
+		</p:xslt>
+		<p:xslt>
+			<p:input port="stylesheet">
 				<p:document href="calculateHtmlOutputFile.xsl"/>
 			</p:input>
 			<p:with-param name="outputFolder" select="$outputFolder"/>
