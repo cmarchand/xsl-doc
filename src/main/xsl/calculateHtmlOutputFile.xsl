@@ -28,7 +28,6 @@
             <xsl:apply-templates select="@*"/>
             <xsl:variable name="uri" as="xs:string" select="string-join(($outputFolderURI,@root-rel-uri),'/')" />
             <xsl:attribute name="htmlOutputUri" select="resolve-uri(local:getDocumentationFileURI($uri))"/>
-            <xsl:attribute name="indexOutputUri" select="resolve-uri(local:getIndexFileURI($uri))"/>
             <xsl:attribute name="welcomeOutputUri" select="resolve-uri(local:getWelcomeFileURI($uri))"/>
             <xsl:attribute name="tocOutputUri" select="resolve-uri(local:getTocFileUri($uri))"/>
             <xsl:apply-templates select="node()"/>

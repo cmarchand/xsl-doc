@@ -36,24 +36,6 @@
     </xsl:function>
     
     <xd:doc>
-        <xd:desc>Returns the relative URI of target HTML file</xd:desc>
-        <xd:param name="relUri">The XSL relative URI</xd:param>
-        <xd:return>The computed HTML file relative URI</xd:return>
-    </xd:doc>
-    <xsl:function name="local:getIndexFileURI" as="xs:string">
-        <xsl:param name="relUri" as="xs:string"/>
-        <xsl:variable name="relUriSeq" select="tokenize($relUri,'/')" as="xs:string*"/>
-        <xsl:variable name="sourceFileName" as="xs:string" select="$relUriSeq[last()]"/>
-        <xsl:variable name="intermediaryDirectory" as="xs:string" select="local:getIntermediaryDirectory($sourceFileName)"/>
-        <xsl:variable name="targetFileName" as="xs:string" select="concat(replace($sourceFileName, '\.','_'),'-index.html')"/>
-        <xsl:variable name="ret" as="xs:string" select="string-join(($relUriSeq[position() &lt; last()],$intermediaryDirectory,$targetFileName),'/')"/>
-        <xsl:if test="$_debug">
-            <xsl:message select="concat('indexFileURI -> ',$ret)"/>
-        </xsl:if>
-        <xsl:sequence select="$ret"/>
-    </xsl:function>
-    
-    <xd:doc>
         <xd:desc>Returns the relative URI of wecome HTML file</xd:desc>
         <xd:param name="relUri">The XSL relative URI</xd:param>
         <xd:return>The computed HTML file relative URI</xd:return>
