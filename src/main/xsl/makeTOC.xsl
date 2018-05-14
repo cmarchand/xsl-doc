@@ -89,7 +89,7 @@
         </div>
     </xsl:template>
     
-    <xsl:template match="element">
+    <xsl:template match="component">
         <li xmlns="http://www.w3.org/1999/xhtml">
             <a href="{local:getDocumentationFileURI(@relUri)}#{@id}" target="doc"><xsl:value-of select="(@name,@match)[1]"/></a>
         </li>

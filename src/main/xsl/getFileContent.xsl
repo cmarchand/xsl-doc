@@ -20,7 +20,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     <xsl:param name="levelsToKeep" as="xs:string"/>
     <xd:doc scope="stylesheet">
         <xd:desc>
-            <xd:p>This program extract from input files all (root+1) elements, and generates an ID for each</xd:p>
+            <xd:p>This program extract from input files all (root+1) components, and generates an ID for each</xd:p>
             <xd:p><xd:b>Created on:</xd:b> Jun 28, 2016</xd:p>
             <xd:p><xd:b>Author:</xd:b> Christophe Marchand - christophe@marchand.top</xd:p>
             <xd:p></xd:p>
@@ -56,7 +56,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <xsl:param name="xsl-name" as="xs:string" tunnel="yes"/>
         <xsl:param name="base-uri" as="xs:string" tunnel="yes"/>
         <xsl:param name="rel-uri" as="xs:string?" tunnel="yes"/>
-        <element type="template" id="{generate-id(.)}" path="{idgen:getXPath(.)}">
+        <component type="template" id="{generate-id(.)}" path="{idgen:getXPath(.)}">
             <xsl:choose>
                 <xsl:when test="exists(@match)">
                     <xsl:attribute name="match" select="@match"/>
@@ -72,39 +72,20 @@ can obtain one at https://mozilla.org/MPL/2.0/.
             <xsl:if test="preceding-sibling::*[1][self::xd:doc][not(@scope='stylesheet')]">
                 <xsl:copy-of select="preceding-sibling::*[1][self::xd:doc]"/>
             </xsl:if>
-        </element>
+        </component>
     </xsl:template>
     
-    <!--xsl:template match="xsl:param">
-        <element type="parameter" id="{generate-id(.)}">
-            <xsl:copy-of select="local:extractName(@name)"/>
-            <xsl:apply-templates select="@* except @name"/>
-        </element>
-    </xsl:template>
-    
-    <xsl:template match="xsl:variable">
-        <element type="variable" id="{generate-id(.)}">
-            <xsl:copy-of select="local:extractName(@name)"/>
-            <xsl:apply-templates select="@* except @name"/>
-        </element>
-    </xsl:template-->
-    
-    <xsl:template match="xsl:function">
-        <element type="function" id="{generate-id(.)}">
-            <xsl:copy-of select="local:extractName(@name)"/>
-            <xsl:apply-templates select="@* except @name"/>
-            <xsl:copy-of select="local:calcSignature(.)"/>
-        </element>
-    </xsl:template>
-
-    <xsl:template match="xsl:accumulator | xs:attribute-set | 
-        xsl:character-map | xsl:decimal-format | xsl:import-schema | 
-        xsl:key | xsl:mode | xsl:namespace-alias | xsl:preserve-space | 
-        xsl:strip-space | xsl:param | xsl:variable">
-        <element type="{local-name(.)}" id="{generate-id(.)}" path="{idgen:getXPath(.)}">
+    <xsl:template match="xsl:accumulator | xs:attribute-set |
+        xsl:character-map | xsl:decimal-format | xsl:import-schema |
+        xsl:key | xsl:mode | xsl:namespace-alias | xsl:preserve-space |
+        xsl:strip-space | xsl:param | xsl:variable | xsl:function">
+        <component type="{local-name(.)}" id="{generate-id(.)}" path="{idgen:getXPath(.)}">
             <xsl:copy-of select="local:extractName((@name, @elements, @schema-location, @stylesheet-prefix, 'unnamed')[1])"/>    <!-- patch for strip-spaces -->
             <xsl:apply-templates select="@* except @name"/>
-        </element>
+            <xsl:if test="self::xsl:function">
+                <xsl:copy-of select="local:calcSignature(.)"/>
+            </xsl:if>
+        </component>
     </xsl:template>
 
     <!-- here, we don't care -->

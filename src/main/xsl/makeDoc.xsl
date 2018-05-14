@@ -103,16 +103,16 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <xsl:choose>
             <xsl:when test="ancestor::xd:*"><xsl:next-match></xsl:next-match></xsl:when>
             <xsl:otherwise>
-                <xsl:variable name="element" as="element(element)">
+                <xsl:variable name="component" as="element(component)">
                     <xsl:choose>
                         <xsl:when test="self::xsl:function">
                             <xsl:variable name="signature" as="xs:string" select="idgen:calcSignature(.)"/>
-                            <xsl:sequence select="$file/element[@signature eq $signature]" />
+                            <xsl:sequence select="$file/component[@signature eq $signature]" />
                         </xsl:when>
-                        <xsl:otherwise><xsl:sequence select="$file/element[@path eq $path]"/></xsl:otherwise>
+                        <xsl:otherwise><xsl:sequence select="$file/component[@path eq $path]"/></xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
-                <!--xsl:if test="empty($element)">
+                <!--xsl:if test="empty($component)">
                     <xsl:text>Element est vide</xsl:text>
                 </xsl:if-->
                 <xsl:variable name="this" select="."/>
@@ -143,7 +143,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
                         </details>
                     </div>
                 </xsl:variable>
-                <xsl:apply-templates select="$element" mode="doc">
+                <xsl:apply-templates select="$component" mode="doc">
                     <xsl:with-param name="documentation" select="$documentation"/>
                     <xsl:with-param name="code" select="$code"/>
                 </xsl:apply-templates>
@@ -151,7 +151,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="element" mode="doc">
+    <xsl:template match="component" mode="doc">
         <xsl:param name="documentation" as="item()?"/>
         <xsl:param name="code" as="element()"/>
         <xsl:variable name="id" select="@id"/>
@@ -159,7 +159,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <div xmlns="http://www.w3.org/1999/xhtml" class="hideable">
             <details open="open" xmlns="http://www.w3.org/1999/xhtml">
                 <summary>
-                    <xsl:copy-of select="local:decodeTypeElement(@type)"/>
+                    <xsl:copy-of select="local:decodeTypeComponent(@type)"/>
                     <xsl:text> </xsl:text>
                     <xsl:value-of select="(@name, @match)[1]"/>
                     <xsl:if test="@mode">
@@ -201,7 +201,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     
     <xsl:template match="text()" mode="doc"/>
 
-    <xsl:function name="local:decodeTypeElement">
+    <xsl:function name="local:decodeTypeComponent">
         <xsl:param name="type" as="xs:string"/>
         <xsl:variable name="ret" as="item()">
             <xsl:choose>
@@ -214,7 +214,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
                 </xsl:when>
                 <xsl:otherwise>
                     <span class="error" xmlns="http://www.w3.org/1999/xhtml">
-                        <xsl:value-of select="concat('Unknown element type: ',$type)"/>
+                        <xsl:value-of select="concat('Unknown component type: ',$type)"/>
                     </span>
                 </xsl:otherwise>
             </xsl:choose>

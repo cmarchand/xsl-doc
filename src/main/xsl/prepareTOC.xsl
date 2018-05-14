@@ -19,7 +19,7 @@
                 <xsl:apply-templates select="file" mode="by-file"/>
             </by-file>
             <by-type label="type">
-                <xsl:for-each-group select=".//element" group-by="@type">
+                <xsl:for-each-group select=".//component" group-by="@type">
                     <group name="{current-grouping-key()}">
                         <xsl:apply-templates select="current-group()" mode="grouping">
                             <xsl:with-param name="groupName" select="current-grouping-key()"/>
@@ -28,7 +28,7 @@
                 </xsl:for-each-group>
             </by-type>
             <by-namespace label="namespace">
-                <xsl:for-each-group select=".//element" group-by="@namespace">
+                <xsl:for-each-group select=".//component" group-by="@namespace">
                     <group name="{current-grouping-key()}">
                         <xsl:apply-templates select="current-group()" mode="grouping">
                             <xsl:with-param name="groupName" select="current-grouping-key()"/>
@@ -37,7 +37,7 @@
                 </xsl:for-each-group>
             </by-namespace>
             <by-mode label="mode">
-                <xsl:for-each-group select=".//element[@type='template']" group-by="(@mode,'')[1]">
+                <xsl:for-each-group select=".//component[@type='template']" group-by="(@mode,'')[1]">
                     <group name="{current-grouping-key()}">
                         <xsl:apply-templates select="current-group()" mode="grouping">
                             <xsl:with-param name="groupName" select="current-grouping-key()"/>
@@ -52,21 +52,21 @@
         <xsl:variable name="relUri" select="@root-rel-uri"/>
         <xsl:variable name="absUri" select="@base-uri"/>
         <group name="{$relUri}" rel-uri="{$relUri}" base-uri="{$absUri}">
-            <xsl:apply-templates select="element" mode="by-file">
+            <xsl:apply-templates select="component" mode="by-file">
                 <xsl:with-param name="relUri" select="$relUri"/>
             </xsl:apply-templates>
         </group>
         <xsl:apply-templates select="file" mode="#current"/>
     </xsl:template>
     
-    <xsl:template match="element" mode="by-file">
+    <xsl:template match="component" mode="by-file">
         <xsl:param name="relUri" as="xs:string"/>
         <xsl:copy>
             <xsl:attribute name="relUri" select="$relUri"/>
             <xsl:apply-templates select="@*" mode="#default"/>
         </xsl:copy>
     </xsl:template>
-    <xsl:template match="element" mode="grouping">
+    <xsl:template match="component" mode="grouping">
         <xsl:param name="groupName" as="xs:string"/>
         <xsl:copy>
             <xsl:attribute name="relUri" select="../@root-rel-uri"/>
