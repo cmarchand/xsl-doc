@@ -32,6 +32,7 @@
 			<xsl:if test="/xsl:package/@name">
 				<xsl:attribute name="package-name" select="/xsl:package/@name"/>
 			</xsl:if>
+			<xsl:sequence select="/*/@catalog-name"/>
 			<xsl:if test="not(empty($rel-uri))">
 				<xsl:attribute name="rel-uri" select="$rel-uri"/>
 			</xsl:if>

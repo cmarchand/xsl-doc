@@ -38,6 +38,11 @@
 				<p:load>
 					<p:with-option name="href" select="/*/resolve-uri(@uri,base-uri(.))"/>
 				</p:load>
+				<p:add-attribute match="/*" attribute-name="catalog-name">
+					<p:with-option name="attribute-value" select="/*/@name">
+						<p:pipe step="sources" port="current"/>
+					</p:with-option>
+				</p:add-attribute>
 			</p:when>
 			<p:otherwise>
 				<p:identity>

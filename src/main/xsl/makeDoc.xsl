@@ -38,7 +38,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
             <xsl:variable name="xsl" select="document(@base-uri)"/>
             <html xmlns="http://www.w3.org/1999/xhtml">
                 <head>
-                    <title>Documentation of <xsl:value-of select="@type"/><xsl:text> </xsl:text><xsl:value-of select="(@package-name,@name)[1]"/></title>
+                    <title>Documentation of <xsl:value-of select="@type"/><xsl:text> </xsl:text><xsl:value-of select="(@catalog-name,@package-name,@name)[1]"/></title>
                     <base href="{string-join(for $i in 2 to count(tokenize(local:getDocumentationFileURI(@root-rel-uri),'/')) return '..','/')}"/>
                     <style type="text/css">
                         table{
@@ -75,7 +75,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
                     </style>
                 </head>
                 <body>
-                    <h2>Documentation of <xsl:value-of select="@type"/><xsl:text> </xsl:text><xsl:value-of select="(@package-name,@name)[1]"/></h2>
+                    <h2>Documentation of <xsl:value-of select="@type"/><xsl:text> </xsl:text><xsl:value-of select="(@catalog-name,@package-name,@name)[1]"/></h2>
                     <xsl:apply-templates select="$xsl//*[@scope='stylesheet']" mode="documentation"/>
                     <!--xsl:message><xsl:copy-of select="$xsl//*[@scope='stylesheet']"/></xsl:message-->
                     <xsl:apply-templates select="$xsl" mode="doc">
