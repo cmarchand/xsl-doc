@@ -3,6 +3,7 @@
     stylesheet="../../main/xsl/calculateRelativePaths.xsl" xslt-version="3.0">
     <x:param name="absoluteRootFolder" select="'file:/home/cmarchand/'"/>
     <x:param name="levelsToKeep" select="'0'"/>
+    <x:param name="projectName" select="'test-project'"/>
     
     <x:scenario label="Scenario for testing template match @base-uri">
         <x:context>

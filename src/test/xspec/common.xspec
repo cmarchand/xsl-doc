@@ -31,27 +31,6 @@
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
     </x:scenario>
 
-    <x:scenario label="Scenario for testing function getIntermediaryDirectory">
-        <x:scenario label="local filename">
-            <x:call function="local:getIntermediaryDirectory">
-                <x:param name="sourceFileName" select="'toto.xsl'"/>
-            </x:call>
-            <x:expect label="_toto" select="'_toto'"/>
-        </x:scenario>
-        <x:scenario label="qualifed linux filename" pending="Not yet implemented in XSpec">
-            <x:call function="local:getIntermediaryDirectory">
-                <x:param name="sourceFileName" select="'src/main/xsl/toto.xsl'"/>
-            </x:call>
-            <x:expect label="src/main/xsl/_toto" select="'src/main/xsl/_toto'"/>
-        </x:scenario>
-        <x:scenario label="qualifed windows filename" pending="Not yet implemented in XSpec">
-            <x:call function="local:getIntermediaryDirectory">
-                <x:param name="sourceFileName" select="'src\main\xsl\toto.xsl'"/>
-            </x:call>
-            <x:expect label="src\main\xsl\_toto" select="'src\main\xsl\_toto'"/>
-        </x:scenario>
-    </x:scenario>
-
     <x:scenario pending="Not yet implemented"
         label="Scenario for testing function normalizeFilePath">
         <x:call function="local:normalizeFilePath">
