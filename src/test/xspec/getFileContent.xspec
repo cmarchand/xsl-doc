@@ -15,11 +15,11 @@
             <file dependance-type="first-doc"
                 name="premier.xsl"
                 base-uri="../../test/resources/premier.xsl" levelsToKeep="0">
-                <element 
+                <component 
                     type="template" 
                     id="..." 
                     path="..."
-                    match="/"></element>
+                    match="/"></component>
             </file>
         </x:expect>
     </x:scenario>
@@ -51,8 +51,8 @@
                 <x:param name="rel-uri" select="'no_value'" tunnel="yes"/>
                 <xsl:template match="/"/>
             </x:context>
-            <x:expect label="element type template" >
-                <element type="template" match="/" id="..." path="..."/>
+            <x:expect label="component type template" >
+                <component type="template" match="/" id="..." path="..."/>
             </x:expect>
         </x:scenario>
         <x:scenario label="with doc">
@@ -65,12 +65,12 @@
                 </xd:doc>
                 <xsl:template match="/"/>
             </x:context>
-            <x:expect label="element type template" >
-                <element type="template" match="/" id="..." path="...">
+            <x:expect label="component type template" >
+                <component type="template" match="/" id="..." path="...">
                     <xd:doc>
                         <xd:desc><xd:p>This is the documentation</xd:p></xd:desc>
                     </xd:doc>
-                </element>
+                </component>
             </x:expect>
         </x:scenario>
     </x:scenario>
@@ -88,8 +88,8 @@
         <x:context>
             <xsl:param name="p" as="xs:string"/>
         </x:context>
-        <x:expect label="element type param">
-            <element type="param" name="p" id="..." as="xs:string" namespace="" path="..."/>
+        <x:expect label="component type param">
+            <component type="param" name="p" id="..." as="xs:string" namespace="" path="..."/>
         </x:expect>
     </x:scenario>
 
@@ -97,8 +97,8 @@
         <x:context>
             <xsl:variable name="v" as="xs:string" select="'toto'"/>
         </x:context>
-        <x:expect label="element type variable">
-            <element type="variable" name="v" id="..." as="xs:string" namespace="" select="'toto'" path="..."/>
+        <x:expect label="component type variable">
+            <component type="variable" name="v" id="..." as="xs:string" namespace="" select="'toto'" path="..."/>
         </x:expect>
     </x:scenario>
 
@@ -110,8 +110,8 @@
                 <xsl:param name="p3"/>
             </xsl:function>
         </x:context>
-        <x:expect label="element type function">
-            <element type="function" id="..." namespace="top:marchand:xml:local" name="myFunction" as="xs:string" signature="Q{{top:marchand:xml:local}}myFunction(xs:string,xs:integer*,item())"/>
+        <x:expect label="component type function">
+            <component type="function" id="..." path="/Q{{http://www.w3.org/1999/XSL/Transform}}function[1]" namespace="top:marchand:xml:local" name="myFunction" as="xs:string" signature="Q{{top:marchand:xml:local}}myFunction(xs:string,xs:integer*,item())"/>
         </x:expect>
     </x:scenario>
 
@@ -120,7 +120,7 @@
             <xsl:strip-space elements="#all"/>
         </x:context>
         <x:expect label="a not null name">
-            <element type="strip-space" id="..." path="..." name="#all" elements="#all"/>
+            <component type="strip-space" id="..." path="..." name="#all" elements="#all"/>
         </x:expect>
     </x:scenario>
 
@@ -129,7 +129,7 @@
             <xsl:preserve-space elements="#all"/>
         </x:context>
         <x:expect label="a not null name">
-            <element type="preserve-space" id="..." path="..." name="#all" elements="#all"/>
+            <component type="preserve-space" id="..." path="..." name="#all" elements="#all"/>
         </x:expect>
     </x:scenario>
 </x:description>
