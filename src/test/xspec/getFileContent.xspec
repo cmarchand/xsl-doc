@@ -89,7 +89,7 @@
             <xsl:param name="p" as="xs:string"/>
         </x:context>
         <x:expect label="component type param">
-            <component type="param" name="p" id="..." as="xs:string" namespace="" path="..."/>
+            <component type="param" name="p" id="..." as="xs:string" namespace="" path="..." visibility="public"/>
         </x:expect>
     </x:scenario>
 
