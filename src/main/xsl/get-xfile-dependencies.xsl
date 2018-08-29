@@ -100,7 +100,9 @@
 	
 	<!--XSLT MATCHING-->
 
-	<xsl:template match="xslt:import | xslt:include | xslt:use-package">
+  <!-- we no longer wish to generate documentation from used packages.
+    packages should have their own documentation -->
+	<xsl:template match="xslt:import | xslt:include">
 		<xsl:param name="caller.uri" tunnel="yes"/>
 		<xsl:variable name="this.uri" select="resolve-uri(@href,base-uri(.))"/>
 		<xsl:if test="$caller.uri != $this.uri">
@@ -110,8 +112,6 @@
 						<xsl:with-param name="dependance-type" select="name()"/>
 						<xsl:with-param name="rel-uri" select="@href"/>
 					</xsl:apply-templates>
-				</xsl:when>
-				<xsl:when test="self::xslt:use-package and not(xslt:accept[@visibility=('public','final')])">
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:message terminate="yes" select="concat(name(),' can not be resolved: ',@href)"/>
