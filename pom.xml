@@ -7,7 +7,7 @@
     
     <groupId>top.marchand.xml</groupId>
     <artifactId>xsl-doc</artifactId>
-    <version>1.8-SNAPSHOT</version>
+    <version>1.8</version>
     <packaging>jar</packaging>
     
     <name>xsl-doc</name>
@@ -26,6 +26,11 @@
             </roles>
             <timezone>UTC+1</timezone>
             <url>https://github.com/cmarchand/</url>
+        </developer>
+        <developer>
+            <name>Bert Frees</name>
+            <email>bertfrees@gmail.com</email>
+            <url>http://github.com/bertfrees</url>
         </developer>
     </developers>
     
