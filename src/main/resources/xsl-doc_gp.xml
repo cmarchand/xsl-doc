@@ -15,6 +15,7 @@ can obtain one at https://mozilla.org/MPL/2.0/.
         <xslt href="cp:/getFileContent.xsl"/>
         <xslt href="cp:/calculateRelativePaths.xsl">
             <param name="absoluteRootFolder" value="$[absoluteRootFolder]"/>
+            <param name="projectName" value="$[projectName]"/>
         </xslt>
         <xslt href="cp:/exposeComponents.xsl"/>
         <xslt href="cp:/calculateHtmlOutputFile.xsl" id="outputPaths">
@@ -52,7 +53,8 @@ can obtain one at https://mozilla.org/MPL/2.0/.
     <params>
         <!--param name="sources" value="src/main/xsl"/>
         <param name="outputFolder" value="should give it via command line"/-->
-        <param name="absoluteRootFolder" value="file:$[basedir]/$[sources]"/>
+        <param name="absoluteRootFolder" value="file:$[basedir]/$[sources]" as="xs:string"/>
+        <param name="projectName" as="xs:string" abstract="true"/>
     </params>
     <sources>
         <folder href="$[sources]" pattern=".*\.xsl" recurse="true"/>
